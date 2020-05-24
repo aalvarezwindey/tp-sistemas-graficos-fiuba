@@ -1,4 +1,4 @@
-import './superficies_parametricas/index';
+import './superficies_parametricas/index.js';
 
 function generarSuperficie(superficie, filas, columnas) {
     positionBuffer = [];
@@ -129,3 +129,5 @@ function crearGeometria({ filas = 100, columnas = 100}) {
 function dibujarGeometria() {
   dibujarMalla(mallaDeTriangulosEsfera);
 }
+
+export { dibujarGeometria, crearGeometria };

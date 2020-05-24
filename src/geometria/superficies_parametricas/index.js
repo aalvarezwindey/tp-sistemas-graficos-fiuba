@@ -1,2 +1,2 @@
-import Esfera from "./superficies/esfera";
-import Plano from "./superficies/plano";
+import Esfera from "./superficies/esfera.js";
+import Plano from "./superficies/plano.js";

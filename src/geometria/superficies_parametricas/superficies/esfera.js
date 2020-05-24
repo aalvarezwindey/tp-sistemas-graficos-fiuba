@@ -1,4 +1,4 @@
-import SuperficieParametrica from "../superficie_parametrica";
+import SuperficieParametrica from "../superficie_parametrica.js";
 
 class Esfera extends SuperficieParametrica {
   constructor(radio) {

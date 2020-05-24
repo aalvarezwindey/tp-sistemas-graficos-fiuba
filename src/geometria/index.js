@@ -1,2 +1,2 @@
-import { crearGeometria, dibujarGeometria } from "./geometria";
+import { crearGeometria, dibujarGeometria } from "./geometria.js";
 
