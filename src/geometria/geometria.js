@@ -1,4 +1,5 @@
 import Esfera from './superficies_parametricas/superficies/esfera.js';
+import BombaAcuatica from './superficies_parametricas/superficies/bomba_acuatica.js';
 
 function generarSuperficie(superficie, filas, columnas) {
     const positionBuffer = [];
@@ -122,7 +123,7 @@ function dibujarMalla(mallaDeTriangulos, shaderProgram, modo = "edges") {
 
 function crearGeometria(definicion = { filas: 100, columnas: 100}) {
   const { filas, columnas } = definicion;
-  const esfera = new Esfera(1);
+  const esfera = new Esfera(2);
 
   return generarSuperficie(esfera, filas, columnas);
 }
@@ -131,4 +132,4 @@ function dibujarGeometria(malla, shaderProgram, modo = "edges") {
   dibujarMalla(malla, shaderProgram, modo);
 }
 
-export { dibujarGeometria, crearGeometria };
+export { dibujarGeometria, crearGeometria, dibujarMalla };
