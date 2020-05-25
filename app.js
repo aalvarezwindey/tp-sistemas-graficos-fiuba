@@ -41,7 +41,6 @@ function setupWebGL() {
 }
 
 function getPos(alfa, beta) {
-
   var r = 2;
   var nx = Math.sin(beta) * Math.sin(alfa);
   var ny = Math.sin(beta) * Math.cos(alfa);
@@ -180,7 +179,7 @@ function animate() {
 
   rotate_angle += 0.01;
   mat4.identity(modelMatrix);
-  mat4.rotate(modelMatrix, modelMatrix, rotate_angle, [1.0, 0.0, 1.0]);
+  mat4.rotate(modelMatrix, modelMatrix, rotate_angle, [1.0, 0.0, 0.0]);
 
 
   mat4.identity(normalMatrix);
