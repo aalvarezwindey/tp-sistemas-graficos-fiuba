@@ -1,13 +1,13 @@
 class SuperficieParametrica {
-  getPosicion = (u, v) => {
+  getPosicion(u, v) {
     throw "Should be implemented";
   }
 
-  getNormal = (u, v) => {
+  getNormal(u, v) {
     throw "Should be implemented";
   }
 
-  getCoordenadasTextura = (u, v) => {
+  getCoordenadasTextura(u, v) {
     throw "Should be implemented";
   }
 }

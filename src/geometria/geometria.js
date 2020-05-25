@@ -1,9 +1,9 @@
-import './superficies_parametricas/index.js';
+import Esfera from './superficies_parametricas/superficies/esfera.js';
 
 function generarSuperficie(superficie, filas, columnas) {
-    positionBuffer = [];
-    normalBuffer = [];
-    uvBuffer = [];
+    const positionBuffer = [];
+    const normalBuffer = [];
+    const uvBuffer = [];
 
     for (var i = 0; i <= filas; i++) {
         for (var j = 0; j <= columnas; j++) {
@@ -32,7 +32,7 @@ function generarSuperficie(superficie, filas, columnas) {
     }
 
     // Buffer de indices de los triángulos
-    indexBuffer = [];
+    const indexBuffer = [];
 
     function inidiceDelVertice_ij(i, j) {
         var cant_vertices_por_fila = columnas + 1;
@@ -63,25 +63,25 @@ function generarSuperficie(superficie, filas, columnas) {
     }
 
     // Creación e Inicialización de los buffers
-    webgl_position_buffer = gl.createBuffer();
+    const webgl_position_buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, webgl_position_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positionBuffer), gl.STATIC_DRAW);
     webgl_position_buffer.itemSize = 3;
     webgl_position_buffer.numItems = positionBuffer.length / 3;
 
-    webgl_normal_buffer = gl.createBuffer();
+    const webgl_normal_buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, webgl_normal_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normalBuffer), gl.STATIC_DRAW);
     webgl_normal_buffer.itemSize = 3;
     webgl_normal_buffer.numItems = normalBuffer.length / 3;
 
-    webgl_uvs_buffer = gl.createBuffer();
+    const webgl_uvs_buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, webgl_uvs_buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvBuffer), gl.STATIC_DRAW);
     webgl_uvs_buffer.itemSize = 2;
     webgl_uvs_buffer.numItems = uvBuffer.length / 2;
 
-    webgl_index_buffer = gl.createBuffer();
+    const webgl_index_buffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, webgl_index_buffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indexBuffer), gl.STATIC_DRAW);
     webgl_index_buffer.itemSize = 1;
@@ -120,14 +120,15 @@ function dibujarMalla(mallaDeTriangulos) {
     }
 }
 
-function crearGeometria({ filas = 100, columnas = 100}) {
+function crearGeometria(definicion = { filas: 100, columnas: 100}) {
+  const { filas, columnas } = definicion;
   const esfera = new Esfera(1);
 
-  mallaDeTriangulosEsfera = generarSuperficie(esfera, filas, columnas);
+  return generarSuperficie(esfera, filas, columnas);
 }
 
-function dibujarGeometria() {
-  dibujarMalla(mallaDeTriangulosEsfera);
+function dibujarGeometria(malla) {
+  dibujarMalla(malla);
 }
 
 export { dibujarGeometria, crearGeometria };
