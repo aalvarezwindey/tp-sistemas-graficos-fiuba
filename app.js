@@ -18,6 +18,8 @@ var viewMatrix = mat4.create();
 var projMatrix = mat4.create();
 var normalMatrix = mat4.create();
 var rotate_angle = -1.57078;
+var malla = null;
+var shaderProgram = null;
 
 function setupWebGL() {
   gl.enable(gl.DEPTH_TEST);
@@ -167,6 +169,7 @@ function drawScene() {
 
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, trianglesIndexBuffer);
   gl.drawElements(gl.TRIANGLE_STRIP, trianglesIndexBuffer.number_vertex_point, gl.UNSIGNED_SHORT, 0);
+  dibujarGeometria(malla, shaderProgram);
 }
 
 
@@ -207,12 +210,12 @@ function startWebGLApp() {
 
     if (gl) {
       setupWebGL(); // configurar web GL
-      initShaders({
+      shaderProgram = initShaders({
         gl,
         fsSrc: fragmentShaderSource,
         vsSrc: vertexShaderSource
       }); // Inicializamos los shaders
-      crearGeometria();
+      malla = crearGeometria();
       setupBuffers(); // Cargamos información que queremos dibujar
       setupVertexShaderMatrix();
       tick();

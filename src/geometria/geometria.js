@@ -95,7 +95,7 @@ function generarSuperficie(superficie, filas, columnas) {
     }
 }
 
-function dibujarMalla(mallaDeTriangulos) {
+function dibujarMalla(mallaDeTriangulos, shaderProgram, modo = "edges") {
     // Se configuran los buffers que alimentaron el pipeline
     gl.bindBuffer(gl.ARRAY_BUFFER, mallaDeTriangulos.webgl_position_buffer);
     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, mallaDeTriangulos.webgl_position_buffer.itemSize, gl.FLOAT, false, 0, 0);
@@ -110,7 +110,7 @@ function dibujarMalla(mallaDeTriangulos) {
 
 
     if (modo != "wireframe") {
-        gl.uniform1i(shaderProgram.useLightingUniform, (lighting == "true"));
+        gl.uniform1i(shaderProgram.useLightingUniform, true);
         gl.drawElements(gl.TRIANGLE_STRIP, mallaDeTriangulos.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
     }
 
@@ -127,8 +127,8 @@ function crearGeometria(definicion = { filas: 100, columnas: 100}) {
   return generarSuperficie(esfera, filas, columnas);
 }
 
-function dibujarGeometria(malla) {
-  dibujarMalla(malla);
+function dibujarGeometria(malla, shaderProgram, modo = "edges") {
+  dibujarMalla(malla, shaderProgram, modo);
 }
 
 export { dibujarGeometria, crearGeometria };

@@ -1,40 +1,32 @@
-<!doctype html>
 <html>
+    <head>
+        <title>WebGL App - Ariel Alvarez Windey</title>
+        <style>
+            body {
+                background-color: grey;
+            }
 
-<head>
-    <title></title>
-    <style>
-        body {
-            background-color: grey;
-        }
+            canvas {
+                background-color: white;
+            }
 
-        canvas {
-            background-color: white;
-        }
+            textarea {
+                background-color: black;
+            }
+        </style>
+    </head>
+    <body>
 
-        textarea {
-            background-color: black;
-        }
-    </style>
-</head>
+        <center>
+            <canvas id="my-canvas" width="1000" height="800">
+                Your browser does not support the HTML5 canvas element.
+            </canvas>
+        </center>
 
-<body>
-
-    <center>
-        <canvas id="my-canvas" width="1000" height="800">
-            Your browser does not support the HTML5 canvas element.
-        </canvas>
-    </center>
-
-    <script type="text/javascript" src="js/gl-matrix.js"></script>
-    <script type="text/javascript" src="js/jquery/jquery.js"></script>
-
-    <script type="text/javascript" src="src/shaders/shaders_setup.js"></script>
-
-    <script type="module" src="src/geometria/index.js" defer></script>
-    <script type="text/javascript" src="app.js" defer></script>
-
-
-</body>
-
+        <script type="text/javascript" src="js/gl-matrix.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.js"></script>
+        <script type="text/javascript" src="src/shaders/shaders_setup.js"></script>
+        <script type="module" src="src/geometria/index.js" defer></script>
+        <script type="text/javascript" src="app.js" defer></script>
+    </body>
 </html>

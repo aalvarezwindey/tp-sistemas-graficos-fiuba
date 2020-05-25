@@ -36,6 +36,7 @@ function initShaders({ gl, fsSrc, vsSrc }) {
 
   //use program
   gl.useProgram(glProgram);
+  return glProgram;
 }
 
 function _loadFS() {
