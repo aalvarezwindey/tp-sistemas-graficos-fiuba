@@ -34,31 +34,17 @@ function generarSuperficie(superficie, filas, columnas) {
 
     // Buffer de indices de los triángulos
     const indexBuffer = [];
-
-    function inidiceDelVertice_ij(i, j) {
-        var cant_vertices_por_fila = columnas + 1;
-        return j * cant_vertices_por_fila + i;
-    }
-
-    function agregarIndicesParaQuad_ij(idx_buffer, i, j) {
-        var v_ij = inidiceDelVertice_ij(i, j);
-        var v_i1_j = inidiceDelVertice_ij(i + 1, j);
-        var v_i_j1 = inidiceDelVertice_ij(i, j + 1);
-        var v_i1_j1 = inidiceDelVertice_ij(i + 1, j + 1);
-
-        idx_buffer.push(v_ij, v_i1_j, v_i_j1, v_i1_j1);
-    }
-
-    for (j = 0; j < filas; j++) {
-        for (i = 0; i < columnas; i++) {
-            agregarIndicesParaQuad_ij(indexBuffer, i, j);
-
-            // Si llegamos al borde debemos hacer los triángulos degenerados
-            if (i === columnas - 1) {
-                var v_i1_j1 = inidiceDelVertice_ij(i + 1, j + 1);
-                var v_0_j1 = inidiceDelVertice_ij(0, j + 1);
-
-                indexBuffer.push(v_i1_j1, v_i1_j1, v_0_j1, v_0_j1);
+    for (i=0; i < filas; i++) {
+        for (j=0; j < columnas; j++) {
+            if (j==0) {
+                indexBuffer.push(j + (i* (columnas+1)));
+                indexBuffer.push(j + ((i+1) * (columnas+1)));
+            }
+            indexBuffer.push(j + 1 + (i* (columnas+1)));
+            indexBuffer.push(j + 1 + ((i+1) * (columnas+1)));
+            if ((j == columnas - 1) && (i+1 < filas)) {
+                indexBuffer.push(j + 1 + ((i+1) * (columnas+1)));
+                indexBuffer.push(((i+1) * (columnas+1)));
             }
         }
     }
@@ -123,7 +109,7 @@ function dibujarMalla(mallaDeTriangulos, shaderProgram, modo = "edges") {
 
 function crearGeometria(definicion = { filas: 100, columnas: 100}) {
   const { filas, columnas } = definicion;
-  const esfera = new Esfera(2);
+  const esfera = new Esfera(1);
 
   return generarSuperficie(esfera, filas, columnas);
 }
