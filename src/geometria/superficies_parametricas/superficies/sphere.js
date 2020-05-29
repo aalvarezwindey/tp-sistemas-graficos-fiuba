@@ -1,9 +1,10 @@
 import SuperficieParametrica from "../superficie_parametrica.js";
 
-class Esfera extends SuperficieParametrica {
+class Sphere extends SuperficieParametrica {
   constructor(radio) {
     super();
     this.radio = radio;
+    super._setupBuffers();
   }
 
   getPosicion(u, v) {
@@ -38,4 +39,4 @@ class Esfera extends SuperficieParametrica {
   };
 }
 
-export default Esfera;
+export default Sphere;

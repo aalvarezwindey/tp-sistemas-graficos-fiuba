@@ -1,7 +1,8 @@
-import { crearGeometria, dibujarGeometria } from "./geometria.js";
+import Objeto3D from "./objeto_3d.js";
+import Sphere from "./superficies_parametricas/superficies/sphere.js";
 
 window.webGLApp = {
   ...window.webGLApp,
-  crearGeometria: crearGeometria,
-  dibujarGeometria: dibujarGeometria
+  Objeto3D: Objeto3D,
+  Sphere: Sphere,
 }

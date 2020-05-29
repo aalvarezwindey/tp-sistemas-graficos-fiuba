@@ -1,8 +1,10 @@
 const {
-  crearGeometria,
-  dibujarGeometria,
+  Objeto3D,
+  Sphere,
   ShadersManager,
-  Camera
+  Camera,
+  crearGeometria,
+  dibujarMalla
 } = window.webGLApp;
 
 console.log('window.webGLApp', window.webGLApp)
@@ -13,34 +15,24 @@ var vec3 = glMatrix.vec3;
 var gl = null,
   canvas = null;
 
-var vertexPositionAttribute = null,
-  trianglesVerticeBuffer = null,
-  vertexNormalAttribute = null,
-  trianglesNormalBuffer = null,
-  trianglesIndexBuffer = null;
-
 var modelMatrix = mat4.create();
 var projMatrix = mat4.create();
 var normalMatrix = mat4.create();
-var rotate_angle = -1.57078;
-var malla = null;
+var esfera = null;
 var shaderProgram = null;
 var camera = null;
 
 function setupWebGL() {
   gl.enable(gl.DEPTH_TEST);
   //set the clear color
-  gl.clearColor(1, 1, 1, 1.0);
+  gl.clearColor(0.7, .7, .7, 1.0);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-  gl.viewport(0, 0, canvas.width, canvas.height);
+  gl.viewport(0, 0, window.innerWidth, window.innerHeight);
 
   // Matrix de Proyeccion Perspectiva
-
   mat4.perspective(projMatrix, 45, canvas.width / canvas.height, 0.1, 100.0);
-
   mat4.identity(modelMatrix);
-  mat4.rotate(modelMatrix, modelMatrix, -1.57078, [1.0, 0.0, 0.0]);
 
   camera = new Camera(mat4.create());
 }
@@ -61,25 +53,12 @@ function drawScene() {
   gl.canvas.width  = window.innerWidth;
   gl.canvas.height = window.innerHeight;
   setupVertexShaderMatrix();
-
-  vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aPosition");
-  gl.enableVertexAttribArray(vertexPositionAttribute);
-  gl.bindBuffer(gl.ARRAY_BUFFER, trianglesVerticeBuffer);
-  gl.vertexAttribPointer(vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
-
-  vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aNormal");
-  gl.enableVertexAttribArray(vertexNormalAttribute);
-  gl.bindBuffer(gl.ARRAY_BUFFER, trianglesNormalBuffer);
-  gl.vertexAttribPointer(vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
-
-  dibujarGeometria(malla, shaderProgram);
+  esfera.render(camera.getViewMatrix());
 }
 
 
 function animate() {
-  rotate_angle += 0.01;
   mat4.identity(modelMatrix);
-  mat4.rotate(modelMatrix, modelMatrix, rotate_angle, [1.0, 0.0, 0.0]);
 
   mat4.identity(normalMatrix);
   mat4.multiply(normalMatrix, camera.getViewMatrix(), modelMatrix);
@@ -118,7 +97,11 @@ function startWebGLApp() {
 
       shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aNormal");
       gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
-      malla = crearGeometria();
+      esfera = new Objeto3D({
+        surface: new Sphere(1),
+        shaderProgram: shaderProgram,
+        glContext: gl
+      });
       setupVertexShaderMatrix();
       tick();
     });
