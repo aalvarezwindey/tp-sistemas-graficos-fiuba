@@ -1,6 +1,11 @@
 import ParametricSurfaceBuffers from "../../webgl/buffer/parametric_surface_buffers.js";
+import Geometry from "../geometry.js";
 
-class SuperficieParametrica {
+class SuperficieParametrica extends Geometry {
+  constructor() {
+    super();
+  }
+
   _setupBuffers(definition = { filas: 100, columnas: 100 }) {
     const { filas, columnas } = definition;
     const positionBuffer = [];

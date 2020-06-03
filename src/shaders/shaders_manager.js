@@ -88,6 +88,22 @@ class ShadersManager {
       throw new Error(msg);
     }
   }
+
+  updateShadersViewMatrix = (viewMatrix) => {
+    for (let [_shaderName, program] of Object.entries(this.programs)) {
+      gl.useProgram(program);
+      const viewMatrixUniform = gl.getUniformLocation(program, "viewMatrix");
+      gl.uniformMatrix4fv(viewMatrixUniform, false, viewMatrix);
+    }
+  }
+
+  updateShadersProjectionMatrix = (projectionMatrix) => {
+    for (let [_shaderName, program] of Object.entries(this.programs)) {
+      gl.useProgram(program);
+      const projMatrixUniform = gl.getUniformLocation(program, "projMatrix");
+      gl.uniformMatrix4fv(projMatrixUniform, false, projectionMatrix);
+    }
+  }
 }
 
 export default ShadersManager;

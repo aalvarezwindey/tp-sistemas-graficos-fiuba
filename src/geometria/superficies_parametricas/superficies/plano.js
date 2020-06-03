@@ -5,6 +5,7 @@ class Plano extends SuperficieParametrica {
     super();
     this.ancho = ancho;
     this.largo = largo;
+    super._setupBuffers();
   }
 
   getPosicion(u, v) {

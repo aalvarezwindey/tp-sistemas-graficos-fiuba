@@ -1,10 +1,11 @@
 const {
   Objeto3D,
   Sphere,
+  Plano,
   ShadersManager,
   Camera,
-  crearGeometria,
-  dibujarMalla
+  DefaultMaterial,
+  Escena
 } = window.webGLApp;
 
 console.log('window.webGLApp', window.webGLApp)
@@ -12,52 +13,42 @@ console.log('window.webGLApp', window.webGLApp)
 var mat4 = glMatrix.mat4;
 var vec3 = glMatrix.vec3;
 
-var gl = null,
-  canvas = null;
-
-var modelMatrix = mat4.create();
+var gl = null;
+var canvas = null;
 var projMatrix = mat4.create();
-var normalMatrix = mat4.create();
-var esfera = null;
-var shaderProgram = null;
+var escena = null;
 var camera = null;
 
 function setupWebGL() {
-  gl.enable(gl.DEPTH_TEST);
   //set the clear color
   gl.clearColor(0.7, .7, .7, 1.0);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
   gl.viewport(0, 0, window.innerWidth, window.innerHeight);
+  gl.enable(gl.DEPTH_TEST);
 
   // Matrix de Proyeccion Perspectiva
   mat4.perspective(projMatrix, 45, canvas.width / canvas.height, 0.1, 100.0);
-  mat4.identity(modelMatrix);
 
   camera = new Camera(mat4.create());
-}
-
-function setupVertexShaderMatrix() {
-  var modelMatrixUniform = gl.getUniformLocation(shaderProgram, "modelMatrix");
-  var viewMatrixUniform = gl.getUniformLocation(shaderProgram, "viewMatrix");
-  var projMatrixUniform = gl.getUniformLocation(shaderProgram, "projMatrix");
-  var normalMatrixUniform = gl.getUniformLocation(shaderProgram, "normalMatrix");
-
-  gl.uniformMatrix4fv(modelMatrixUniform, false, modelMatrix);
-  gl.uniformMatrix4fv(viewMatrixUniform, false, camera.getViewMatrix());
-  gl.uniformMatrix4fv(projMatrixUniform, false, projMatrix);
-  gl.uniformMatrix4fv(normalMatrixUniform, false, normalMatrix);
 }
 
 function drawScene() {
   gl.canvas.width  = window.innerWidth;
   gl.canvas.height = window.innerHeight;
-  setupVertexShaderMatrix();
-  esfera.render(camera.getViewMatrix());
+
+  // Actualizamos matriz de perspectiva
+  mat4.perspective(projMatrix, 45, gl.canvas.width / gl.canvas.height, 0.1, 100.0);
+  escena.updateProjectionMatrix(projMatrix);
+
+  // Actualizamos matriz de vista
+  escena.updateViewMatrix(camera.getViewMatrix());
+
+  const rootMatrix = mat4.create();
+  escena.render(rootMatrix);
 }
 
 
-function animate() {
+/* function animate() {
   mat4.identity(modelMatrix);
 
   mat4.identity(normalMatrix);
@@ -65,11 +56,11 @@ function animate() {
   mat4.invert(normalMatrix, normalMatrix);
   mat4.transpose(normalMatrix, normalMatrix);
 }
-
+ */
 function tick() {
   requestAnimationFrame(tick);
   drawScene();
-  animate();
+  //animate();
 }
 
 function startWebGLApp() {
@@ -85,24 +76,9 @@ function startWebGLApp() {
   if (gl) {
     setupWebGL(); // configurar web GL
     ShadersManager.init(gl).then(shaders => {
-      shaderProgram = shaders.program(ShadersManager.DEFAULT);
-      gl.useProgram(shaderProgram);
-
-
-      shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aPosition");
-      gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
-
-      shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aUv");
-      gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
-
-      shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aNormal");
-      gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
-      esfera = new Objeto3D({
-        surface: new Sphere(1),
-        shaderProgram: shaderProgram,
-        glContext: gl
-      });
-      setupVertexShaderMatrix();
+      escena = new Escena(shaders);
+      escena.updateViewMatrix(camera.getViewMatrix());
+      escena.updateProjectionMatrix(projMatrix);
       tick();
     });
 
