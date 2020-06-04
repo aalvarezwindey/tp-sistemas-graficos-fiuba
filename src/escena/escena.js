@@ -1,6 +1,9 @@
 import Objeto3D from "../geometria/objeto_3d.js";
 import Esfera from '../geometria/superficies_parametricas/superficies/sphere.js';
 import DefaultMaterial from "../material/types/default_material.js";
+import SuperficieBarrido from "../geometria/superficie_barrido/superficie_barrido.js";
+import Circulo from "../geometria/superficie_barrido/poligonos/circulo.js";
+import Recta from "../geometria/superficie_barrido/recorridos/recta.js";
 
 class Escena {
   constructor(shadersManager) {
@@ -16,7 +19,6 @@ class Escena {
       glContext: gl
     });
     objeto.setPosition(0, 1, 0);
-
     this.objetos.push(objeto);
 
     objeto = new Objeto3D({
@@ -25,7 +27,22 @@ class Escena {
       glContext: gl
     });
     objeto.setPosition(0, -1, 0);
+    this.objetos.push(objeto);
 
+    objeto = new Objeto3D({
+      geometry: new Esfera(1),
+      material: defaultMaterial,
+      glContext: gl
+    });
+    objeto.setPosition(4, 2, 0);
+    this.objetos.push(objeto);
+
+    objeto = new Objeto3D({
+      geometry: new SuperficieBarrido(new Circulo(3, 100), new Recta(4)),
+      material: defaultMaterial,
+      glContext: gl
+    });
+    objeto.setPosition(0, 3, 0);
     this.objetos.push(objeto);
   }
 
