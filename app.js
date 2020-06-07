@@ -4,6 +4,7 @@ const {
   Plano,
   ShadersManager,
   Camera,
+  CamaraOrbital,
   DefaultMaterial,
   Escena
 } = window.webGLApp;
@@ -31,7 +32,7 @@ function setupWebGL() {
   // Matrix de Proyeccion Perspectiva
   mat4.perspective(projMatrix, 45, canvas.width / canvas.height, 0.1, 100.0);
 
-  camera = new Camera(mat4.create());
+  camera = new CamaraOrbital();
 }
 
 function drawScene() {
