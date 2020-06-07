@@ -1,6 +1,6 @@
-import Recorrido from "../recorrido.js";
+import RecorridoParametrico from "../recorrido_parametrico.js";
 
-class Recta extends Recorrido {
+class Recta extends RecorridoParametrico {
   constructor(largo) {
     super();
     this.largo = largo;
@@ -11,7 +11,7 @@ class Recta extends Recorrido {
   }
 
   getTangente(u) {
-    return [this.largo * u, 0, 0];
+    return [1, 0, 0];
   }
 
   getNormal(u) {

@@ -34,20 +34,38 @@ class SuperficieBarrido extends Geometry {
         ...tangenteRecorrido, 0,
         ...posicionRecorrido, 1
       );
-      mat4.transpose(matrizDeNivel, matrizDeNivel);
+
+      const matrizDeNormales = mat3.fromValues(
+        ...normalRecorrido,
+        ...binormalRecorrido,
+        ...tangenteRecorrido
+      )
 
       for (var idxVertice = 0; idxVertice < cantidadVertices; idxVertice++) {
+        // Tomamos el vertice correspondiente
         const vertice = this.poligono.vertices[idxVertice];
 
+        // Calculamos la posicion con la matriz de nivel
         const posicionTransformada = vec4.create();
-        vec4.transformMat4(posicionTransformada, vec4.fromValues(...vertice.posicion, 1), matrizDeNivel)
+        vec4.transformMat4(
+          posicionTransformada,
+          vec4.fromValues(...vertice.posicion, 1),
+          matrizDeNivel
+        );
+
+        // Descartamos el cuarto valor del vector
         bufferDePosicion.push(
           posicionTransformada[0],
           posicionTransformada[1],
           posicionTransformada[2]
         );
 
-        // TODO: calcular buffer de normal
+        const normalTransformada = vec3.create();
+        vec3.transformMat3(
+          normalTransformada,
+          vec3.fromValues(...vertice.normal),
+          matrizDeNormales
+        );
       }
     }
 

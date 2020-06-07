@@ -1,4 +1,4 @@
-class Recorrido {
+class RecorridoParametrico {
   getPosicion(u) {
     throw "Should be implemented";
   }
@@ -17,4 +17,4 @@ class Recorrido {
 }
 
 // Matriz de nivel = Rotacion + Traslacion => Me permite dibujar mi poligono en un determinado nivel
-export default Recorrido;
+export default RecorridoParametrico;
