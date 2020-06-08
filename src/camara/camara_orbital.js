@@ -55,7 +55,7 @@ class CamaraOrbital {
     })
   }
 
-  getViewMatrix = () => {
+  getMatrizDeVista = () => {
     const matrizDeVista = mat4.create();
     mat4.lookAt(matrizDeVista, this.posicion, this.objetivo, [0, 1, 0]);
     return matrizDeVista;

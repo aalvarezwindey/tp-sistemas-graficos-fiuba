@@ -8,9 +8,13 @@ import Rectangulo from "../geometria/superficie_barrido/poligonos/rectangulo.js"
 import Circunferencia from "../geometria/superficie_barrido/recorridos_parametricos/circunferencia.js";
 
 class Escena {
-  constructor(shadersManager) {
+  constructor(shadersManager, gestorDeCamaras) {
+    console.log('Escena', gestorDeCamaras);
     this.objetos = [];
     this.shadersManager = shadersManager;
+    this.gestorDeCamaras = gestorDeCamaras;
+
+    this._iniciarHandlers();
 
     let objeto;
     const defaultMaterial = new DefaultMaterial(shadersManager);
@@ -48,12 +52,34 @@ class Escena {
     this.objetos.push(objeto);
   }
 
+  _iniciarHandlers = () => {
+
+    // Switcher de camaras
+    document.addEventListener('keydown', event => {
+      const keyCode = event.keyCode;
+      //console.log('keyCode', keyCode)
+
+      switch(keyCode) {
+        // 't'
+        case 84: {
+          this.gestorDeCamaras.proximaCamara();
+          break;
+        }
+
+        default: {
+          break;
+        }
+      }
+    });
+  }
+
   render = (rootMatrix) => {
     this.objetos.forEach(obj => obj.render(rootMatrix));
   }
 
-  updateViewMatrix = (viewMatrix) => {
-    this.shadersManager.updateShadersViewMatrix(viewMatrix)
+  updateViewMatrix = () => {
+    const matrizDeVista = this.gestorDeCamaras.getCamara().getMatrizDeVista();
+    this.shadersManager.updateShadersViewMatrix(matrizDeVista)
   }
 
   updateProjectionMatrix = (projectionMatrix) => {

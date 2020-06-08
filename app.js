@@ -3,8 +3,7 @@ const {
   Sphere,
   Plano,
   ShadersManager,
-  Camera,
-  CamaraOrbital,
+  GestorDeCamaras,
   DefaultMaterial,
   Escena
 } = window.webGLApp;
@@ -20,7 +19,7 @@ var gl = null;
 var canvas = null;
 var projMatrix = mat4.create();
 var escena = null;
-var camera = null;
+var gestorDeCamaras = null;
 
 function setupWebGL() {
   //set the clear color
@@ -32,7 +31,7 @@ function setupWebGL() {
   // Matrix de Proyeccion Perspectiva
   mat4.perspective(projMatrix, 45, canvas.width / canvas.height, 0.1, 100.0);
 
-  camera = new CamaraOrbital();
+  gestorDeCamaras = new GestorDeCamaras();
 }
 
 function drawScene() {
@@ -44,7 +43,7 @@ function drawScene() {
   escena.updateProjectionMatrix(projMatrix);
 
   // Actualizamos matriz de vista
-  escena.updateViewMatrix(camera.getViewMatrix());
+  escena.updateViewMatrix();
 
   const rootMatrix = mat4.create();
   escena.render(rootMatrix);
@@ -79,8 +78,7 @@ function startWebGLApp() {
   if (gl) {
     setupWebGL(); // configurar web GL
     ShadersManager.init(gl).then(shaders => {
-      escena = new Escena(shaders);
-      escena.updateViewMatrix(camera.getViewMatrix());
+      escena = new Escena(shaders, gestorDeCamaras);
       escena.updateProjectionMatrix(projMatrix);
       tick();
     });
