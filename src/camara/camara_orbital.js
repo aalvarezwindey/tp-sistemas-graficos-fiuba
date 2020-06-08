@@ -31,7 +31,6 @@ class CamaraOrbital {
     });
 
     document.addEventListener('mousedown', event => {
-      console.log('mousedonw')
       this.isMouseDown = true;
     })
 

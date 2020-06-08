@@ -10,6 +10,8 @@ class Objeto3D {
     this.material = material;
     this.geometry = geometry;
     this.gl = glContext;
+
+    this._updateModelMatrix();
   }
 
   // Private
@@ -21,7 +23,7 @@ class Objeto3D {
   }
 
   _isAbstractObject() {
-    return !this.geometry;
+    return !this.geometry || !this.material;
   }
 
   _renderTriangleMesh(modelMatrix, normalMatrix) {
@@ -37,11 +39,11 @@ class Objeto3D {
   // Public
   render(parentMatrix) {
     const { gl } = this;
-    this._updateModelMatrix();
 
     const matrix = mat4.create();
     mat4.multiply(matrix, parentMatrix, this.modelMatrix);
 
+    // TODO: check normal matrix
     this._renderTriangleMesh(matrix, mat4.create());
 
     this.children.forEach(child => child.render(matrix));
@@ -61,16 +63,20 @@ class Objeto3D {
 
   setPosition(x, y, z) {
     this.position = vec3.fromValues(x, y, z);
+    this._updateModelMatrix();
   }
 
   setRotation(rotationAngle, x, y, z) {
     this.rotationAngle = rotationAngle;
     this.rotation = vec3.fromValues(x, y, z);
+    this._updateModelMatrix();
   }
 
   setScale(x, y, z) {
     this.scale = vec3.fromValues(x, y, z);
+    this._updateModelMatrix();
   }
+
 }
 
 export default Objeto3D
