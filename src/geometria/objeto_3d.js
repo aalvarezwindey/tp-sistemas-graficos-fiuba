@@ -2,6 +2,7 @@ class Objeto3D {
   constructor(params = { geometry: null, material: null, glContext: gl }) {
     const { geometry, material, glContext } = params;
     this.modelMatrix = mat4.create();
+    this.normalMatrix = mat4.create();
     this.position = vec3.create();
     this.rotation = vec3.create();
     this.scale = vec3.fromValues(1, 1, 1);
@@ -21,6 +22,11 @@ class Objeto3D {
     mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[1], [0, 1, 0]);
     mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[2], [0, 0, 1]);
     mat4.scale(this.modelMatrix, this.modelMatrix, this.scale);
+
+    // Update normal matrix
+    mat4.invert(this.normalMatrix, this.modelMatrix);
+    mat4.transpose(this.normalMatrix, this.normalMatrix);
+
   }
 
   _isAbstractObject() {
@@ -45,7 +51,7 @@ class Objeto3D {
     mat4.multiply(matrix, parentMatrix, this.modelMatrix);
 
     // TODO: check normal matrix
-    this._renderTriangleMesh(matrix, mat4.create());
+    this._renderTriangleMesh(matrix, this.normalMatrix);
 
     this.children.forEach(child => child.render(matrix));
   }

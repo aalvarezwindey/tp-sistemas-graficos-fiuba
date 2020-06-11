@@ -60,6 +60,10 @@ class CamaraOrbital {
     return matrizDeVista;
   }
 
+  cambiarObjetivo = (obj) => {
+    this.objetivo = obj;
+  }
+
   _actualizarAlfaYBeta = () => {
     let deltaX = 0;
     let deltaY = 0;
@@ -80,9 +84,9 @@ class CamaraOrbital {
 
   _actualizarPosicionDeCamara = () => {
     this.posicion = vec3.fromValues(
-      this.radio * Math.sin(this.alfa) * Math.sin(this.beta),
-      this.radio * Math.cos(this.beta),
-      this.radio * Math.cos(this.alfa) * Math.sin(this.beta),
+      this.radio * Math.sin(this.alfa) * Math.sin(this.beta) + this.objetivo[0],
+      this.radio * Math.cos(this.beta) + this.objetivo[1],
+      this.radio * Math.cos(this.alfa) * Math.sin(this.beta) + this.objetivo[2],
     );
   }
 }

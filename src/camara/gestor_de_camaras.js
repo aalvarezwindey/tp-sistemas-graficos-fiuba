@@ -26,6 +26,10 @@ class GestorDeCamaras {
 
     this.camara = this.camarasDisponibles[camaraIndex];
   }
+
+  cambiarObjetivo = (objeto3D) => {
+    this.camaraOrbital.cambiarObjetivo(objeto3D.position)
+  }
 }
 
 export default GestorDeCamaras;

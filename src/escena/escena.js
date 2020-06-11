@@ -9,18 +9,20 @@ import Circunferencia from "../geometria/superficie_barrido/recorridos_parametri
 
 class Escena {
   constructor(shadersManager, gestorDeCamaras) {
-    console.log('Escena', gestorDeCamaras);
     this.objetos = [];
     this.shadersManager = shadersManager;
     this.gestorDeCamaras = gestorDeCamaras;
+    this._indiceObjetoEnfocado = 0;
 
     this._iniciarHandlers();
 
     let objeto;
     const defaultMaterial = new DefaultMaterial(shadersManager);
 
+    const esfera = new Esfera(1);
+
     objeto = new Objeto3D({
-      geometry: new Esfera(1),
+      geometry: esfera,
       material: defaultMaterial,
       glContext: gl
     });
@@ -36,11 +38,11 @@ class Escena {
     this.objetos.push(objeto);
 
     objeto = new Objeto3D({
-      geometry: new Esfera(1),
+      geometry: esfera,
       material: defaultMaterial,
       glContext: gl
     });
-    objeto.setPosition(4, 2, 0);
+    objeto.setPosition(10, 2, 0);
     this.objetos.push(objeto);
 
     objeto = new Objeto3D({
@@ -48,7 +50,7 @@ class Escena {
       material: defaultMaterial,
       glContext: gl
     });
-    objeto.setPosition(0, 1, 0);
+    objeto.setPosition(-20, 10, 0);
     this.objetos.push(objeto);
   }
 
@@ -56,13 +58,20 @@ class Escena {
 
     // Switcher de camaras
     document.addEventListener('keydown', event => {
-      const keyCode = event.keyCode;
-      //console.log('keyCode', keyCode)
-
-      switch(keyCode) {
-        // 't'
-        case 84: {
+      switch(event.key) {
+        case 't': {
           this.gestorDeCamaras.proximaCamara();
+          break;
+        }
+
+        case 'c': {
+          // Actualizamos objeto enfocado
+          this._indiceObjetoEnfocado += 1;
+          if (this._indiceObjetoEnfocado === this.objetos.length) {
+            this._indiceObjetoEnfocado = 0;
+          }
+
+          this.gestorDeCamaras.cambiarObjetivo(this.objetos[this._indiceObjetoEnfocado])
           break;
         }
 
