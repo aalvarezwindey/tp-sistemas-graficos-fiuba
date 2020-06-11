@@ -20,6 +20,7 @@ var canvas = null;
 var projMatrix = mat4.create();
 var escena = null;
 var gestorDeCamaras = null;
+var shadersManager = null;
 
 function setupWebGL() {
   //set the clear color
@@ -78,6 +79,7 @@ function startWebGLApp() {
   if (gl) {
     setupWebGL(); // configurar web GL
     ShadersManager.init(gl).then(shaders => {
+      shadersManager = shaders;
       escena = new Escena(shaders, gestorDeCamaras);
       escena.updateProjectionMatrix(projMatrix);
       tick();

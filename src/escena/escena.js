@@ -6,6 +6,7 @@ import Circulo from "../geometria/superficie_barrido/poligonos/circulo.js";
 import Recta from "../geometria/superficie_barrido/recorridos_parametricos/recta.js";
 import Rectangulo from "../geometria/superficie_barrido/poligonos/rectangulo.js";
 import Circunferencia from "../geometria/superficie_barrido/recorridos_parametricos/circunferencia.js";
+import Catapulta from "./catapulta/catapulta.js";
 
 class Escena {
   constructor(shadersManager, gestorDeCamaras) {
@@ -51,6 +52,10 @@ class Escena {
       glContext: gl
     });
     objeto.setPosition(-20, 10, 0);
+    this.objetos.push(objeto);
+
+    objeto = new Catapulta();
+    objeto.setPosition(-10, 0, 0);
     this.objetos.push(objeto);
   }
 
