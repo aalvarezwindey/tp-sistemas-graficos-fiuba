@@ -1,7 +1,7 @@
 import Objeto3D from "../geometria/objeto_3d.js";
 
 const D_OBJ = 5;
-const OFFSET_ROTACION = 0.01;
+const OFFSET_ROTACION = 0.1;
 
 class CamaraPrimeraPersona {
   constructor() {
@@ -125,6 +125,8 @@ class CamaraPrimeraPersona {
     mat4.fromYRotation(m, this.rotacion);
     vec3.transformMat4(this.frontal, this.frontal, m);
     vec3.transformMat4(this.lateral, this.lateral, m);
+
+    this.posicion.setRotation(0, this.rotacion, 0);
   }
 
   _actualizarPosicionDelObjetivo = () => {
