@@ -4,7 +4,7 @@ import DefaultMaterial from '../../material/types/default_material.js';
 import SuperficieBarrido from '../../geometria/superficie_barrido/superficie_barrido.js';
 import Circulo from '../../geometria/superficie_barrido/poligonos/circulo.js';
 
-const ANCHO_RUEDA = 0.2;
+const ANCHO_RUEDA = 2;
 const DIAMETRO_RUEDA = 1
 
 class Rueda extends Objeto3D {
@@ -16,7 +16,7 @@ class Rueda extends Objeto3D {
     });
 
     // Creates geometria only the first time
-    Rueda.geometria = Rueda.geometria || new SuperficieBarrido(new Circulo(DIAMETRO_RUEDA), new Recta(ANCHO_RUEDA));
+    Rueda.geometria = Rueda.geometria || new SuperficieBarrido(new Circulo(DIAMETRO_RUEDA), new Recta(ANCHO_RUEDA), true);
 
     this.setGeometry(Rueda.geometria);
   }
@@ -34,12 +34,14 @@ class Catapulta extends Objeto3D {
 
     rueda1.setPosition(-7, 0, -3);
     rueda1.setRotation(0, Math.PI / 2, 0);
+    rueda1.setGeometry(new SuperficieBarrido(new Circulo(DIAMETRO_RUEDA), new Recta(ANCHO_RUEDA), false))
 
     rueda2.setPosition(7, 0, -3);
     rueda2.setRotation(0, Math.PI / 2, 0);
 
     rueda3.setPosition(7, 0, 3);
     rueda3.setRotation(0, Math.PI / 2, 0);
+    rueda3.setGeometry(new SuperficieBarrido(new Circulo(DIAMETRO_RUEDA), new Recta(ANCHO_RUEDA), false))
 
     rueda4.setPosition(-7, 0, 3);
     rueda4.setRotation(0, Math.PI / 2, 0);
