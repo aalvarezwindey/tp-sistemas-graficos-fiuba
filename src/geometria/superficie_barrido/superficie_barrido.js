@@ -9,14 +9,11 @@ class SuperficieBarrido extends Geometry {
     this._setupBuffers();
   }
 
-  _setupBuffers(filas = 100) {
+  _setupBuffers(definition = { filas: 100, columnas: 100 }) {
+    const { filas, columnas } = definition;
     const niveles = this.cerrado ? filas + 2 : filas;
     const cantidadVertices = this.poligono.vertices.length;
-    super._setupIndexBuffer({
-      filas: niveles,
-      columnas: cantidadVertices,
-    });
-
+    
     const bufferDePosicion = [];
     const bufferDeNormal = [];
     const bufferDeUV = [];
@@ -84,7 +81,12 @@ class SuperficieBarrido extends Geometry {
       }
     }
 
-    super._setupIndexBuffer({ filas: niveles, columnas: cantidadVertices });
+    super._setupIndexBuffer(definition);
+    /* super._setupIndexBuffer({
+      filas: niveles,
+      columnas: cantidadVertices,
+    }); */
+
 
     // Creación e Inicialización de los buffers
     const webgl_position_buffer = gl.createBuffer();

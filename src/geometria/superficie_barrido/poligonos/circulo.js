@@ -8,7 +8,7 @@ class Circulo extends Poligono {
 
     const _2pi = Math.PI * 2;
 
-    for (let i = 0; i <= definicion; i++) {
+    for (let i = 0; i < definicion; i++) {
       const u = i / definicion;
       const vertice = new Vertice();
       vertice.posicion = vec3.fromValues(
