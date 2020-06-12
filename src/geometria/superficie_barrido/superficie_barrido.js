@@ -47,7 +47,6 @@ class SuperficieBarrido extends Geometry {
         let normalVertice = vertice.normal
 
         if ((nivel === 0 || nivel === niveles) && this.cerrado) {
-          console.log('CERRANDING')
           vertice = this.poligono.centro;
           normalVertice = vertice.normal;
 
@@ -80,6 +79,8 @@ class SuperficieBarrido extends Geometry {
           vec3.fromValues(...normalVertice),
           matrizDeNormales
         );
+
+        bufferDeNormal.push(...normalTransformada);
       }
     }
 
@@ -95,9 +96,9 @@ class SuperficieBarrido extends Geometry {
     const webgl_normal_buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, webgl_normal_buffer);
     // TODO: replace for normal buffer
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(bufferDePosicion), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(bufferDeNormal), gl.STATIC_DRAW);
     webgl_normal_buffer.itemSize = 3;
-    webgl_normal_buffer.numItems = bufferDePosicion.length / 3;
+    webgl_normal_buffer.numItems = bufferDeNormal.length / 3;
 
     // TODO define uv
     /* const webgl_uvs_buffer = gl.createBuffer();
@@ -109,31 +110,6 @@ class SuperficieBarrido extends Geometry {
     this.buffers.position = webgl_position_buffer;
     this.buffers.normal = webgl_normal_buffer;
     // this.buffers.uv = webgl_uvs_buffer;
-  }
-
-  _completarBuffersDePosicionYNormalParaBorde(matrizDeNivel, matrizDeNormales) {
-    for (var vertex=0; vertex <= this.vertices; vertex++) {
-      var u = vertex / this.vertices;
-
-      var center_vertex_pos = this.shape.getCenterPosition(u);
-      var normalCentro = this.shape.getCenterNormal(u);
-
-      var posicionCentroTransformado = vec4.create();
-      var normalCentroTransformada = vec3.create();
-
-      var vec4_center_vertex_pos = vec4.fromValues(center_vertex_pos[0], center_vertex_pos[1], center_vertex_pos[2], 1);
-      vec4.transformMat4(posicionCentroTransformado, vec4_center_vertex_pos, matrizDeNivel);
-
-      vec3.transformMat3(normalCentroTransformada, normalCentro, matrizDeNormales);
-
-      this.positionBuffer.push(posicionCentroTransformado[0]);
-      this.positionBuffer.push(posicionCentroTransformado[1]);
-      this.positionBuffer.push(posicionCentroTransformado[2]);
-
-      this.normalBuffer.push(normalCentroTransformada[0]);
-      this.normalBuffer.push(normalCentroTransformada[1]);
-      this.normalBuffer.push(normalCentroTransformada[2]);
-    }
   }
 }
 
