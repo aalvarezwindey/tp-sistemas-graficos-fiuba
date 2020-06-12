@@ -10,12 +10,18 @@ const DIAMETRO_RUEDA = 1
 class Rueda extends Objeto3D {
   constructor() {
     super({
-      geometry: new SuperficieBarrido(new Circulo(DIAMETRO_RUEDA), new Recta(ANCHO_RUEDA)),
+      geometry: null,
       material: new DefaultMaterial(shadersManager),
       glContext: gl
     });
+
+    // Creates geometria only the first time
+    Rueda.geometria = Rueda.geometria || new SuperficieBarrido(new Circulo(DIAMETRO_RUEDA), new Recta(ANCHO_RUEDA));
+
+    this.setGeometry(Rueda.geometria);
   }
 }
+
 
 class Catapulta extends Objeto3D {
   constructor() {
