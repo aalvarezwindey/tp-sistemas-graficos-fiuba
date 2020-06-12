@@ -1,6 +1,7 @@
 class Poligono {
   constructor() {
     this.vertices = [];
+    this.centro = new Vertice();
   }
 }
 

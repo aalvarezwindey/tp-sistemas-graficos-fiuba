@@ -1,16 +1,16 @@
 import Geometry from "../geometry.js";
 
 class SuperficieBarrido extends Geometry {
-  constructor(poligono, recorrido) {
+  constructor(poligono, recorrido, cerrado = false) {
     super();
     this.poligono = poligono;
     this.recorrido = recorrido;
+    this.cerrado = cerrado;
     this._setupBuffers();
   }
 
-  _setupBuffers(definition = { filas: 100, columnas: 100 }) {
-    const { filas, columnas } = definition;
-    const niveles = filas;
+  _setupBuffers(filas = 100) {
+    const niveles = this.cerrado ? filas + 2 : filas;
     const cantidadVertices = this.poligono.vertices.length;
     super._setupIndexBuffer({
       filas: niveles,
@@ -43,7 +43,21 @@ class SuperficieBarrido extends Geometry {
 
       for (var idxVertice = 0; idxVertice < cantidadVertices; idxVertice++) {
         // Tomamos el vertice correspondiente
-        const vertice = this.poligono.vertices[idxVertice];
+        let vertice = this.poligono.vertices[idxVertice];
+        let normalVertice = vertice.normal
+
+        if ((nivel === 0 || nivel === niveles) && this.cerrado) {
+          console.log('CERRANDING')
+          vertice = this.poligono.centro;
+          normalVertice = vertice.normal;
+
+          if (nivel === niveles) {
+            // La normal de la tapa final tiene el sentido contrario
+            vec3.inverse(normalVertice, normalVertice)
+          }
+        }
+
+
 
         // Calculamos la posicion con la matriz de nivel
         const posicionTransformada = vec4.create();
@@ -63,13 +77,13 @@ class SuperficieBarrido extends Geometry {
         const normalTransformada = vec3.create();
         vec3.transformMat3(
           normalTransformada,
-          vec3.fromValues(...vertice.normal),
+          vec3.fromValues(...normalVertice),
           matrizDeNormales
         );
       }
     }
 
-    super._setupIndexBuffer(definition);
+    super._setupIndexBuffer({ filas: niveles, columnas: cantidadVertices });
 
     // Creación e Inicialización de los buffers
     const webgl_position_buffer = gl.createBuffer();
@@ -95,6 +109,31 @@ class SuperficieBarrido extends Geometry {
     this.buffers.position = webgl_position_buffer;
     this.buffers.normal = webgl_normal_buffer;
     // this.buffers.uv = webgl_uvs_buffer;
+  }
+
+  _completarBuffersDePosicionYNormalParaBorde(matrizDeNivel, matrizDeNormales) {
+    for (var vertex=0; vertex <= this.vertices; vertex++) {
+      var u = vertex / this.vertices;
+
+      var center_vertex_pos = this.shape.getCenterPosition(u);
+      var normalCentro = this.shape.getCenterNormal(u);
+
+      var posicionCentroTransformado = vec4.create();
+      var normalCentroTransformada = vec3.create();
+
+      var vec4_center_vertex_pos = vec4.fromValues(center_vertex_pos[0], center_vertex_pos[1], center_vertex_pos[2], 1);
+      vec4.transformMat4(posicionCentroTransformado, vec4_center_vertex_pos, matrizDeNivel);
+
+      vec3.transformMat3(normalCentroTransformada, normalCentro, matrizDeNormales);
+
+      this.positionBuffer.push(posicionCentroTransformado[0]);
+      this.positionBuffer.push(posicionCentroTransformado[1]);
+      this.positionBuffer.push(posicionCentroTransformado[2]);
+
+      this.normalBuffer.push(normalCentroTransformada[0]);
+      this.normalBuffer.push(normalCentroTransformada[1]);
+      this.normalBuffer.push(normalCentroTransformada[2]);
+    }
   }
 }
 

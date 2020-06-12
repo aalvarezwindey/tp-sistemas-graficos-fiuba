@@ -36,6 +36,9 @@ class Circulo extends Poligono {
 
       this.vertices.push(vertice);
     }
+
+    this.centro.posicion = vec3.fromValues(0, 0, 0);
+    this.centro.normal = vec3.fromValues(0, 0, 1);
   }
 }
 
