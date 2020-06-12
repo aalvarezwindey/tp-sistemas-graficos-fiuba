@@ -20,7 +20,6 @@ class CamaraPrimeraPersona {
     this.clientYAnterior = 0;
     this.factorVelocidad = 0.01;
 
-    this.alfa = 0;
     this.beta = Math.PI / 2;
 
     this.frontal = [0, 0, 1];
@@ -31,7 +30,7 @@ class CamaraPrimeraPersona {
       this.mouse.x = event.clientX || event.pageX;
       this.mouse.y = event.clientY || event.pageY;
 
-      this._actualizarAlfaYBeta();
+      this._actualizarGiroDeMouse();
       this._actualizarPosicionDelObjetivo();
     });
 
@@ -100,7 +99,7 @@ class CamaraPrimeraPersona {
     return matrizDeVista;
   }
 
-  _actualizarAlfaYBeta = () => {
+  _actualizarGiroDeMouse = () => {
     let deltaX = 0;
     let deltaY = 0;
 
@@ -110,11 +109,13 @@ class CamaraPrimeraPersona {
     this.clientXAnterior = this.mouse.x;
     this.clientYAnterior = this.mouse.y;
 
-    this.alfa = this.alfa + deltaX * this.factorVelocidad;
+    this.rotacion = this.rotacion + deltaX * this.factorVelocidad;
     this.beta = this.beta + deltaY * this.factorVelocidad;
 
     if (this.beta < 0) this.beta = 0;
     if (this.beta > Math.PI) this.beta = Math.PI;
+
+    this._actualizarFrontalYLateral();
   }
 
   _actualizarFrontalYLateral = () => {
@@ -131,9 +132,9 @@ class CamaraPrimeraPersona {
 
   _actualizarPosicionDelObjetivo = () => {
     this.objetivo.setPosition(
-      D_OBJ * Math.sin(this.alfa) * Math.sin(this.beta),
+      D_OBJ * Math.sin(this.rotacion * this.factorVelocidad) * Math.sin(this.beta),
       D_OBJ * Math.cos(this.beta),
-      D_OBJ * Math.cos(this.alfa) * Math.sin(this.beta)
+      D_OBJ * Math.cos(this.rotacion * this.factorVelocidad) * Math.sin(this.beta)
     );
   }
 }
