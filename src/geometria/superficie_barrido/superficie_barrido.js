@@ -9,14 +9,22 @@ class SuperficieBarrido extends Geometry {
     this._setupBuffers();
   }
 
-  _setupBuffers(definition = { filas: 100, columnas: 100 }) {
-    const { filas, columnas } = definition;
-    const niveles = this.cerrado ? filas + 2 : filas;
+  _setupBuffers(filas = 100) {
+    const niveles =  this.cerrado ? filas + 2 : filas;
     const cantidadVertices = this.poligono.vertices.length;
     
     const bufferDePosicion = [];
     const bufferDeNormal = [];
     const bufferDeUV = [];
+
+    
+    console.log('niveles', niveles, 'cant v', cantidadVertices)
+    
+    super._setupIndexBuffer({
+      filas: niveles,
+      columnas: cantidadVertices,
+    });
+    
 
     for (var nivel = 0; nivel <= niveles; nivel++) {
       const u = nivel / niveles;
@@ -49,11 +57,9 @@ class SuperficieBarrido extends Geometry {
 
           if (nivel === niveles) {
             // La normal de la tapa final tiene el sentido contrario
-            vec3.inverse(normalVertice, normalVertice)
+            vec3.negate(normalVertice, normalVertice)
           }
         }
-
-
 
         // Calculamos la posicion con la matriz de nivel
         const posicionTransformada = vec4.create();
@@ -80,13 +86,6 @@ class SuperficieBarrido extends Geometry {
         bufferDeNormal.push(...normalTransformada);
       }
     }
-
-    super._setupIndexBuffer(definition);
-    /* super._setupIndexBuffer({
-      filas: niveles,
-      columnas: cantidadVertices,
-    }); */
-
 
     // Creación e Inicialización de los buffers
     const webgl_position_buffer = gl.createBuffer();
