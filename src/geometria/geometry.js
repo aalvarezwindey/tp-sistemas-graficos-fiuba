@@ -10,16 +10,16 @@ class Geometry {
     for (var i = 0; i < filas; i++) {
       for (var j = 0; j < columnas; j++) {
         if (j === 0) {
-          indexBuffer.push(j + (i* (columnas+1)));
-          indexBuffer.push(j + ((i+1) * (columnas+1)));
+          indexBuffer.push(j + (i * (columnas + 1)));
+          indexBuffer.push(j + ((i + 1) * (columnas + 1)));
         }
 
-        indexBuffer.push(j + 1 + (i* (columnas+1)));
-        indexBuffer.push(j + 1 + ((i+1) * (columnas+1)));
+        indexBuffer.push(j + 1 + (i * (columnas + 1)));
+        indexBuffer.push(j + 1 + ((i + 1) * (columnas + 1)));
 
-        if ((j == columnas - 1) && (i+1 < filas)) {
-          indexBuffer.push(j + 1 + ((i+1) * (columnas+1)));
-          indexBuffer.push(((i+1) * (columnas+1)));
+        if ((j === columnas - 1) && (i + 1 < filas)) {
+          indexBuffer.push(j + 1 + ((i + 1) * (columnas + 1)));
+          indexBuffer.push(((i + 1) * (columnas + 1)));
         }
       }
     }

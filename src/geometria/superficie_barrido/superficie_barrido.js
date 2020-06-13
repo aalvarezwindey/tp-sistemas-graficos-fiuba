@@ -10,7 +10,7 @@ class SuperficieBarrido extends Geometry {
   }
 
   _setupBuffers(filas = 100) {
-    const niveles =  this.cerrado ? filas + 2 : filas;
+    const niveles =  this.cerrado ? filas + 2 + 1 : filas + 1;
     const cantidadVertices = this.poligono.vertices.length;
     
     const bufferDePosicion = [];
@@ -21,7 +21,7 @@ class SuperficieBarrido extends Geometry {
     console.log('niveles', niveles, 'cant v', cantidadVertices)
     
     super._setupIndexBuffer({
-      filas: niveles,
+      filas: niveles - 1,
       columnas: cantidadVertices,
     });
     
@@ -96,7 +96,6 @@ class SuperficieBarrido extends Geometry {
 
     const webgl_normal_buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, webgl_normal_buffer);
-    // TODO: replace for normal buffer
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(bufferDeNormal), gl.STATIC_DRAW);
     webgl_normal_buffer.itemSize = 3;
     webgl_normal_buffer.numItems = bufferDeNormal.length / 3;
