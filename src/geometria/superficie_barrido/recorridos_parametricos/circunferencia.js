@@ -6,6 +6,17 @@ class Circunferencia extends RecorridoParametrico {
     this.radio = radio;
   }
 
+  _getDerivadaSegunda(u) {
+    const _2pi = 2 * Math.PI;
+    const derivadaSegunda = vec3.fromValues(
+      -1 * this.radio * _2pi * _2pi * Math.cos(_2pi * u),
+      -1 * this.radio * _2pi * _2pi * Math.sin(_2pi * u),
+      0
+    )
+    vec3.normalize(derivadaSegunda, derivadaSegunda)
+    return derivadaSegunda;
+  }
+
   getPosicion(u) {
     const _2pi = 2 * Math.PI;
     return [
@@ -25,14 +36,20 @@ class Circunferencia extends RecorridoParametrico {
   }
 
   getNormal(u) {
-    const pos = this.getPosicion(u);
-    const normal = vec3.fromValues(...pos);
+    // calculamos la normal como N = B x T
+    const normal = vec3.create();
+    vec3.cross(normal, this.getBinormal(u), this.getTangente(u));
     vec3.normalize(normal, normal);
-    return [...normal];
+    return normal;
   }
 
   getBinormal(u) {
-    return [0, 0, 1];
+    const derivadaSegunda = this._getDerivadaSegunda(u);
+    const binormal = vec3.create();
+    // calculamos la binormal como B = T x r''(u)
+    vec3.cross(binormal, this.getTangente(u), derivadaSegunda);
+    vec3.normalize(binormal, binormal)
+    return binormal;
   }
 }
 

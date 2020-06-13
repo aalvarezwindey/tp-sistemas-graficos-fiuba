@@ -12,20 +12,16 @@ class SuperficieBarrido extends Geometry {
   _setupBuffers(filas = 100) {
     const niveles =  this.cerrado ? filas + 2 + 1 : filas + 1;
     const cantidadVertices = this.poligono.vertices.length;
-    
+
     const bufferDePosicion = [];
     const bufferDeNormal = [];
     const bufferDeUV = [];
 
-    
-    console.log('niveles', niveles, 'cant v', cantidadVertices)
-    
     // Recordar que los index buffers generan una grilla de Filas x Columnas de QUADS
     super._setupIndexBuffer({
-      filas: niveles - 1,
+      filas: niveles,
       columnas: cantidadVertices - 1,
     });
-    
 
     for (var nivel = 0; nivel <= niveles; nivel++) {
       const u = nivel / niveles;
@@ -58,7 +54,9 @@ class SuperficieBarrido extends Geometry {
 
           if (nivel === niveles) {
             // La normal de la tapa final tiene el sentido contrario
-            vec3.negate(normalVertice, normalVertice)
+
+            // TODO: tiene que ir invertida la normal de la otra tapa? Esta sentencia genera un resultado extraño
+            //vec3.negate(normalVertice, normalVertice)
           }
         }
 
