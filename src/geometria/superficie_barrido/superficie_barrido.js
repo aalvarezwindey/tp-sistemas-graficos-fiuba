@@ -20,9 +20,10 @@ class SuperficieBarrido extends Geometry {
     
     console.log('niveles', niveles, 'cant v', cantidadVertices)
     
+    // Recordar que los index buffers generan una grilla de Filas x Columnas de QUADS
     super._setupIndexBuffer({
       filas: niveles - 1,
-      columnas: cantidadVertices,
+      columnas: cantidadVertices - 1,
     });
     
 
