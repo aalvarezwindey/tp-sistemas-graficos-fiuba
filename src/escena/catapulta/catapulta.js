@@ -32,6 +32,7 @@ class Catapulta extends Objeto3D {
     const rueda3 = new Rueda();
     const rueda4 = new Rueda();
 
+
     rueda1.setPosition(-7, 0, -3);
     rueda1.setRotation(0, Math.PI / 2, 0);
     rueda1.setGeometry(new SuperficieBarrido(new Circulo(DIAMETRO_RUEDA), new Recta(ANCHO_RUEDA), false))
@@ -41,7 +42,7 @@ class Catapulta extends Objeto3D {
 
     rueda3.setPosition(7, 0, 3);
     rueda3.setRotation(0, Math.PI / 2, 0);
-    rueda3.setGeometry(new SuperficieBarrido(new Circulo(DIAMETRO_RUEDA), new Recta(ANCHO_RUEDA), false))
+    rueda3.setGeometry(new SuperficieBarrido(new Circulo(DIAMETRO_RUEDA, 4), new Recta(3), true, 2))
 
     rueda4.setPosition(-7, 0, 3);
     rueda4.setRotation(0, Math.PI / 2, 0);

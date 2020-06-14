@@ -1,16 +1,17 @@
 import Geometry from "../geometry.js";
+import { Vertice } from "./poligono.js";
 
 class SuperficieBarrido extends Geometry {
-  constructor(poligono, recorrido, cerrado = false) {
+  constructor(poligono, recorrido, cerrado = false, filasQuads = 100) {
     super();
     this.poligono = poligono;
     this.recorrido = recorrido;
     this.cerrado = cerrado;
-    this._setupBuffers();
+    this._setupBuffers(filasQuads);
   }
 
-  _setupBuffers(filas = 100) {
-    const niveles =  this.cerrado ? filas + 2 + 1 : filas + 1;
+  _setupBuffers(filasQuads = 100) {
+    const niveles = this.cerrado ? filasQuads + 2 + 1 : filasQuads + 1;
     const cantidadVertices = this.poligono.vertices.length;
 
     const bufferDePosicion = [];
@@ -41,48 +42,47 @@ class SuperficieBarrido extends Geometry {
         ...normalRecorrido,
         ...binormalRecorrido,
         ...tangenteRecorrido
-      )
+      );
 
-      for (var idxVertice = 0; idxVertice < cantidadVertices; idxVertice++) {
-        // Tomamos el vertice correspondiente
-        let vertice = this.poligono.vertices[idxVertice];
-        let normalVertice = vertice.normal
+      // Tejido de primer tapa
+      if (nivel === 0 && this.cerrado) {
+        this.poligono.vertices.forEach(v => {
+          this._tejerNivelParaVertice({
+            vertice: this.poligono.centro,
+            matrizDeNivel,
+            matrizDeNormales,
+            bufferDePosicion,
+            bufferDeNormal
+          });
+        });
+      }
 
-        if ((nivel === 0 || nivel === niveles) && this.cerrado) {
-          vertice = this.poligono.centro;
-          normalVertice = vertice.normal;
+      this.poligono.vertices.forEach(vertice => {
+        // Tejido normal de nivel
+        this._tejerNivelParaVertice({
+          vertice,
+          matrizDeNivel,
+          matrizDeNormales,
+          bufferDePosicion,
+          bufferDeNormal
+        });
+      })
 
-          if (nivel === niveles) {
-            // La normal de la tapa final tiene el sentido contrario
-
-            // TODO: tiene que ir invertida la normal de la otra tapa? Esta sentencia genera un resultado extraño
-            //vec3.negate(normalVertice, normalVertice)
-          }
-        }
-
-        // Calculamos la posicion con la matriz de nivel
-        const posicionTransformada = vec4.create();
-        vec4.transformMat4(
-          posicionTransformada,
-          vec4.fromValues(...vertice.posicion, 1),
-          matrizDeNivel
-        );
-
-        // Descartamos el cuarto valor del vector
-        bufferDePosicion.push(
-          posicionTransformada[0],
-          posicionTransformada[1],
-          posicionTransformada[2]
-        );
-
-        const normalTransformada = vec3.create();
-        vec3.transformMat3(
-          normalTransformada,
-          vec3.fromValues(...normalVertice),
-          matrizDeNormales
-        );
-
-        bufferDeNormal.push(...normalTransformada);
+      // Tejido de última tapa
+      if (nivel === niveles && this.cerrado) {
+        let ver = {}
+        ver.posicion = this.poligono.centro.posicion;
+        ver.normal = [-20, -20, 2]
+        this.poligono.vertices.forEach(v => {
+          console.log('ULT TAPA')
+          this._tejerNivelParaVertice({
+            vertice: ver,
+            matrizDeNivel,
+            matrizDeNormales,
+            bufferDePosicion,
+            bufferDeNormal
+          });
+        });
       }
     }
 
@@ -109,6 +109,38 @@ class SuperficieBarrido extends Geometry {
     this.buffers.position = webgl_position_buffer;
     this.buffers.normal = webgl_normal_buffer;
     // this.buffers.uv = webgl_uvs_buffer;
+  }
+
+  _tejerNivelParaVertice = ({
+    vertice,
+    matrizDeNivel,
+    matrizDeNormales,
+    bufferDePosicion,
+    bufferDeNormal
+  }) => {
+    // Calculamos la posicion con la matriz de nivel
+    const posicionTransformada = vec4.create();
+    vec4.transformMat4(
+      posicionTransformada,
+      vec4.fromValues(...vertice.posicion, 1),
+      matrizDeNivel
+    );
+
+    // Descartamos el cuarto valor del vector
+    bufferDePosicion.push(
+      posicionTransformada[0],
+      posicionTransformada[1],
+      posicionTransformada[2]
+    );
+
+    const normalTransformada = vec3.create();
+    vec3.transformMat3(
+      normalTransformada,
+      vec3.fromValues(...vertice.normal),
+      matrizDeNormales
+    );
+
+    bufferDeNormal.push(...normalTransformada);
   }
 }
 
