@@ -1,7 +1,7 @@
 import Geometry from "../geometry.js";
 
 class SuperficieBarrido extends Geometry {
-  constructor(poligono, recorrido, cerrado = false, filasQuads = 100) {
+  constructor(poligono, recorrido, cerrado = true, filasQuads = 100) {
     super();
     this.poligono = poligono;
     this.recorrido = recorrido;

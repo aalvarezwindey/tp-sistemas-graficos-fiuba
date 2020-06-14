@@ -11,7 +11,7 @@ class Cilindro extends Objeto3D {
 
     this.cilindro = new Objeto3D({
       geometry: new SuperficieBarrido(new Circulo(radio), new Recta(alto), true),
-      material: new DefaultMaterial(shadersManager),
+      material: DEFAULT_MATERIAL,
       glContext: gl
     });
 
