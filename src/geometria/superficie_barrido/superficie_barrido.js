@@ -11,7 +11,7 @@ class SuperficieBarrido extends Geometry {
   }
 
   _setupBuffers(filasQuads = 100) {
-    const niveles = this.cerrado ? filasQuads + 2 + 1 : filasQuads + 1;
+    const niveles = filasQuads + 1;
     const cantidadVertices = this.poligono.vertices.length;
 
     const bufferDePosicion = [];
@@ -20,7 +20,7 @@ class SuperficieBarrido extends Geometry {
 
     // Recordar que los index buffers generan una grilla de Filas x Columnas de QUADS
     super._setupIndexBuffer({
-      filas: niveles,
+      filas: this.cerrado ? niveles + 2 : niveles,
       columnas: cantidadVertices - 1,
     });
 
@@ -70,13 +70,9 @@ class SuperficieBarrido extends Geometry {
 
       // Tejido de última tapa
       if (nivel === niveles && this.cerrado) {
-        let ver = {}
-        ver.posicion = this.poligono.centro.posicion;
-        ver.normal = [-20, -20, 2]
         this.poligono.vertices.forEach(v => {
-          console.log('ULT TAPA')
           this._tejerNivelParaVertice({
-            vertice: ver,
+            vertice: this.poligono.centro,
             matrizDeNivel,
             matrizDeNormales,
             bufferDePosicion,
