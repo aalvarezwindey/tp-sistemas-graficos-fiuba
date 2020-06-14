@@ -1,5 +1,4 @@
 import Geometry from "../geometry.js";
-import { Vertice } from "./poligono.js";
 
 class SuperficieBarrido extends Geometry {
   constructor(poligono, recorrido, cerrado = false, filasQuads = 100) {

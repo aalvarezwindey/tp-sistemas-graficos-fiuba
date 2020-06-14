@@ -3,52 +3,72 @@ import Recta from '../../geometria/superficie_barrido/recorridos_parametricos/re
 import DefaultMaterial from '../../material/types/default_material.js';
 import SuperficieBarrido from '../../geometria/superficie_barrido/superficie_barrido.js';
 import Circulo from '../../geometria/superficie_barrido/poligonos/circulo.js';
+import Cilindro from '../../geometria/objetos_3d/cilindro.js';
 
-const ANCHO_RUEDA = 0.2;
-const RADIO_RUEDA = 1
 
 class Rueda extends Objeto3D {
+  ANCHO_RUEDA = 0.2;
+  RADIO_RUEDA = 1;
+
   constructor() {
-    super({
-      geometry: null,
-      material: new DefaultMaterial(shadersManager),
-      glContext: gl
-    });
+    super();
 
     // Creates geometria only the first time
-    Rueda.geometria = Rueda.geometria || new SuperficieBarrido(new Circulo(RADIO_RUEDA), new Recta(ANCHO_RUEDA), true);
+    Rueda.cilindro = Rueda.cilindro || new Cilindro(this.RADIO_RUEDA, this.ANCHO_RUEDA);
 
-    this.setGeometry(Rueda.geometria);
+    this.addChild(Rueda.cilindro);
+  }
+}
+
+class EjeDeRuedas extends Objeto3D {
+  LARGO_EJE = 8;
+  RADIO_EJE = 0.1;
+
+  constructor() {
+    super();
+
+    // Creates geometria only the first time
+    EjeDeRuedas.cilindro = EjeDeRuedas.cilindro || new Cilindro(this.RADIO_EJE, this.LARGO_EJE);
+
+    this.addChild(EjeDeRuedas.cilindro);
+  }
+}
+
+class TrenDeRuedas extends Objeto3D {
+  ENCASTRE = 0.2;
+
+  constructor() {
+    super();
+    this.rueda1 = new Rueda();
+    this.rueda2 = new Rueda();
+    this.eje = new EjeDeRuedas();
+
+    this.eje.addChild(this.rueda1);
+    this.eje.addChild(this.rueda2);
+
+    this.rueda1.setPosition(- (this.eje.LARGO_EJE / 2 - this.ENCASTRE), 0, 0);
+    this.rueda2.setPosition(+ (this.eje.LARGO_EJE / 2 - this.ENCASTRE), 0, 0);
+
+    this.addChild(this.eje);
   }
 }
 
 
 class Catapulta extends Objeto3D {
+  DISTANCIA_ENTRE_TRENES_DE_RUEDAS = 6;
+
   constructor() {
     super();
-
-    const rueda1 = new Rueda();
-    const rueda2 = new Rueda();
-    const rueda3 = new Rueda();
-    const rueda4 = new Rueda();
+    const trenDelantero = new TrenDeRuedas();
+    const trenTrasero = new TrenDeRuedas();
 
 
-    rueda1.setPosition(-7, 0, -3);
-    rueda1.setRotation(0, Math.PI / 2, 0);
+    trenDelantero.setPosition(0, 0, - this.DISTANCIA_ENTRE_TRENES_DE_RUEDAS);
+    trenTrasero.setPosition(0, 0, + this.DISTANCIA_ENTRE_TRENES_DE_RUEDAS);
 
-    rueda2.setPosition(7, 0, -3);
-    rueda2.setRotation(0, Math.PI / 2, 0);
+    this.addChild(trenDelantero);
+    this.addChild(trenTrasero);
 
-    rueda3.setPosition(7, 0, 3);
-    rueda3.setRotation(0, Math.PI / 2, 0);
-
-    rueda4.setPosition(-7, 0, 3);
-    rueda4.setRotation(0, Math.PI / 2, 0);
-
-    this.addChild(rueda1);
-    this.addChild(rueda2);
-    this.addChild(rueda3);
-    this.addChild(rueda4);
   }
 }
 
