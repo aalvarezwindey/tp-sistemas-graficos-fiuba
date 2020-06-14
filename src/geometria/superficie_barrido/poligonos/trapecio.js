@@ -1,26 +1,27 @@
 import Poligono, { Vertice } from "../poligono.js";
 
-class Rectangulo extends Poligono {
-  constructor(base, altura) {
+class Trapecio extends Poligono {
+  constructor(anchoInferior, anchoSuperior, altura) {
     super();
 
-    this.base = base;
+    this.anchoInferior = anchoInferior;
+    this.anchoSuperior = anchoSuperior;
     this.altura = altura;
 
     const vertice1 = new Vertice();
-    vertice1.posicion = vec3.fromValues(base / 2, altura / 2, 0);
+    vertice1.posicion = vec3.fromValues(-anchoInferior / 2, -altura / 2, 0);
     this.vertices.push(vertice1);
 
     const vertice2 = new Vertice();
-    vertice2.posicion = vec3.fromValues(base / 2, -altura / 2, 0);
+    vertice2.posicion = vec3.fromValues(-anchoSuperior / 2, altura / 2, 0);
     this.vertices.push(vertice2);
 
     const vertice3 = new Vertice();
-    vertice3.posicion = vec3.fromValues(-base / 2, -altura / 2, 0);
+    vertice3.posicion = vec3.fromValues(anchoSuperior / 2, altura / 2, 0);
     this.vertices.push(vertice3);
 
     const vertice4 = new Vertice();
-    vertice4.posicion = vec3.fromValues(-base / 2, altura / 2, 0);
+    vertice4.posicion = vec3.fromValues(anchoInferior / 2, -altura / 2, 0);
     this.vertices.push(vertice4);
 
     // Repetimos el primer vértice para cerrar bien el polígono
@@ -37,4 +38,4 @@ class Rectangulo extends Poligono {
   }
 }
 
-export default Rectangulo;
+export default Trapecio;
