@@ -2,11 +2,12 @@ import Objeto3D from "../geometria/objeto_3d.js";
 
 const D_OBJ = 5;
 const OFFSET_ROTACION = 0.1;
+const ALTURA_PERSONAJE = 1;
 
 class CamaraPrimeraPersona {
   constructor() {
     const POSICION_DEFAULT = new Objeto3D();
-    POSICION_DEFAULT.setPosition(0, 0, 0);
+    POSICION_DEFAULT.setPosition(0, ALTURA_PERSONAJE, 0);
     const OBJETIVO_DEFAULT = new Objeto3D();
     OBJETIVO_DEFAULT.setPosition(0, 0, -D_OBJ);
 
@@ -39,7 +40,7 @@ class CamaraPrimeraPersona {
         case "a":
           this.posicion.setPosition(
             this.posicion.position[0] + this.lateral[0],
-            0,
+            ALTURA_PERSONAJE,
             this.posicion.position[2] + this.lateral[2],
           )
           break;
@@ -47,7 +48,7 @@ class CamaraPrimeraPersona {
         case "d":
           this.posicion.setPosition(
             this.posicion.position[0] - this.lateral[0],
-            0,
+            ALTURA_PERSONAJE,
             this.posicion.position[2] - this.lateral[2],
           )
           break;
@@ -55,7 +56,7 @@ class CamaraPrimeraPersona {
         case "w":
           this.posicion.setPosition(
             this.posicion.position[0] + this.frontal[0],
-            0,
+            ALTURA_PERSONAJE,
             this.posicion.position[2] + this.frontal[2],
           )
           break;
@@ -63,7 +64,7 @@ class CamaraPrimeraPersona {
         case "s":
           this.posicion.setPosition(
             this.posicion.position[0] - this.frontal[0],
-            0,
+            ALTURA_PERSONAJE,
             this.posicion.position[2] - this.frontal[2],
           )
           break;
@@ -133,7 +134,7 @@ class CamaraPrimeraPersona {
   _actualizarPosicionDelObjetivo = () => {
     this.objetivo.setPosition(
       D_OBJ * Math.sin(this.rotacion * this.factorVelocidad) * Math.sin(this.beta),
-      D_OBJ * Math.cos(this.beta),
+      D_OBJ * Math.cos(this.beta) + ALTURA_PERSONAJE,
       D_OBJ * Math.cos(this.rotacion * this.factorVelocidad) * Math.sin(this.beta)
     );
   }
