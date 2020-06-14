@@ -21,20 +21,19 @@ class Escena {
     const defaultMaterial = new DefaultMaterial(shadersManager);
 
     objeto = new Objeto3D({
-      geometry: new Plano(20, 20),
+      geometry: new Plano(200, 200),
       material: defaultMaterial,
       glContext: gl
     });
-    objeto.setPosition(0, -1, 0);
+    objeto.setPosition(0, 0, 0);
     this.objetos.push(objeto);
 
     objeto = new Catapulta();
-    objeto.setPosition(0, 0, 0);
+    objeto.setPosition(0, 1, 0);
     this.objetos.push(objeto);
   }
 
   _iniciarHandlers = () => {
-
     // Switcher de camaras
     document.addEventListener('keydown', event => {
       switch(event.key) {
