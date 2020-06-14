@@ -20,16 +20,6 @@ class Escena {
     let objeto;
     const defaultMaterial = new DefaultMaterial(shadersManager);
 
-    const esfera = new Esfera(1);
-
-    objeto = new Objeto3D({
-      geometry: esfera,
-      material: defaultMaterial,
-      glContext: gl
-    });
-    objeto.setPosition(0, 1, 0);
-    this.objetos.push(objeto);
-
     objeto = new Objeto3D({
       geometry: new Plano(20, 20),
       material: defaultMaterial,
@@ -38,24 +28,8 @@ class Escena {
     objeto.setPosition(0, -1, 0);
     this.objetos.push(objeto);
 
-    objeto = new Objeto3D({
-      geometry: esfera,
-      material: defaultMaterial,
-      glContext: gl
-    });
-    objeto.setPosition(10, 2, 0);
-    this.objetos.push(objeto);
-
-    objeto = new Objeto3D({
-      geometry: new SuperficieBarrido(new Circulo(0.2, 100), new Circunferencia(5)),
-      material: defaultMaterial,
-      glContext: gl
-    });
-    objeto.setPosition(-20, 10, 0);
-    this.objetos.push(objeto);
-
     objeto = new Catapulta();
-    objeto.setPosition(-10, 0, 0);
+    objeto.setPosition(0, 0, 0);
     this.objetos.push(objeto);
   }
 
