@@ -127,7 +127,11 @@ class CucharaCatapulta extends Objeto3D {
       CucharaCatapulta.ESPESOR
     );
     mango.setRotation(Math.PI / 2, Math.PI / 2, 0);
-    mango.setPosition(0, 0, CucharaCatapulta.DESPLAZAMIENTO_CUCHARA_SOBRE_EJE)
+    mango.setPosition(
+      0,
+      EjeTravesañoDelantero.RADIO_EJE,
+      CucharaCatapulta.DESPLAZAMIENTO_CUCHARA_SOBRE_EJE
+    );
 
     const cabezaCuchara = new Prisma(
       CucharaCatapulta.LARGO_CUADRADO_CUCHARA,
@@ -265,7 +269,7 @@ TravesañoDelantero.DIST_CENTRO_PLATAFORMA_A_EJE_TRAVESAÑO_DELANTERO = (Platafo
 EjeTravesañoDelantero.RADIO_EJE = (TravesañoDelantero.ANCHO_SUP_LINGOTES * 0.7) / 2;
 EjeTravesañoDelantero.LARGO_EXCEDENTE_EJE = 0.2;
 EjeTravesañoDelantero.LARGO_EJE = TravesañoDelantero.DISTANCIA_ENTRE_LINGOTES + EjeTravesañoDelantero.LARGO_EXCEDENTE_EJE + TravesañoDelantero.LARGO_LINGOTE;
-EjeTravesañoDelantero.DISTANCIA_EJE_A_BORDE_SUPERIOR = 0.3;
+EjeTravesañoDelantero.DISTANCIA_EJE_A_BORDE_SUPERIOR = 0.15;
 EjeTravesañoDelantero.ALTURA_EJE = TravesañoDelantero.ALTURA_LINGOTES - (EjeTravesañoDelantero.RADIO_EJE + EjeTravesañoDelantero.DISTANCIA_EJE_A_BORDE_SUPERIOR);
 
 TravesañoTrasero.ANCHO_INF_LINGOTES = Rueda.RADIO * 1.1;
