@@ -1,12 +1,15 @@
 const DEFAULT = 'default';
+const MADERA_CLARA = 'madera_clara';
 
 const SHADERS_FILE_NAMES = [
   DEFAULT,
+  MADERA_CLARA
 ];
 
 class ShadersManager {
   // Shaders IDs getters
   static get DEFAULT() { return DEFAULT }
+  static get MADERA_CLARA() { return MADERA_CLARA }
 
   static async init(glContext, baseUrl = 'src/shaders/glsl') {
     const results = await Promise.all(SHADERS_FILE_NAMES.map(fileName => {

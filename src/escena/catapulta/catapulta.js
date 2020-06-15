@@ -56,6 +56,8 @@ class PlataformaCatapulta extends Objeto3D {
       new Prisma(PlataformaCatapulta.LARGO, PlataformaCatapulta.ANCHO, PlataformaCatapulta.ESPESOR)
     );
 
+    PlataformaCatapulta.prisma.setMaterial(MATERIAL_MADERA_CLARA)
+
     // TODO: No estoy seguro si es mejor rotar el Prisma o PlataformaCatapulta
     PlataformaCatapulta.prisma.setRotation(Math.PI / 2, Math.PI / 2, 0);
     this.addChild(PlataformaCatapulta.prisma);
@@ -98,6 +100,8 @@ class TravesañoDelantero extends Objeto3D {
     // Eje
     const eje = new EjeTravesañoDelantero();
     eje.setPosition(0, EjeTravesañoDelantero.ALTURA_EJE, 0);
+    // TODO: Esta rotación es la que hay que animar
+    //eje.setRotation(-Math.PI / 4, 0, 0);
     sistemaDeReferencia.addChild(eje);
 
     this.addChild(sistemaDeReferencia);
@@ -142,7 +146,16 @@ class CucharaCatapulta extends Objeto3D {
     cabezaCuchara.setPosition(0, CucharaCatapulta.LARGO_MANGO / 2 + CucharaCatapulta.LARGO_CUADRADO_CUCHARA / 2, 0)
     mango.addChild(cabezaCuchara);
 
+    const ovilloCuchara = new Cilindro(
+      CucharaCatapulta.RADIO_OVILLO,
+      CucharaCatapulta.ANCHO_OVILLO
+    );
+
+    ovilloCuchara.setPosition(0, EjeTravesañoDelantero.RADIO_EJE, CucharaCatapulta.DISTANCIA_ENTRE_EJES_DE_TRAVESAÑOS);
+    ovilloCuchara.setRotation(0, Math.PI / 2, 0);
+
     sistemaDeReferencia.addChild(mango);
+    sistemaDeReferencia.addChild(ovilloCuchara);
 
     this.addChild(sistemaDeReferencia);
 
@@ -297,5 +310,8 @@ CucharaCatapulta.LARGO_MANGO = PlataformaCatapulta.LARGO + CucharaCatapulta.LARG
 CucharaCatapulta.ANCHO_MANGO = TravesañoTrasero.DISTANCIA_ENTRE_LINGOTES * 0.3
 CucharaCatapulta.LARGO_CUADRADO_CUCHARA = TravesañoTrasero.DISTANCIA_ENTRE_LINGOTES;
 CucharaCatapulta.DESPLAZAMIENTO_CUCHARA_SOBRE_EJE = (CucharaCatapulta.LARGO_MANGO / 2) - ((PlataformaCatapulta.LARGO / 2) - TravesañoDelantero.DIST_CENTRO_PLATAFORMA_A_EJE_TRAVESAÑO_DELANTERO);
+CucharaCatapulta.RADIO_OVILLO = Math.sqrt(Math.pow(CucharaCatapulta.ANCHO_MANGO / 2, 2) + Math.pow(CucharaCatapulta.ESPESOR / 2, 2))
+CucharaCatapulta.ANCHO_OVILLO = CucharaCatapulta.ANCHO_MANGO / 2;
+CucharaCatapulta.DISTANCIA_ENTRE_EJES_DE_TRAVESAÑOS = TravesañoDelantero.DIST_CENTRO_PLATAFORMA_A_EJE_TRAVESAÑO_DELANTERO + TravesañoTrasero.DIST_CENTRO_PLATAFORMA_A_EJE_TRAVESAÑO_TRASERO
 
 export default Catapulta

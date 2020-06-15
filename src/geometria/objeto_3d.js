@@ -60,6 +60,10 @@ class Objeto3D {
     this.geometry = geometry;
   }
 
+  setMaterial(material) {
+    this.material = material;
+  }
+
   addChild(child) {
     this.children.push(child);
   }

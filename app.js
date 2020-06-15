@@ -5,6 +5,7 @@ const {
   ShadersManager,
   GestorDeCamaras,
   DefaultMaterial,
+  MaderaClara,
   Escena
 } = window.webGLApp;
 
@@ -22,6 +23,7 @@ var escena = null;
 var gestorDeCamaras = null;
 var shadersManager = null;
 var DEFAULT_MATERIAL = null;
+var MATERIAL_MADERA_CLARA = null;
 
 function setupWebGL() {
   //set the clear color
@@ -82,6 +84,7 @@ function startWebGLApp() {
     ShadersManager.init(gl).then(shaders => {
       shadersManager = shaders;
       DEFAULT_MATERIAL = new DefaultMaterial(shadersManager)
+      MATERIAL_MADERA_CLARA = new MaderaClara(shadersManager);
       escena = new Escena(shaders, gestorDeCamaras);
       escena.updateProjectionMatrix(projMatrix);
       tick();
