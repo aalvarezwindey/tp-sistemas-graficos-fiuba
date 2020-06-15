@@ -100,15 +100,6 @@ class TravesañoDelantero extends Objeto3D {
     // Eje
     const eje = new EjeTravesañoDelantero();
     eje.setPosition(0, EjeTravesañoDelantero.ALTURA_EJE, 0);
-    // TODO: Esta rotación es la que hay que animar
-    // eje.setRotation(-Math.PI / 4, 0, 0);
-    eje.setAnimacion((ejeTravesañoDelantero) => {
-      const VELOCIDAD = 20;
-      const ANGULO_MAX = Math.PI / 4;
-      const anguloDeRotacion = Math.max(-ANGULO_MAX, -TIEMPO * VELOCIDAD * ANGULO_MAX);
-      ejeTravesañoDelantero.setRotation(anguloDeRotacion, 0, 0);
-    });
-
     sistemaDeReferencia.addChild(eje);
 
     this.addChild(sistemaDeReferencia);
@@ -122,6 +113,16 @@ class EjeTravesañoDelantero extends Objeto3D {
       const cuchara = new CucharaCatapulta();
       eje.addChild(cuchara);
       this.addChild(eje)
+
+      this.setAnimacion((ejeTravesañoDelantero) => {
+        const VELOCIDAD = 20;
+        const ANGULO_MAX = Math.PI / 4;
+        const anguloDeRotacion = Math.max(-ANGULO_MAX, -TIEMPO * VELOCIDAD * ANGULO_MAX);
+        ejeTravesañoDelantero.setRotation(anguloDeRotacion, 0, 0);
+
+        // Seteamos esta variable para poder contrarrestar el giro en el contrapeso
+        cuchara.contrapeso.eje.setRotation(anguloDeRotacion, 0, 0);
+      })
   }
 }
 
@@ -167,16 +168,16 @@ class CucharaCatapulta extends Objeto3D {
     sistemaDeReferencia.addChild(mango);
     sistemaDeReferencia.addChild(ovilloCuchara);
 
-    const contrapeso = new ContrapesoCuchara();
-    contrapeso.setRotation(Math.PI / 2, 0, - Math.PI / 2);
+    this.contrapeso = new ContrapesoCuchara();
+    this.contrapeso.setRotation(Math.PI / 2, 0, - Math.PI / 2);
 
-    contrapeso.setPosition(
+    this.contrapeso.setPosition(
       CucharaCatapulta.ESPESOR / 2 - (ContrapesoCuchara.RADIO_EJE + ContrapesoCuchara.DISTANCIA_EJE_A_BORDE_LINGOTE),
       - CucharaCatapulta.LARGO_MANGO / 2 + ContrapesoCuchara.ANCHO_SUP_LINGOTES / 2,
       0)
     ;
 
-    mango.addChild(contrapeso);
+    mango.addChild(this.contrapeso);
 
     this.addChild(sistemaDeReferencia);
   }
@@ -187,7 +188,7 @@ class ContrapesoCuchara extends Objeto3D {
     super();
 
     // Eje
-    const eje = new Cilindro(ContrapesoCuchara.RADIO_EJE, ContrapesoCuchara.LARGO_EJE, MATERIAL_MADERA_OSCURA);
+    this.eje = new Cilindro(ContrapesoCuchara.RADIO_EJE, ContrapesoCuchara.LARGO_EJE, MATERIAL_MADERA_OSCURA);
 
     // Travesaños hijos del eje
     const lingoteIzquierdo = new Lingote(
@@ -203,7 +204,7 @@ class ContrapesoCuchara extends Objeto3D {
       - ContrapesoCuchara.ALTURA_LINGOTES / 2 + ContrapesoCuchara.RADIO_EJE + ContrapesoCuchara.DISTANCIA_EJE_A_BORDE_LINGOTE,
       0
     );
-    eje.addChild(lingoteIzquierdo);
+    this.eje.addChild(lingoteIzquierdo);
 
     const lingoteDerecho = new Lingote(
       ContrapesoCuchara.ANCHO_INF_LINGOTES,
@@ -218,7 +219,7 @@ class ContrapesoCuchara extends Objeto3D {
       - ContrapesoCuchara.ALTURA_LINGOTES / 2 + ContrapesoCuchara.RADIO_EJE + ContrapesoCuchara.DISTANCIA_EJE_A_BORDE_LINGOTE,
       0
     );
-    eje.addChild(lingoteDerecho);
+    this.eje.addChild(lingoteDerecho);
 
     // bloque contrapeso
     const cuboDeContrapeso = new Prisma(
@@ -233,9 +234,9 @@ class ContrapesoCuchara extends Objeto3D {
       - ContrapesoCuchara.ALTURA_LINGOTES + ContrapesoCuchara.RADIO_EJE + ContrapesoCuchara.DISTANCIA_EJE_A_BORDE_LINGOTE - ContrapesoCuchara.LADO_CUBO_CONTRAPESO / 2,
       0
     );
-    eje.addChild(cuboDeContrapeso);
+    this.eje.addChild(cuboDeContrapeso);
 
-    this.addChild(eje);
+    this.addChild(this.eje);
   }
 }
 
