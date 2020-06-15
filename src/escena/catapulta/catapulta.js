@@ -108,7 +108,40 @@ class EjeTravesañoDelantero extends Objeto3D {
   constructor() {
     super();
       const eje = new Cilindro(EjeTravesañoDelantero.RADIO_EJE, EjeTravesañoDelantero.LARGO_EJE);
+      const cuchara = new CucharaCatapulta();
+      eje.addChild(cuchara);
       this.addChild(eje)
+  }
+}
+
+class CucharaCatapulta extends Objeto3D {
+  constructor() {
+    super();
+
+    // El sistema de referencia es a partir de la unión con el eje del travesaño delantero
+    const sistemaDeReferencia = new Objeto3D();
+
+    const mango = new Prisma(
+      CucharaCatapulta.LARGO_MANGO,
+      CucharaCatapulta.ANCHO_MANGO,
+      CucharaCatapulta.ESPESOR
+    );
+    mango.setRotation(Math.PI / 2, Math.PI / 2, 0);
+    mango.setPosition(0, 0, CucharaCatapulta.DESPLAZAMIENTO_CUCHARA_SOBRE_EJE)
+
+    const cabezaCuchara = new Prisma(
+      CucharaCatapulta.LARGO_CUADRADO_CUCHARA,
+      CucharaCatapulta.LARGO_CUADRADO_CUCHARA,
+      CucharaCatapulta.ESPESOR
+    );
+
+    cabezaCuchara.setPosition(0, CucharaCatapulta.LARGO_MANGO / 2 + CucharaCatapulta.LARGO_CUADRADO_CUCHARA / 2, 0)
+    mango.addChild(cabezaCuchara);
+
+    sistemaDeReferencia.addChild(mango);
+
+    this.addChild(sistemaDeReferencia);
+
   }
 }
 
@@ -253,5 +286,12 @@ ContraEjeTravesañoTrasero.DISTANCIA_BORDE_CONTRAEJE = 0.2
 ContraEjeTravesañoTrasero.DISTANCIA_CENTRO_A_CONTRAEJES = EjeTravesañoTrasero.LARGO_EJE / 2 - ContraEjeTravesañoTrasero.DISTANCIA_BORDE_CONTRAEJE;
 Ovillo.RADIO = EjeTravesañoTrasero.RADIO_EJE * 2;
 Ovillo.ANCHO = TravesañoTrasero.DISTANCIA_ENTRE_LINGOTES * 0.3;
+
+CucharaCatapulta.ESPESOR = EjeTravesañoDelantero.RADIO_EJE + EjeTravesañoDelantero.DISTANCIA_EJE_A_BORDE_SUPERIOR;
+CucharaCatapulta.LARGO_EXCEDENTE_A_PLATAFORMA = PlataformaCatapulta.LARGO * 0.2
+CucharaCatapulta.LARGO_MANGO = PlataformaCatapulta.LARGO + CucharaCatapulta.LARGO_EXCEDENTE_A_PLATAFORMA;
+CucharaCatapulta.ANCHO_MANGO = TravesañoTrasero.DISTANCIA_ENTRE_LINGOTES * 0.3
+CucharaCatapulta.LARGO_CUADRADO_CUCHARA = TravesañoTrasero.DISTANCIA_ENTRE_LINGOTES;
+CucharaCatapulta.DESPLAZAMIENTO_CUCHARA_SOBRE_EJE = (CucharaCatapulta.LARGO_MANGO / 2) - ((PlataformaCatapulta.LARGO / 2) - TravesañoDelantero.DIST_CENTRO_PLATAFORMA_A_EJE_TRAVESAÑO_DELANTERO);
 
 export default Catapulta
