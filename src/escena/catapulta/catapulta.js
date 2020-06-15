@@ -109,20 +109,40 @@ class TravesañoDelantero extends Objeto3D {
 class EjeTravesañoDelantero extends Objeto3D {
   constructor() {
     super();
-      const eje = new Cilindro(EjeTravesañoDelantero.RADIO_EJE, EjeTravesañoDelantero.LARGO_EJE, MATERIAL_MADERA_OSCURA);
-      const cuchara = new CucharaCatapulta();
-      eje.addChild(cuchara);
-      this.addChild(eje)
+    const eje = new Cilindro(EjeTravesañoDelantero.RADIO_EJE, EjeTravesañoDelantero.LARGO_EJE, MATERIAL_MADERA_OSCURA);
+    const cuchara = new CucharaCatapulta();
+    this.disparar = false;
+    eje.addChild(cuchara);
+    this.addChild(eje)
 
-      this.setAnimacion((ejeTravesañoDelantero) => {
+    this.setAnimacion((ejeTravesañoDelantero) => {
+      if (this.disparar) {
         const VELOCIDAD = 20;
         const ANGULO_MAX = Math.PI / 4;
-        const anguloDeRotacion = Math.max(-ANGULO_MAX, -TIEMPO * VELOCIDAD * ANGULO_MAX);
+        const anguloDeRotacion = Math.max(-ANGULO_MAX, -(TIEMPO - this.tiempoInicial) * VELOCIDAD * ANGULO_MAX);
         ejeTravesañoDelantero.setRotation(anguloDeRotacion, 0, 0);
 
         // Seteamos esta variable para poder contrarrestar el giro en el contrapeso
         cuchara.contrapeso.eje.setRotation(anguloDeRotacion, 0, 0);
-      })
+      } else {
+        ejeTravesañoDelantero.setRotation(0, 0, 0);
+        cuchara.contrapeso.eje.setRotation(0, 0, 0);
+      }
+    });
+
+    document.addEventListener('keydown', event => {
+      switch (event.keyCode) {
+        // Barra espaciadora => Disparamos catapulta
+        case 32: {
+          this.disparar = !this.disparar;
+          this.tiempoInicial = TIEMPO;
+        }
+
+        default: {
+          break;
+        }
+      }
+    });
   }
 }
 

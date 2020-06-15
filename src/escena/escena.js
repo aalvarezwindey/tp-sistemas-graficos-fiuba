@@ -20,9 +20,9 @@ class Escena {
     objeto.setPosition(0, 0, 0);
     this.objetos.push(objeto);
 
-    objeto = new Catapulta();
-    objeto.setPosition(0, 10, 0);
-    this.objetos.push(objeto);
+    this.catapulta = new Catapulta();
+    this.catapulta.setPosition(0, 1, 0);
+    this.objetos.push(this.catapulta);
   }
 
   _iniciarHandlers = () => {
