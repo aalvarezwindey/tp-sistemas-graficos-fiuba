@@ -9,7 +9,7 @@ class Rueda extends Objeto3D {
     super();
 
     // Creates geometria only the first time
-    Rueda.cilindro = Rueda.cilindro || new Cilindro(Rueda.RADIO, Rueda.ANCHO);
+    Rueda.cilindro = Rueda.cilindro || new Cilindro(Rueda.RADIO, Rueda.ANCHO, MATERIAL_MADERA_CLARA);
 
     this.addChild(Rueda.cilindro);
   }
@@ -23,7 +23,7 @@ class EjeDeRuedas extends Objeto3D {
     super();
 
     // Creates geometria only the first time
-    EjeDeRuedas.cilindro = EjeDeRuedas.cilindro || new Cilindro(EjeDeRuedas.RADIO_EJE, EjeDeRuedas.LARGO);
+    EjeDeRuedas.cilindro = EjeDeRuedas.cilindro || new Cilindro(EjeDeRuedas.RADIO_EJE, EjeDeRuedas.LARGO, MATERIAL_MADERA_OSCURA);
 
     this.addChild(EjeDeRuedas.cilindro);
   }
@@ -79,7 +79,8 @@ class TravesañoDelantero extends Objeto3D {
       TravesañoDelantero.ANCHO_INF_LINGOTES,
       TravesañoDelantero.ANCHO_SUP_LINGOTES,
       TravesañoDelantero.ALTURA_LINGOTES,
-      TravesañoDelantero.LARGO_LINGOTE
+      TravesañoDelantero.LARGO_LINGOTE,
+      MATERIAL_MADERA_CLARA
     );
     lingoteIzquierdo.setRotation(-Math.PI / 2, 0, 0);
     lingoteIzquierdo.setPosition(-TravesañoDelantero.DISTANCIA_ENTRE_LINGOTES / 2, TravesañoDelantero.ALTURA_LINGOTES / 2, 0);
@@ -89,7 +90,8 @@ class TravesañoDelantero extends Objeto3D {
       TravesañoDelantero.ANCHO_INF_LINGOTES,
       TravesañoDelantero.ANCHO_SUP_LINGOTES,
       TravesañoDelantero.ALTURA_LINGOTES,
-      TravesañoDelantero.LARGO_LINGOTE
+      TravesañoDelantero.LARGO_LINGOTE,
+      MATERIAL_MADERA_CLARA
     );
     lingoteDerecho.setRotation(-Math.PI / 2, 0, 0);
     lingoteDerecho.setPosition(TravesañoDelantero.DISTANCIA_ENTRE_LINGOTES / 2, TravesañoDelantero.ALTURA_LINGOTES / 2, 0);
@@ -109,7 +111,7 @@ class TravesañoDelantero extends Objeto3D {
 class EjeTravesañoDelantero extends Objeto3D {
   constructor() {
     super();
-      const eje = new Cilindro(EjeTravesañoDelantero.RADIO_EJE, EjeTravesañoDelantero.LARGO_EJE);
+      const eje = new Cilindro(EjeTravesañoDelantero.RADIO_EJE, EjeTravesañoDelantero.LARGO_EJE, MATERIAL_MADERA_OSCURA);
       const cuchara = new CucharaCatapulta();
       eje.addChild(cuchara);
       this.addChild(eje)
@@ -126,7 +128,8 @@ class CucharaCatapulta extends Objeto3D {
     const mango = new Prisma(
       CucharaCatapulta.LARGO_MANGO,
       CucharaCatapulta.ANCHO_MANGO,
-      CucharaCatapulta.ESPESOR
+      CucharaCatapulta.ESPESOR,
+      MATERIAL_MADERA_CLARA
     );
     mango.setRotation(Math.PI / 2, Math.PI / 2, 0);
     mango.setPosition(
@@ -138,7 +141,8 @@ class CucharaCatapulta extends Objeto3D {
     const cabezaCuchara = new Prisma(
       CucharaCatapulta.LARGO_CUADRADO_CUCHARA,
       CucharaCatapulta.LARGO_CUADRADO_CUCHARA,
-      CucharaCatapulta.ESPESOR
+      CucharaCatapulta.ESPESOR,
+      MATERIAL_MADERA_CLARA
     );
 
     cabezaCuchara.setPosition(0, CucharaCatapulta.LARGO_MANGO / 2 + CucharaCatapulta.LARGO_CUADRADO_CUCHARA / 2, 0)
@@ -146,7 +150,8 @@ class CucharaCatapulta extends Objeto3D {
 
     const ovilloCuchara = new Cilindro(
       CucharaCatapulta.RADIO_OVILLO,
-      CucharaCatapulta.ANCHO_OVILLO
+      CucharaCatapulta.ANCHO_OVILLO,
+      MATERIAL_HILO
     );
 
     ovilloCuchara.setPosition(0, EjeTravesañoDelantero.RADIO_EJE, CucharaCatapulta.DISTANCIA_ENTRE_EJES_DE_TRAVESAÑOS);
@@ -169,7 +174,8 @@ class TravesañoTrasero extends Objeto3D {
       TravesañoTrasero.ANCHO_INF_LINGOTES,
       TravesañoTrasero.ANCHO_SUP_LINGOTES,
       TravesañoTrasero.ALTURA_LINGOTES,
-      TravesañoTrasero.LARGO_LINGOTE
+      TravesañoTrasero.LARGO_LINGOTE,
+      MATERIAL_MADERA_CLARA
     );
     lingoteIzquierdo.setRotation(-Math.PI / 2, 0, 0);
     lingoteIzquierdo.setPosition(-TravesañoTrasero.DISTANCIA_ENTRE_LINGOTES / 2, TravesañoTrasero.ALTURA_LINGOTES / 2, 0);
@@ -180,7 +186,8 @@ class TravesañoTrasero extends Objeto3D {
       TravesañoTrasero.ANCHO_INF_LINGOTES,
       TravesañoTrasero.ANCHO_SUP_LINGOTES,
       TravesañoTrasero.ALTURA_LINGOTES,
-      TravesañoTrasero.LARGO_LINGOTE
+      TravesañoTrasero.LARGO_LINGOTE,
+      MATERIAL_MADERA_CLARA
     );
     lingoteDerecho.setRotation(-Math.PI / 2, 0, 0);
     lingoteDerecho.setPosition(TravesañoTrasero.DISTANCIA_ENTRE_LINGOTES / 2, TravesañoTrasero.ALTURA_LINGOTES / 2, 0);
@@ -199,7 +206,7 @@ class TravesañoTrasero extends Objeto3D {
 class EjeTravesañoTrasero extends Objeto3D {
   constructor() {
     super();
-      const eje = new Cilindro(EjeTravesañoTrasero.RADIO_EJE, EjeTravesañoTrasero.LARGO_EJE);
+      const eje = new Cilindro(EjeTravesañoTrasero.RADIO_EJE, EjeTravesañoTrasero.LARGO_EJE, MATERIAL_MADERA_OSCURA);
       this.addChild(eje)
 
       const contraEje1 = new ContraEjeTravesañoTrasero();
@@ -222,7 +229,7 @@ class Ovillo extends Objeto3D {
   constructor() {
     super();
 
-    this.addChild(new Cilindro(Ovillo.RADIO, Ovillo.ANCHO));
+    this.addChild(new Cilindro(Ovillo.RADIO, Ovillo.ANCHO, MATERIAL_HILO));
   }
 }
 
@@ -233,7 +240,7 @@ class ContraEjeTravesañoTrasero extends Objeto3D {
     ContraEjeTravesañoTrasero.cilindro = (
       ContraEjeTravesañoTrasero.cilindro 
       ||
-      new Cilindro(ContraEjeTravesañoTrasero.RADIO_CONTRAEJES, ContraEjeTravesañoTrasero.LARGO_CONTRAEJES)
+      new Cilindro(ContraEjeTravesañoTrasero.RADIO_CONTRAEJES, ContraEjeTravesañoTrasero.LARGO_CONTRAEJES, MATERIAL_MADERA_CLARA)
     );
     this.addChild(ContraEjeTravesañoTrasero.cilindro);
   }
