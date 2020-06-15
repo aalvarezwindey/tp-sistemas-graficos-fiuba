@@ -23,6 +23,7 @@ class Escena {
     this.catapulta = new Catapulta();
     this.catapulta.setPosition(0, 1, 0);
     this.objetos.push(this.catapulta);
+    this.gestorDeCamaras.setPersonaParaCamaraTerceraPersona(this.catapulta);
   }
 
   _iniciarHandlers = () => {

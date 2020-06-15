@@ -347,8 +347,8 @@ class Catapulta extends Objeto3D {
 
     // Valores de movimiento
     this.OFFSET_DE_ROTACION = Math.PI / 8;
-    this.OFFSET_DE_MOVIMIENTO = 1;
-    this.frontal = [0, 0, this.OFFSET_DE_MOVIMIENTO];
+    this.OFFSET_DE_MOVIMIENTO = 10;
+    this.frontal = [0, 0, 1];
 
     const trenDelantero = new TrenDeRuedas();
     const trenTrasero = new TrenDeRuedas();
@@ -384,7 +384,7 @@ class Catapulta extends Objeto3D {
         }
 
         case 'k': {
-          this._girarIzquierda();
+          this._girarDerecha();
           break;
         }
 
@@ -398,18 +398,18 @@ class Catapulta extends Objeto3D {
   _avanzar = () => {
     const posicionActual = this.position;
     this.setPosition(
-      posicionActual[0] - this.frontal[0],
+      posicionActual[0] - this.frontal[0] * this.OFFSET_DE_MOVIMIENTO,
       posicionActual[1],
-      posicionActual[2] - this.frontal[2]
+      posicionActual[2] - this.frontal[2] * this.OFFSET_DE_MOVIMIENTO
     );
   }
 
   _retroceder = () => {
     const posicionActual = this.position;
     this.setPosition(
-      posicionActual[0] + this.frontal[0],
+      posicionActual[0] + this.frontal[0] * this.OFFSET_DE_MOVIMIENTO,
       posicionActual[1],
-      posicionActual[2] + this.frontal[2]
+      posicionActual[2] + this.frontal[2] * this.OFFSET_DE_MOVIMIENTO
     );
   }
 
@@ -424,7 +424,7 @@ class Catapulta extends Objeto3D {
   }
 
   _actualizarFrontal = () => {
-    this.frontal = vec3.fromValues(0, 0, this.OFFSET_DE_MOVIMIENTO);
+    this.frontal = vec3.fromValues(0, 0, 1);
 
     const m = mat4.create();
 
