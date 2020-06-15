@@ -2,12 +2,14 @@ const DEFAULT = 'default';
 const MADERA_CLARA = 'madera_clara';
 const MADERA_OSCURA = 'madera_oscura';
 const HILO = 'hilo';
+const PIEDRA = 'piedra';
 
 const SHADERS_FILE_NAMES = [
   DEFAULT,
   MADERA_CLARA,
   MADERA_OSCURA,
-  HILO
+  HILO,
+  PIEDRA
 ];
 
 class ShadersManager {
@@ -16,6 +18,7 @@ class ShadersManager {
   static get MADERA_CLARA() { return MADERA_CLARA }
   static get MADERA_OSCURA() { return MADERA_OSCURA }
   static get HILO() { return HILO }
+  static get PIEDRA() { return PIEDRA }
 
   static async init(glContext, baseUrl = 'src/shaders/glsl') {
     const results = await Promise.all(SHADERS_FILE_NAMES.map(fileName => {
