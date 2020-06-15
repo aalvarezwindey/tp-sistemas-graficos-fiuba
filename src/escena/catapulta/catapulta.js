@@ -96,11 +96,19 @@ class TravesañoDelantero extends Objeto3D {
     sistemaDeReferencia.addChild(lingoteDerecho);
 
     // Eje
-    const eje = new Cilindro(TravesañoDelantero.RADIO_EJE, TravesañoDelantero.LARGO_EJE);
-    eje.setPosition(0, TravesañoDelantero.ALTURA_EJE, 0);
+    const eje = new EjeTravesañoDelantero();
+    eje.setPosition(0, EjeTravesañoDelantero.ALTURA_EJE, 0);
     sistemaDeReferencia.addChild(eje);
 
     this.addChild(sistemaDeReferencia);
+  }
+}
+
+class EjeTravesañoDelantero extends Objeto3D {
+  constructor() {
+    super();
+      const eje = new Cilindro(EjeTravesañoDelantero.RADIO_EJE, EjeTravesañoDelantero.LARGO_EJE);
+      this.addChild(eje)
   }
 }
 
@@ -156,6 +164,17 @@ class EjeTravesañoTrasero extends Objeto3D {
       contraEje2.setPosition(+ ContraEjeTravesañoTrasero.DISTANCIA_CENTRO_A_CONTRAEJES, 0, 0);
       contraEje2.setRotation(0, Math.PI / 2, Math.PI / 2);
       this.addChild(contraEje2);
+
+      const ovillo = new Ovillo();
+      this.addChild(ovillo);
+  }
+}
+
+class Ovillo extends Objeto3D {
+  constructor() {
+    super();
+
+    this.addChild(new Cilindro(Ovillo.RADIO, Ovillo.ANCHO));
   }
 }
 
@@ -210,11 +229,11 @@ TravesañoDelantero.ALTURA_LINGOTES = 5;
 TravesañoDelantero.LARGO_LINGOTE = 0.325;
 TravesañoDelantero.DISTANCIA_ENTRE_LINGOTES = PlataformaCatapulta.ANCHO * 0.8;
 TravesañoDelantero.DIST_CENTRO_PLATAFORMA_A_EJE_TRAVESAÑO_DELANTERO = (PlataformaCatapulta.LARGO / 2) - (PlataformaCatapulta.LARGO_EXCEDENTE + (Rueda.RADIO * 2) + TravesañoDelantero.ANCHO_INF_LINGOTES / 2)
-TravesañoDelantero.RADIO_EJE = (TravesañoDelantero.ANCHO_SUP_LINGOTES * 0.7) / 2;
-TravesañoDelantero.LARGO_EXCEDENTE_EJE = 0.2;
-TravesañoDelantero.LARGO_EJE = TravesañoDelantero.DISTANCIA_ENTRE_LINGOTES + TravesañoDelantero.LARGO_EXCEDENTE_EJE + TravesañoDelantero.LARGO_LINGOTE;
-TravesañoDelantero.DISTANCIA_EJE_A_BORDE_SUPERIOR = 0.3;
-TravesañoDelantero.ALTURA_EJE = TravesañoDelantero.ALTURA_LINGOTES - (TravesañoDelantero.RADIO_EJE + TravesañoDelantero.DISTANCIA_EJE_A_BORDE_SUPERIOR);
+EjeTravesañoDelantero.RADIO_EJE = (TravesañoDelantero.ANCHO_SUP_LINGOTES * 0.7) / 2;
+EjeTravesañoDelantero.LARGO_EXCEDENTE_EJE = 0.2;
+EjeTravesañoDelantero.LARGO_EJE = TravesañoDelantero.DISTANCIA_ENTRE_LINGOTES + EjeTravesañoDelantero.LARGO_EXCEDENTE_EJE + TravesañoDelantero.LARGO_LINGOTE;
+EjeTravesañoDelantero.DISTANCIA_EJE_A_BORDE_SUPERIOR = 0.3;
+EjeTravesañoDelantero.ALTURA_EJE = TravesañoDelantero.ALTURA_LINGOTES - (EjeTravesañoDelantero.RADIO_EJE + EjeTravesañoDelantero.DISTANCIA_EJE_A_BORDE_SUPERIOR);
 
 TravesañoTrasero.ANCHO_INF_LINGOTES = Rueda.RADIO * 1.1;
 TravesañoTrasero.ANCHO_SUP_LINGOTES = TravesañoTrasero.ANCHO_INF_LINGOTES / 2.5;
@@ -232,5 +251,7 @@ ContraEjeTravesañoTrasero.LARGO_CONTRAEJES = 2 * EjeTravesañoTrasero.RADIO_EJE
 ContraEjeTravesañoTrasero.RADIO_CONTRAEJES = 0.2 * EjeTravesañoTrasero.RADIO_EJE;
 ContraEjeTravesañoTrasero.DISTANCIA_BORDE_CONTRAEJE = 0.2
 ContraEjeTravesañoTrasero.DISTANCIA_CENTRO_A_CONTRAEJES = EjeTravesañoTrasero.LARGO_EJE / 2 - ContraEjeTravesañoTrasero.DISTANCIA_BORDE_CONTRAEJE;
+Ovillo.RADIO = EjeTravesañoTrasero.RADIO_EJE * 2;
+Ovillo.ANCHO = TravesañoTrasero.DISTANCIA_ENTRE_LINGOTES * 0.3;
 
 export default Catapulta
