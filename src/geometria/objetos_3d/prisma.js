@@ -6,18 +6,18 @@ import SuperficieBarrido from '../superficie_barrido/superficie_barrido.js';
 // Crea un Prisma de una altura 'alto y un perfil ractangular de 'lado1'x'lado2',
 // ubicando su centro en el centro de masa del mismo
 class Prisma extends Objeto3D {
-  constructor(lado1, lado2, alto) {
+  constructor(lado1, lado2, alto, material = DEFAULT_MATERIAL) {
     super();
 
-    this.prisma = new Objeto3D({
+    this.objeto = new Objeto3D({
       geometry: new SuperficieBarrido(new Rectangulo(lado1, lado2), new Recta(alto), true),
-      material: new DefaultMaterial(shadersManager),
+      material: material,
       glContext: gl
     });
 
-    this.prisma.setPosition(-alto / 2, 0, 0);
+    this.objeto.setPosition(-alto / 2, 0, 0);
 
-    this.addChild(this.prisma);
+    this.addChild(this.objeto);
   }
 }
 

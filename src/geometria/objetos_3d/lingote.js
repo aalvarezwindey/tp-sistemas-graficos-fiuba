@@ -6,18 +6,18 @@ import Trapecio from '../superficie_barrido/poligonos/trapecio.js';
 // Crea un Lingote (que no es mas que un trapecio 3D),
 // ubicando su centro en el centro de masa del mismo
 class Lingote extends Objeto3D {
-  constructor(anchoInferior, anchoSuperior, altura, largo) {
+  constructor(anchoInferior, anchoSuperior, altura, largo, material = DEFAULT_MATERIAL) {
     super();
 
-    this.lingote = new Objeto3D({
+    this.objeto = new Objeto3D({
       geometry: new SuperficieBarrido(new Trapecio(anchoInferior, anchoSuperior, altura), new Recta(largo), true),
-      material: DEFAULT_MATERIAL,
+      material: material,
       glContext: gl
     });
 
-    this.lingote.setPosition(-largo / 2, 0, 0);
+    this.objeto.setPosition(-largo / 2, 0, 0);
 
-    this.addChild(this.lingote);
+    this.addChild(this.objeto);
   }
 }
 

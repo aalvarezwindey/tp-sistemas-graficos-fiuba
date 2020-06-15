@@ -53,10 +53,8 @@ class PlataformaCatapulta extends Objeto3D {
     PlataformaCatapulta.prisma = (
       PlataformaCatapulta.prisma
       ||
-      new Prisma(PlataformaCatapulta.LARGO, PlataformaCatapulta.ANCHO, PlataformaCatapulta.ESPESOR)
+      new Prisma(PlataformaCatapulta.LARGO, PlataformaCatapulta.ANCHO, PlataformaCatapulta.ESPESOR, MATERIAL_MADERA_CLARA)
     );
-
-    PlataformaCatapulta.prisma.setMaterial(MATERIAL_MADERA_CLARA)
 
     // TODO: No estoy seguro si es mejor rotar el Prisma o PlataformaCatapulta
     PlataformaCatapulta.prisma.setRotation(Math.PI / 2, Math.PI / 2, 0);
