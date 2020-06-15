@@ -344,6 +344,12 @@ class ContraEjeTravesañoTrasero extends Objeto3D {
 class Catapulta extends Objeto3D {
   constructor() {
     super();
+
+    // Valores de movimiento
+    this.OFFSET_DE_ROTACION = Math.PI / 8;
+    this.OFFSET_DE_MOVIMIENTO = 1;
+    this.frontal = [0, 0, this.OFFSET_DE_MOVIMIENTO];
+
     const trenDelantero = new TrenDeRuedas();
     const trenTrasero = new TrenDeRuedas();
     const plataforma = new PlataformaCatapulta();
@@ -354,6 +360,77 @@ class Catapulta extends Objeto3D {
     this.addChild(trenDelantero);
     this.addChild(trenTrasero);
     this.addChild(plataforma);
+
+    this._inicarControles();
+  }
+
+  _inicarControles = () => {
+    document.addEventListener('keydown', event => {
+      switch (event.key) {
+        // Barra espaciadora => Disparamos catapulta
+        case 'u': {
+          this._avanzar();
+          break;
+        }
+
+        case 'j': {
+          this._retroceder();
+          break;
+        }
+
+        case 'h': {
+          this._girarIzquierda()
+          break;
+        }
+
+        case 'k': {
+          this._girarIzquierda();
+          break;
+        }
+
+        default: {
+          break;
+        }
+      }
+    });
+  }
+
+  _avanzar = () => {
+    const posicionActual = this.position;
+    this.setPosition(
+      posicionActual[0] - this.frontal[0],
+      posicionActual[1],
+      posicionActual[2] - this.frontal[2]
+    );
+  }
+
+  _retroceder = () => {
+    const posicionActual = this.position;
+    this.setPosition(
+      posicionActual[0] + this.frontal[0],
+      posicionActual[1],
+      posicionActual[2] + this.frontal[2]
+    );
+  }
+
+  _girarDerecha = () => {
+    this.setRotation(0, this.rotation[1] - this.OFFSET_DE_ROTACION, 0);
+    this._actualizarFrontal();
+  }
+
+  _girarIzquierda = () => {
+    this.setRotation(0, this.rotation[1] + this.OFFSET_DE_ROTACION, 0);
+    this._actualizarFrontal();
+  }
+
+  _actualizarFrontal = () => {
+    this.frontal = vec3.fromValues(0, 0, this.OFFSET_DE_MOVIMIENTO);
+
+    const m = mat4.create();
+
+    // Tomamos la rotacion en Y de la catapulta
+    mat4.fromYRotation(m, this.rotation[1]);
+    vec3.transformMat4(this.frontal, this.frontal, m);
   }
 }
 
