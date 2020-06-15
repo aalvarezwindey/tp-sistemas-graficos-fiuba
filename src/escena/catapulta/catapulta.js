@@ -15,8 +15,6 @@ class Rueda extends Objeto3D {
   }
 }
 
-
-
 class EjeDeRuedas extends Objeto3D {
   LARGO = 8;
   RADIO_EJE = 0.1;
@@ -30,7 +28,6 @@ class EjeDeRuedas extends Objeto3D {
     this.addChild(EjeDeRuedas.cilindro);
   }
 }
-
 
 class TrenDeRuedas extends Objeto3D {
   constructor() {
@@ -85,8 +82,7 @@ class TravesañoDelantero extends Objeto3D {
       TravesañoDelantero.LARGO_LINGOTE
     );
     lingoteIzquierdo.setRotation(-Math.PI / 2, 0, 0);
-    lingoteIzquierdo.setPosition(-TravesañoDelantero.DISTANCIA_ENTRE_LINGOTES / 2, 0, 0);
-
+    lingoteIzquierdo.setPosition(-TravesañoDelantero.DISTANCIA_ENTRE_LINGOTES / 2, TravesañoDelantero.ALTURA_LINGOTES / 2, 0);
     sistemaDeReferencia.addChild(lingoteIzquierdo);
 
     const lingoteDerecho = new Lingote(
@@ -96,11 +92,13 @@ class TravesañoDelantero extends Objeto3D {
       TravesañoDelantero.LARGO_LINGOTE
     );
     lingoteDerecho.setRotation(-Math.PI / 2, 0, 0);
-    lingoteDerecho.setPosition(TravesañoDelantero.DISTANCIA_ENTRE_LINGOTES / 2, 0, 0);
-
+    lingoteDerecho.setPosition(TravesañoDelantero.DISTANCIA_ENTRE_LINGOTES / 2, TravesañoDelantero.ALTURA_LINGOTES / 2, 0);
     sistemaDeReferencia.addChild(lingoteDerecho);
 
-    sistemaDeReferencia.setPosition(0, TravesañoDelantero.ALTURA_LINGOTES / 2, 0)
+    // Eje
+    const eje = new Cilindro(TravesañoDelantero.RADIO_EJE, TravesañoDelantero.LARGO_EJE);
+    eje.setPosition(0, TravesañoDelantero.ALTURA_EJE, 0);
+    sistemaDeReferencia.addChild(eje);
 
     this.addChild(sistemaDeReferencia);
   }
@@ -118,7 +116,7 @@ class TravesañoTrasero extends Objeto3D {
       TravesañoTrasero.LARGO_LINGOTE
     );
     lingoteIzquierdo.setRotation(-Math.PI / 2, 0, 0);
-    lingoteIzquierdo.setPosition(-TravesañoTrasero.DISTANCIA_ENTRE_LINGOTES / 2, 0, 0);
+    lingoteIzquierdo.setPosition(-TravesañoTrasero.DISTANCIA_ENTRE_LINGOTES / 2, TravesañoTrasero.ALTURA_LINGOTES / 2, 0);
 
     sistemaDeReferencia.addChild(lingoteIzquierdo);
 
@@ -129,13 +127,48 @@ class TravesañoTrasero extends Objeto3D {
       TravesañoTrasero.LARGO_LINGOTE
     );
     lingoteDerecho.setRotation(-Math.PI / 2, 0, 0);
-    lingoteDerecho.setPosition(TravesañoTrasero.DISTANCIA_ENTRE_LINGOTES / 2, 0, 0);
+    lingoteDerecho.setPosition(TravesañoTrasero.DISTANCIA_ENTRE_LINGOTES / 2, TravesañoTrasero.ALTURA_LINGOTES / 2, 0);
 
     sistemaDeReferencia.addChild(lingoteDerecho);
 
-    sistemaDeReferencia.setPosition(0, TravesañoTrasero.ALTURA_LINGOTES / 2, 0)
+    // Eje
+    const eje = new EjeTravesañoTrasero();
+    eje.setPosition(0, EjeTravesañoTrasero.ALTURA_EJE, 0);
+    sistemaDeReferencia.addChild(eje);
 
     this.addChild(sistemaDeReferencia);
+  }
+}
+
+class EjeTravesañoTrasero extends Objeto3D {
+  constructor() {
+    super();
+      const eje = new Cilindro(EjeTravesañoTrasero.RADIO_EJE, EjeTravesañoTrasero.LARGO_EJE);
+      this.addChild(eje)
+
+      const contraEje1 = new ContraEjeTravesañoTrasero();
+      const contraEje2 = new ContraEjeTravesañoTrasero();
+
+      contraEje1.setPosition(- ContraEjeTravesañoTrasero.DISTANCIA_CENTRO_A_CONTRAEJES, 0, 0);
+      contraEje1.setRotation(0, Math.PI / 2, Math.PI / 2);
+      this.addChild(contraEje1);
+
+      contraEje2.setPosition(+ ContraEjeTravesañoTrasero.DISTANCIA_CENTRO_A_CONTRAEJES, 0, 0);
+      contraEje2.setRotation(0, Math.PI / 2, Math.PI / 2);
+      this.addChild(contraEje2);
+  }
+}
+
+class ContraEjeTravesañoTrasero extends Objeto3D {
+  constructor() {
+    super();
+    // Creates geometria only the first time
+    ContraEjeTravesañoTrasero.cilindro = (
+      ContraEjeTravesañoTrasero.cilindro 
+      ||
+      new Cilindro(ContraEjeTravesañoTrasero.RADIO_CONTRAEJES, ContraEjeTravesañoTrasero.LARGO_CONTRAEJES)
+    );
+    this.addChild(ContraEjeTravesañoTrasero.cilindro);
   }
 }
 
@@ -177,13 +210,27 @@ TravesañoDelantero.ALTURA_LINGOTES = 5;
 TravesañoDelantero.LARGO_LINGOTE = 0.325;
 TravesañoDelantero.DISTANCIA_ENTRE_LINGOTES = PlataformaCatapulta.ANCHO * 0.8;
 TravesañoDelantero.DIST_CENTRO_PLATAFORMA_A_EJE_TRAVESAÑO_DELANTERO = (PlataformaCatapulta.LARGO / 2) - (PlataformaCatapulta.LARGO_EXCEDENTE + (Rueda.RADIO * 2) + TravesañoDelantero.ANCHO_INF_LINGOTES / 2)
+TravesañoDelantero.RADIO_EJE = (TravesañoDelantero.ANCHO_SUP_LINGOTES * 0.7) / 2;
+TravesañoDelantero.LARGO_EXCEDENTE_EJE = 0.2;
+TravesañoDelantero.LARGO_EJE = TravesañoDelantero.DISTANCIA_ENTRE_LINGOTES + TravesañoDelantero.LARGO_EXCEDENTE_EJE + TravesañoDelantero.LARGO_LINGOTE;
+TravesañoDelantero.DISTANCIA_EJE_A_BORDE_SUPERIOR = 0.3;
+TravesañoDelantero.ALTURA_EJE = TravesañoDelantero.ALTURA_LINGOTES - (TravesañoDelantero.RADIO_EJE + TravesañoDelantero.DISTANCIA_EJE_A_BORDE_SUPERIOR);
 
-TravesañoTrasero.ANCHO_INF_LINGOTES = Rueda.RADIO;
+TravesañoTrasero.ANCHO_INF_LINGOTES = Rueda.RADIO * 1.1;
 TravesañoTrasero.ANCHO_SUP_LINGOTES = TravesañoTrasero.ANCHO_INF_LINGOTES / 2.5;
 TravesañoTrasero.ALTURA_LINGOTES = TravesañoDelantero.ALTURA_LINGOTES / 3;
 TravesañoTrasero.LARGO_LINGOTE = TravesañoDelantero.LARGO_LINGOTE / 2;
 TravesañoTrasero.DISTANCIA_ENTRE_LINGOTES = PlataformaCatapulta.ANCHO * 0.3;
 TravesañoTrasero.DISTANCIA_AL_BORDE_DE_PLATAFORMA = PlataformaCatapulta.LARGO * 0.01;
 TravesañoTrasero.DIST_CENTRO_PLATAFORMA_A_EJE_TRAVESAÑO_TRASERO = (PlataformaCatapulta.LARGO / 2) - ((TravesañoTrasero.ANCHO_INF_LINGOTES / 2) + TravesañoTrasero.DISTANCIA_AL_BORDE_DE_PLATAFORMA);
+EjeTravesañoTrasero.RADIO_EJE = (TravesañoTrasero.ANCHO_SUP_LINGOTES * 0.9) / 2;
+EjeTravesañoTrasero.LARGO_EXCEDENTE_EJE = 1;
+EjeTravesañoTrasero.LARGO_EJE = TravesañoTrasero.DISTANCIA_ENTRE_LINGOTES + EjeTravesañoTrasero.LARGO_EXCEDENTE_EJE;
+EjeTravesañoTrasero.ALTURA_EJE = TravesañoTrasero.ALTURA_LINGOTES - (3 * EjeTravesañoTrasero.RADIO_EJE);
+ContraEjeTravesañoTrasero.LARGO_EXCEDENTE_CONTRAEJE = 0.5;
+ContraEjeTravesañoTrasero.LARGO_CONTRAEJES = 2 * EjeTravesañoTrasero.RADIO_EJE + ContraEjeTravesañoTrasero.LARGO_EXCEDENTE_CONTRAEJE;
+ContraEjeTravesañoTrasero.RADIO_CONTRAEJES = 0.2 * EjeTravesañoTrasero.RADIO_EJE;
+ContraEjeTravesañoTrasero.DISTANCIA_BORDE_CONTRAEJE = 0.2
+ContraEjeTravesañoTrasero.DISTANCIA_CENTRO_A_CONTRAEJES = EjeTravesañoTrasero.LARGO_EJE / 2 - ContraEjeTravesañoTrasero.DISTANCIA_BORDE_CONTRAEJE;
 
 export default Catapulta
