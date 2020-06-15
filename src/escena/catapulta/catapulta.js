@@ -101,7 +101,14 @@ class TravesañoDelantero extends Objeto3D {
     const eje = new EjeTravesañoDelantero();
     eje.setPosition(0, EjeTravesañoDelantero.ALTURA_EJE, 0);
     // TODO: Esta rotación es la que hay que animar
-    //eje.setRotation(-Math.PI / 4, 0, 0);
+    // eje.setRotation(-Math.PI / 4, 0, 0);
+    eje.setAnimacion((ejeTravesañoDelantero) => {
+      const VELOCIDAD = 20;
+      const ANGULO_MAX = Math.PI / 4;
+      const anguloDeRotacion = Math.max(-ANGULO_MAX, -TIEMPO * VELOCIDAD * ANGULO_MAX);
+      ejeTravesañoDelantero.setRotation(anguloDeRotacion, 0, 0);
+    });
+
     sistemaDeReferencia.addChild(eje);
 
     this.addChild(sistemaDeReferencia);
@@ -160,8 +167,75 @@ class CucharaCatapulta extends Objeto3D {
     sistemaDeReferencia.addChild(mango);
     sistemaDeReferencia.addChild(ovilloCuchara);
 
-    this.addChild(sistemaDeReferencia);
+    const contrapeso = new ContrapesoCuchara();
+    contrapeso.setRotation(Math.PI / 2, 0, - Math.PI / 2);
 
+    contrapeso.setPosition(
+      CucharaCatapulta.ESPESOR / 2 - (ContrapesoCuchara.RADIO_EJE + ContrapesoCuchara.DISTANCIA_EJE_A_BORDE_LINGOTE),
+      - CucharaCatapulta.LARGO_MANGO / 2 + ContrapesoCuchara.ANCHO_SUP_LINGOTES / 2,
+      0)
+    ;
+
+    mango.addChild(contrapeso);
+
+    this.addChild(sistemaDeReferencia);
+  }
+}
+
+class ContrapesoCuchara extends Objeto3D {
+  constructor() {
+    super();
+
+    // Eje
+    const eje = new Cilindro(ContrapesoCuchara.RADIO_EJE, ContrapesoCuchara.LARGO_EJE, MATERIAL_MADERA_OSCURA);
+
+    // Travesaños hijos del eje
+    const lingoteIzquierdo = new Lingote(
+      ContrapesoCuchara.ANCHO_INF_LINGOTES,
+      ContrapesoCuchara.ANCHO_SUP_LINGOTES,
+      ContrapesoCuchara.ALTURA_LINGOTES,
+      ContrapesoCuchara.LARGO_LINGOTE,
+      MATERIAL_MADERA_CLARA
+    );
+    lingoteIzquierdo.setRotation(-Math.PI / 2, 0, 0);
+    lingoteIzquierdo.setPosition(
+      - ContrapesoCuchara.DISTANCIA_ENTRE_LINGOTES / 2,
+      - ContrapesoCuchara.ALTURA_LINGOTES / 2 + ContrapesoCuchara.RADIO_EJE + ContrapesoCuchara.DISTANCIA_EJE_A_BORDE_LINGOTE,
+      0
+    );
+    eje.addChild(lingoteIzquierdo);
+
+    const lingoteDerecho = new Lingote(
+      ContrapesoCuchara.ANCHO_INF_LINGOTES,
+      ContrapesoCuchara.ANCHO_SUP_LINGOTES,
+      ContrapesoCuchara.ALTURA_LINGOTES,
+      ContrapesoCuchara.LARGO_LINGOTE,
+      MATERIAL_MADERA_CLARA
+    );
+    lingoteDerecho.setRotation(-Math.PI / 2, 0, 0);
+    lingoteDerecho.setPosition(
+      + ContrapesoCuchara.DISTANCIA_ENTRE_LINGOTES / 2,
+      - ContrapesoCuchara.ALTURA_LINGOTES / 2 + ContrapesoCuchara.RADIO_EJE + ContrapesoCuchara.DISTANCIA_EJE_A_BORDE_LINGOTE,
+      0
+    );
+    eje.addChild(lingoteDerecho);
+
+    // bloque contrapeso
+    const cuboDeContrapeso = new Prisma(
+      ContrapesoCuchara.LADO_CUBO_CONTRAPESO,
+      ContrapesoCuchara.LADO_CUBO_CONTRAPESO,
+      ContrapesoCuchara.LADO_CUBO_CONTRAPESO,
+      MATERIAL_PIEDRA
+    );
+
+    cuboDeContrapeso.setPosition(
+      0,
+      - ContrapesoCuchara.ALTURA_LINGOTES + ContrapesoCuchara.RADIO_EJE + ContrapesoCuchara.DISTANCIA_EJE_A_BORDE_LINGOTE - ContrapesoCuchara.LADO_CUBO_CONTRAPESO / 2,
+      0
+    );
+    eje.addChild(cuboDeContrapeso);
+
+    this.addChild(eje);
   }
 }
 
@@ -318,5 +392,20 @@ CucharaCatapulta.DESPLAZAMIENTO_CUCHARA_SOBRE_EJE = (CucharaCatapulta.LARGO_MANG
 CucharaCatapulta.RADIO_OVILLO = Math.sqrt(Math.pow(CucharaCatapulta.ANCHO_MANGO / 2, 2) + Math.pow(CucharaCatapulta.ESPESOR / 2, 2))
 CucharaCatapulta.ANCHO_OVILLO = CucharaCatapulta.ANCHO_MANGO / 2;
 CucharaCatapulta.DISTANCIA_ENTRE_EJES_DE_TRAVESAÑOS = TravesañoDelantero.DIST_CENTRO_PLATAFORMA_A_EJE_TRAVESAÑO_DELANTERO + TravesañoTrasero.DIST_CENTRO_PLATAFORMA_A_EJE_TRAVESAÑO_TRASERO
+CucharaCatapulta.DISTANCIA_EJE_CONTRAPESO_A_BORDE_CUCHARA = 0.2;
+CucharaCatapulta.DISTANCIA_EJE_CONTRAPESO_A_EJE_CUCHARA = (CucharaCatapulta.LARGO_MANGO / 2) - CucharaCatapulta.DESPLAZAMIENTO_CUCHARA_SOBRE_EJE - CucharaCatapulta.DISTANCIA_EJE_CONTRAPESO_A_BORDE_CUCHARA
+ContrapesoCuchara.ANCHO_INF_LINGOTES = TravesañoTrasero.ANCHO_INF_LINGOTES * 0.7;
+ContrapesoCuchara.ANCHO_SUP_LINGOTES = ContrapesoCuchara.ANCHO_INF_LINGOTES / 2.5;
+ContrapesoCuchara.ALTURA_LINGOTES = CucharaCatapulta.ESPESOR + EjeTravesañoDelantero.RADIO_EJE;
+ContrapesoCuchara.LARGO_LINGOTE = TravesañoTrasero.LARGO_LINGOTE;
+ContrapesoCuchara.ANCHO_EXCEDENTE_LINGOTES = 0.4;
+ContrapesoCuchara.DISTANCIA_ENTRE_LINGOTES = CucharaCatapulta.ANCHO_MANGO + ContrapesoCuchara.ANCHO_EXCEDENTE_LINGOTES;
+ContrapesoCuchara.RADIO_EJE = CucharaCatapulta.ESPESOR / 5;
+ContrapesoCuchara.LARGO_EXCEDENTE_EJE = 0.4;
+ContrapesoCuchara.DISTANCIA_EJE_A_BORDE_LINGOTE = 0.1;
+ContrapesoCuchara.LARGO_EJE = ContrapesoCuchara.DISTANCIA_ENTRE_LINGOTES + ContrapesoCuchara.LARGO_EXCEDENTE_EJE;
+ContrapesoCuchara.EXCEDENTE_ENTRE_CUBO_CONTRAPESO_Y_LINGOTES = 0.3;
+ContrapesoCuchara.LADO_CUBO_CONTRAPESO = ContrapesoCuchara.DISTANCIA_ENTRE_LINGOTES + ContrapesoCuchara.EXCEDENTE_ENTRE_CUBO_CONTRAPESO_Y_LINGOTES
+
 
 export default Catapulta

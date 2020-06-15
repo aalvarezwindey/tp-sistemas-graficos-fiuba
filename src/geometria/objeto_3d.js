@@ -10,6 +10,7 @@ class Objeto3D {
     this.material = material;
     this.geometry = geometry;
     this.gl = glContext;
+    this.animaciones = [];
 
     this._updateModelMatrix();
   }
@@ -18,6 +19,30 @@ class Objeto3D {
   _updateModelMatrix() {
     this.modelMatrix = mat4.create();
     mat4.translate(this.modelMatrix, this.modelMatrix, this.position);
+
+/*     // Rotación
+    const matrizDeRotacion = mat4.create();
+
+    // Calculo cada matriz de rotacion
+    const matrizDeRotacionEnX = mat4.create();
+    mat4.identity(matrizDeRotacionEnX);
+    mat4.rotate(matrizDeRotacionEnX, matrizDeRotacionEnX, this.rotation[0], [1, 0, 0])
+
+    const matrizDeRotacionEnY = mat4.create();
+    mat4.identity(matrizDeRotacionEnY);
+    mat4.rotate(matrizDeRotacionEnY, matrizDeRotacionEnY, this.rotation[1], [1, 1, 0])
+
+    const matrizDeRotacionEnZ = mat4.create();
+    mat4.identity(matrizDeRotacionEnZ);
+    mat4.rotate(matrizDeRotacionEnZ, matrizDeRotacionEnZ, this.rotation[2], [0, 0, 1])
+
+    // Calculo matriz de rotacion
+    mat4.mul(matrizDeRotacion, matrizDeRotacionEnX, matrizDeRotacionEnY);
+    mat4.mul(matrizDeRotacion, matrizDeRotacion, matrizDeRotacionEnZ);
+
+    // Aplicamos rotacion al modelo
+    mat4.mul(this.modelMatrix, this.modelMatrix, matrizDeRotacion); */
+
     mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[0], [1, 0, 0]);
     mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[1], [0, 1, 0]);
     mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[2], [0, 0, 1]);
@@ -46,6 +71,9 @@ class Objeto3D {
   // Public
   render(parentMatrix) {
     const { gl } = this;
+
+    // Ejecutamos las animaciones
+    this.animaciones.forEach(animacion => animacion(this));
 
     const matrix = mat4.create();
     mat4.multiply(matrix, parentMatrix, this.modelMatrix);
@@ -87,6 +115,14 @@ class Objeto3D {
     this._updateModelMatrix();
   }
 
+  // Agrega una funcion al arreglo de animaciones
+  // las animaciones se ejecutan en cada ciclo de renderizado
+  // pasandole el objeto como parametro
+  setAnimacion = (callback) => {
+    this.animaciones.push(callback);
+
+    return callback;
+  }
 }
 
 export default Objeto3D

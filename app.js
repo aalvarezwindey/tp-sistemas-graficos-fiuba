@@ -26,6 +26,9 @@ var MATERIAL_MADERA_CLARA = null;
 var MATERIAL_MADERA_OSCURA = null;
 var MATERIAL_HILO = null;
 var MATERIAL_PIEDRA = null;
+var VELOCIDAD_ANIMACION = 1;
+var PAUSA = false;
+var TIEMPO = 0;
 
 function setupWebGL() {
   //set the clear color
@@ -67,6 +70,9 @@ function drawScene() {
  */
 function tick() {
   requestAnimationFrame(tick);
+  if (!PAUSA) {
+    TIEMPO += 0.1 * VELOCIDAD_ANIMACION * 1/60;
+  }
   drawScene();
   //animate();
 }

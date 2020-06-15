@@ -45,6 +45,18 @@ class Escena {
           break;
         }
 
+        // Detiene el paso del tiempo
+        case 'p': {
+          PAUSA = !PAUSA;
+          break;
+        }
+
+        // Resetea el tiempo
+        case 'r': {
+          TIEMPO = 0;
+          break;
+        }
+
         default: {
           break;
         }
