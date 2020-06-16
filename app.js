@@ -4,7 +4,7 @@ const {
   Plano,
   ShadersManager,
   GestorDeCamaras,
-  DefaultMaterial, MaderaClara, MaderaOscura, Hilo, Piedra,
+  DefaultMaterial, MaderaClara, MaderaOscura, Hilo, Piedra, Rojo, Verde, Azul,
   Escena
 } = window.webGLApp;
 
@@ -24,9 +24,14 @@ var MATERIAL_MADERA_CLARA = null;
 var MATERIAL_MADERA_OSCURA = null;
 var MATERIAL_HILO = null;
 var MATERIAL_PIEDRA = null;
+var MATERIAL_ROJO = null;
+var MATERIAL_VERDE = null;
+var MATERIAL_AZUL = null;
 var VELOCIDAD_ANIMACION = 1;
 var PAUSA = false;
 var TIEMPO = 0;
+var DEBUG_EJES = false;
+var EJES_DE_COORDEANDAS = null;
 
 function setupWebGL() {
   //set the clear color
@@ -94,6 +99,9 @@ function startWebGLApp() {
       MATERIAL_MADERA_OSCURA = new MaderaOscura(shadersManager);
       MATERIAL_HILO = new Hilo(shadersManager);
       MATERIAL_PIEDRA = new Piedra(shadersManager);
+      MATERIAL_ROJO = new Rojo(shadersManager);
+      MATERIAL_VERDE = new Verde(shadersManager);
+      MATERIAL_AZUL = new Azul(shadersManager);
       escena = new Escena(shaders, gestorDeCamaras);
       escena.updateProjectionMatrix(projMatrix);
       tick();

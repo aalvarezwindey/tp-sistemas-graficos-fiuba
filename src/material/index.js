@@ -3,6 +3,9 @@ import MaderaClara from "./types/madera_clara.js";
 import MaderaOscura from "./types/madera_oscura.js";
 import Hilo from "./types/hilo.js";
 import Piedra from "./types/piedra.js";
+import Rojo from "./types/rojo.js";
+import Verde from "./types/verde.js";
+import Azul from "./types/azul.js";
 
 window.webGLApp = {
   ...window.webGLApp,
@@ -11,4 +14,7 @@ window.webGLApp = {
   MaderaOscura: MaderaOscura,
   Hilo: Hilo,
   Piedra: Piedra,
+  Rojo: Rojo,
+  Verde: Verde,
+  Azul: Azul
 }

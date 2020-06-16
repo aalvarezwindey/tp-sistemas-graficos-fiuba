@@ -4,10 +4,18 @@ class Recta extends RecorridoParametrico {
   constructor(largo) {
     super();
     this.largo = largo;
+
+    this.sentido = null;
   }
 
   getPosicion(u) {
-    return [this.largo * u, 0, 0];
+    if (!this.sentido) return [this.largo * u, 0, 0];
+    switch(this.sentido) {
+      case 'x': return [this.largo * u, 0, 0];
+      case 'y': return [0, this.largo * u, 0];
+      case 'z': return [0, 0, this.largo * u];
+      default: return [this.largo * u, 0, 0];
+    }
   }
 
   getTangente(u) {

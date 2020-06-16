@@ -13,6 +13,8 @@ class Objeto3D {
     this.gl = glContext;
     this.animaciones = [];
 
+    this.matrizDeRotacion = null;
+
     this._updateModelMatrix();
   }
 
@@ -21,9 +23,13 @@ class Objeto3D {
     this.modelMatrix = mat4.create();
     mat4.translate(this.modelMatrix, this.modelMatrix, this.position);
 
-    mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[0], [1, 0, 0]);
-    mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[1], [0, 1, 0]);
-    mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[2], [0, 0, 1]);
+    if (this.matrizDeRotacion) {
+      mat4.mul(this.modelMatrix, this.modelMatrix, this.matrizDeRotacion);
+    } else {
+      mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[0], [1, 0, 0]);
+      mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[1], [0, 1, 0]);
+      mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[2], [0, 0, 1]);
+    }
     mat4.scale(this.modelMatrix, this.modelMatrix, this.scale);
 
     // Update normal matrix
@@ -83,7 +89,10 @@ class Objeto3D {
   }
 
   removeChild(child) {
-    // TODO
+    const idx = this.children.indexOf(child);
+    if (idx !== -1) {
+      this.children.splice(idx, 1);
+    }
   }
 
   setPosition(x, y, z) {
@@ -113,7 +122,7 @@ class Objeto3D {
   getWorldCoordinates = () => {
     const matrix = mat4.create();
     mat4.multiply(matrix, this.parentMatrix, this.modelMatrix);
-    const coordenadasDeMundo = vec4.fromValues(1,1,1,1);
+    const coordenadasDeMundo = vec4.fromValues(0, 0, 0, 1);
     vec4.transformMat4(coordenadasDeMundo, coordenadasDeMundo, matrix);
     return vec3.fromValues(...coordenadasDeMundo);
   }

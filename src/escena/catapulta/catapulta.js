@@ -367,8 +367,8 @@ class Hilo extends Objeto3D {
     const distancia = vec3.distance(p1, p2);
 
     const matrizDeRotacion = mat4.create()
-    mat4.lookAt(matrizDeRotacion, p1, p2, [0, 1, 0]);
-    mat4.mul(this.hilo.modelMatrix, this.hilo.modelMatrix, matrizDeRotacion);
+    mat4.targetTo(matrizDeRotacion, p1, p2, [0, 1, 0]);
+    this.hilo.matrizDeRotacion = matrizDeRotacion;
     this.hilo.setPosition(0, distancia / 2, 0);
     this.hilo.setScale(distancia, 1, 1);
   }
