@@ -3,6 +3,10 @@ import Cilindro from '../../geometria/objetos_3d/cilindro.js';
 import Prisma from '../../geometria/objetos_3d/prisma.js';
 import Lingote from '../../geometria/objetos_3d/lingote.js';
 
+var OVILLO_CUCHARA = null;
+var OVILLO_TRAVESAÑO_TRASERO = null;
+var HILO = null;
+
 
 class Rueda extends Objeto3D {
   constructor() {
@@ -122,11 +126,14 @@ class EjeTravesañoDelantero extends Objeto3D {
         const anguloDeRotacion = Math.max(-ANGULO_MAX, -(TIEMPO - this.tiempoInicial) * VELOCIDAD * ANGULO_MAX);
         ejeTravesañoDelantero.setRotation(anguloDeRotacion, 0, 0);
 
+        HILO.actualizarRotacion();
+
         // Seteamos esta variable para poder contrarrestar el giro en el contrapeso
         cuchara.contrapeso.eje.setRotation(anguloDeRotacion, 0, 0);
       } else {
         ejeTravesañoDelantero.setRotation(0, 0, 0);
         cuchara.contrapeso.eje.setRotation(0, 0, 0);
+        HILO.setEstadoInicial();
       }
     });
 
@@ -181,6 +188,7 @@ class CucharaCatapulta extends Objeto3D {
       CucharaCatapulta.ANCHO_OVILLO,
       MATERIAL_HILO
     );
+    OVILLO_CUCHARA =  ovilloCuchara;
 
     ovilloCuchara.setPosition(0, EjeTravesañoDelantero.RADIO_EJE, CucharaCatapulta.DISTANCIA_ENTRE_EJES_DE_TRAVESAÑOS);
     ovilloCuchara.setRotation(0, Math.PI / 2, 0);
@@ -316,6 +324,7 @@ class EjeTravesañoTrasero extends Objeto3D {
       this.addChild(contraEje2);
 
       const ovillo = new Ovillo();
+      OVILLO_TRAVESAÑO_TRASERO = ovillo;
       this.addChild(ovillo);
   }
 }
@@ -341,6 +350,36 @@ class ContraEjeTravesañoTrasero extends Objeto3D {
   }
 }
 
+class Hilo extends Objeto3D {
+  constructor() {
+    super();
+    this.distanciaInicial = vec3.distance(OVILLO_CUCHARA.getWorldCoordinates(), OVILLO_TRAVESAÑO_TRASERO.getWorldCoordinates());
+    this.hilo = new Cilindro(Hilo.RADIO, 1, MATERIAL_HILO);
+
+    this.setEstadoInicial();
+    this.addChild(this.hilo);
+    OVILLO_TRAVESAÑO_TRASERO.addChild(this);
+  }
+
+  actualizarRotacion = () => {
+    const p1 = OVILLO_CUCHARA.getWorldCoordinates();
+    const p2 = OVILLO_TRAVESAÑO_TRASERO.getWorldCoordinates()
+    const distancia = vec3.distance(p1, p2);
+
+    const matrizDeRotacion = mat4.create()
+    mat4.lookAt(matrizDeRotacion, p1, p2, [0, 1, 0]);
+    mat4.mul(this.hilo.modelMatrix, this.hilo.modelMatrix, matrizDeRotacion);
+    this.hilo.setPosition(0, distancia / 2, 0);
+    this.hilo.setScale(distancia, 1, 1);
+  }
+
+  setEstadoInicial() {
+    this.hilo.setPosition(0, this.distanciaInicial / 2, 0);
+    this.hilo.setRotation(0, 0, Math.PI / 2);
+    this.hilo.setScale(this.distanciaInicial, 1, 1);
+  }
+}
+
 class Catapulta extends Objeto3D {
   constructor() {
     super();
@@ -360,6 +399,8 @@ class Catapulta extends Objeto3D {
     this.addChild(trenDelantero);
     this.addChild(trenTrasero);
     this.addChild(plataforma);
+
+    HILO = new Hilo();
 
     this._inicarControles();
   }
@@ -503,7 +544,9 @@ ContrapesoCuchara.LARGO_EXCEDENTE_EJE = 0.4;
 ContrapesoCuchara.DISTANCIA_EJE_A_BORDE_LINGOTE = 0.1;
 ContrapesoCuchara.LARGO_EJE = ContrapesoCuchara.DISTANCIA_ENTRE_LINGOTES + ContrapesoCuchara.LARGO_EXCEDENTE_EJE;
 ContrapesoCuchara.EXCEDENTE_ENTRE_CUBO_CONTRAPESO_Y_LINGOTES = 0.3;
-ContrapesoCuchara.LADO_CUBO_CONTRAPESO = ContrapesoCuchara.DISTANCIA_ENTRE_LINGOTES + ContrapesoCuchara.EXCEDENTE_ENTRE_CUBO_CONTRAPESO_Y_LINGOTES
+ContrapesoCuchara.LADO_CUBO_CONTRAPESO = ContrapesoCuchara.DISTANCIA_ENTRE_LINGOTES + ContrapesoCuchara.EXCEDENTE_ENTRE_CUBO_CONTRAPESO_Y_LINGOTES;
+
+Hilo.RADIO = 0.025;
 
 
 export default Catapulta
