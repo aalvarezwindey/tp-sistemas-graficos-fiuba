@@ -13,11 +13,6 @@ var mat3 = glMatrix.mat3;
 var vec3 = glMatrix.vec3;
 var vec4 = glMatrix.vec4;
 
-var P1 = null;
-var P2 = null;
-var PUNTO_1 = null;
-var PUNTO_2 = null;
-
 var gl = null;
 var canvas = null;
 var projMatrix = mat4.create();

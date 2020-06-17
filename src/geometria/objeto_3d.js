@@ -12,7 +12,6 @@ class Objeto3D {
     this.geometry = geometry;
     this.gl = glContext;
     this.animaciones = [];
-    this.matrizDeRotacion = null;
     this.autoUpdateModelMatrix = true;
 
     this._updateModelMatrix();
@@ -24,14 +23,9 @@ class Objeto3D {
 
     this.modelMatrix = mat4.create();
     mat4.translate(this.modelMatrix, this.modelMatrix, this.position);
-
-    if (this.matrizDeRotacion) {
-      mat4.mul(this.modelMatrix, this.modelMatrix, this.matrizDeRotacion);
-    } else {
-      mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[0], [1, 0, 0]);
-      mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[1], [0, 1, 0]);
-      mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[2], [0, 0, 1]);
-    }
+    mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[0], [1, 0, 0]);
+    mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[1], [0, 1, 0]);
+    mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[2], [0, 0, 1]);
     mat4.scale(this.modelMatrix, this.modelMatrix, this.scale);
 
     // Update normal matrix
@@ -66,15 +60,9 @@ class Objeto3D {
 
     // Ejecutamos las animaciones
     this.animaciones.forEach(animacion => animacion(this));
-    if (!this.autoUpdateModelMatrix) {
-      /* console.log('[render] modelo', this.modelMatrix);
-      console.log('[render] padre', this.parentMatrix); */
-      matrix = mat4.create();
-      mat4.multiply(matrix, mat4.create(), this.modelMatrix);
-    } else {
-      matrix = mat4.create();
-      mat4.multiply(matrix, this.parentMatrix, this.modelMatrix);
-    }
+
+    matrix = mat4.create();
+    mat4.multiply(matrix, this.parentMatrix, this.modelMatrix);
 
     // TODO: check normal matrix
     this._renderTriangleMesh(matrix, this.normalMatrix);

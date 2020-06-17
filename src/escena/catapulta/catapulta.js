@@ -2,6 +2,9 @@ import Objeto3D from '../../geometria/objeto_3d.js'
 import Cilindro from '../../geometria/objetos_3d/cilindro.js';
 import Prisma from '../../geometria/objetos_3d/prisma.js';
 import Lingote from '../../geometria/objetos_3d/lingote.js';
+import SuperficieBarrido from '../../geometria/superficie_barrido/superficie_barrido.js';
+import Circulo from '../../geometria/superficie_barrido/poligonos/circulo.js';
+import Recta from '../../geometria/superficie_barrido/recorridos_parametricos/recta.js';
 
 var OVILLO_CUCHARA = null;
 var OVILLO_TRAVESAÑO_TRASERO = null;
@@ -121,8 +124,8 @@ class EjeTravesañoDelantero extends Objeto3D {
 
     this.setAnimacion((ejeTravesañoDelantero) => {
       if (this.disparar) {
-        const VELOCIDAD = 5;
-        const ANGULO_MAX = Math.PI / 2;
+        const VELOCIDAD = 20;
+        const ANGULO_MAX = Math.PI / 4;
         const anguloDeRotacion = Math.max(-ANGULO_MAX, -(TIEMPO - this.tiempoInicial) * VELOCIDAD * ANGULO_MAX);
         ejeTravesañoDelantero.setRotation(anguloDeRotacion, 0, 0);
 
@@ -139,7 +142,7 @@ class EjeTravesañoDelantero extends Objeto3D {
         case 32: {
           this.setRotation(0, 0, 0);
           cuchara.contrapeso.eje.setRotation(0, 0, 0);
-          HILO.setEstadoInicial();
+          HILO.actualizarRotacion();
           this.disparar = !this.disparar;
           this.tiempoInicial = TIEMPO;
         }
@@ -188,7 +191,6 @@ class CucharaCatapulta extends Objeto3D {
       MATERIAL_HILO
     );
     OVILLO_CUCHARA = ovilloCuchara;
-    ovilloCuchara.addChild(EJES_DE_COORDEANDAS);
 
     ovilloCuchara.setPosition(0, EjeTravesañoDelantero.RADIO_EJE, CucharaCatapulta.DISTANCIA_ENTRE_EJES_DE_TRAVESAÑOS);
     ovilloCuchara.setRotation(0, Math.PI / 2, 0);
@@ -353,88 +355,38 @@ class ContraEjeTravesañoTrasero extends Objeto3D {
 class Hilo extends Objeto3D {
   constructor() {
     super();
-    this.hilo = new Cilindro(Hilo.RADIO, 1, MATERIAL_HILO);
-    this.hilo.addChild(EJES_DE_COORDEANDAS)
-    this.setEstadoInicial();
+
+    // Necesitamos un cilindro con origen en el principio de la extrusión
+    this.hilo = new Objeto3D({
+      geometry: new SuperficieBarrido(new Circulo(Hilo.RADIO), new Recta(1), true),
+      material: MATERIAL_HILO,
+      glContext: gl
+    });
+    this.actualizarRotacion();
     this.addChild(this.hilo);
     OVILLO_CUCHARA.addChild(this);
-    OVILLO_TRAVESAÑO_TRASERO.addChild(EJES_DE_COORDEANDAS);
   }
 
   actualizarRotacion = () => {
-    P1 = OVILLO_CUCHARA.getWorldCoordinates();
-    P2 = OVILLO_TRAVESAÑO_TRASERO.getWorldCoordinates()
+    const P1 = OVILLO_CUCHARA.getWorldCoordinates();
+    const P2 = OVILLO_TRAVESAÑO_TRASERO.getWorldCoordinates();
 
+    // Calculamos la inversa de la matriz de modelado del OVILLO CUCHARA
+    // Con esta matriz podemos obtener la posición de un punto en coordenadas de mundo
+    // a coordenadas relativas al sistema de referencia de esa matriz de modelado en cuestión
     const inversaModeloP1 = mat4.create();
-    mat4.invert(inversaModeloP1, OVILLO_CUCHARA.getModelMatrix())
+    mat4.invert(inversaModeloP1, OVILLO_CUCHARA.getModelMatrix());
     const P2_en_coordenadas_de_P1 = vec3.create();
     vec3.transformMat4(P2_en_coordenadas_de_P1, P2, inversaModeloP1);
 
+    // Calculamos el ángulo de rotación entre ambos puntos (Sabemos que es en el plano XY)
     const anguloExtraDeRotacion = Math.atan2(P2_en_coordenadas_de_P1[1], P2_en_coordenadas_de_P1[0]);
-/* 
-    console.log('P2_en_coordenadas_de_P1', P2_en_coordenadas_de_P1);
-    console.log('anguloExtraDeRotacion', anguloExtraDeRotacion); */
 
-    PUNTO_1.setPosition(...P1);
-    PUNTO_2.setPosition(...P2);
     const distancia = vec3.distance(P1, P2);
-    this.hilo.setPosition(0, 0, 0);
+
+    // Calculamos la matriz de modelado manualmente para poder aplicar las transformaciones en distinto orden
     this.hilo.setRotation(0, 0, anguloExtraDeRotacion);
-    this.hilo.setScale(distancia * 2, 1, 1);
-/*     const vectorQueUneAmbosPuntos = vec3.normalize(vec3.sub(P1, P2));
-
-    // Calculo el versor -z segun el ovillo del travesaño trasero
-    const vectorQueApuntaHaciaDondeMiraLaCatapulta = vec4.create();
-    vec4.transformMat4(vectorQueApuntaHaciaDondeMiraLaCatapulta, [0, 0, -1, 0], OVILLO_TRAVESAÑO_TRASERO.getModelMatrix());
-    console.log('vectorQueApuntaHaciaDondeMiraLaCatapulta', vectorQueApuntaHaciaDondeMiraLaCatapulta)
-    vec3.sub(vectorQueUneAmbosPuntos, P2, P1);
-    const anguloDeRotacion = vec3.angle(vectorQueUneAmbosPuntos, [0, 0, 1]);
-    console.log('Rotacion', anguloDeRotacion); */
-    //this.hilo.autoUpdateModelMatrix = false;
-
-    // Devuelve la matriz del MatPadre_OVILLO_CUCHARA x MatModelo_OVILLO_CUCHARA
-    //this.hilo.setParentMatrix(OVILLO_CUCHARA.getModelMatrix());
-/*     ;
-
-    const matRot = mat4.create();
-    mat4.lookAt(matRot, P1, P2, [1, 0, 0]); */
-/*     console.log('matRot antes', matRot);
-    matRot[12] = 0;
-    matRot[13] = 0;
-    matRot[14] = 0;
-    console.log('matRot dsp', matRot); */
-
-    //mat4.lookAt(matRot, [0, 0, 0], [1, 0, 1], [0, 1, 0]);
-
-    //mat4.rotate(matRot, matRot, Math.PI / 4, [0, 0, 1]);
-
-    //mat4.identity(matRot)
-
-    /* const aux = mat4.create(); */
-    //mat4.translate(aux, aux, [0, -distancia/2, 0]);
-
-    //mat4.rotate(aux, aux, Math.PI / 2, [0, 0, 1]);
-
-/*     mat4.scale(aux, aux, [distancia, 1, 1]);
-    mat4.multiply(aux, matRot, aux);
- */
-
-    //this.hilo.modelMatrix = aux;
-
-    /* console.log('[actualizarRotacion] modelo', matFinal);
-    console.log('[actualizarRotacion] padre', OVILLO_CUCHARA.getModelMatrix()); */
-  }
-
-  setEstadoInicial() {
-    this.hilo.autoUpdateModelMatrix = true
-    //this.hilo.matrizDeRotacion = null
-    P1 = OVILLO_CUCHARA.getWorldCoordinates();
-    P2 = OVILLO_TRAVESAÑO_TRASERO.getWorldCoordinates();
-    console.log('INITIAL STATE', 'P1', 'P2', P1, P2);
-    const distanciaInicial = vec3.distance(P1, P2);
-    this.hilo.setPosition(0, -distanciaInicial / 2, 0);
-    this.hilo.setRotation(0, 0, Math.PI / 2);
-    this.hilo.setScale(distanciaInicial, 1, 1);
+    this.hilo.setScale(distancia, 1, 1);
   }
 }
 
