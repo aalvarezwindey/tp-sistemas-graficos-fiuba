@@ -5,6 +5,7 @@ import Lingote from '../../geometria/objetos_3d/lingote.js';
 import SuperficieBarrido from '../../geometria/superficie_barrido/superficie_barrido.js';
 import Circulo from '../../geometria/superficie_barrido/poligonos/circulo.js';
 import Recta from '../../geometria/superficie_barrido/recorridos_parametricos/recta.js';
+import Esfera from '../../geometria/objetos_3d/esfera.js';
 
 var OVILLO_CUCHARA = null;
 var OVILLO_TRAVESAÑO_TRASERO = null;
@@ -183,6 +184,11 @@ class CucharaCatapulta extends Objeto3D {
     );
 
     cabezaCuchara.setPosition(0, CucharaCatapulta.LARGO_MANGO / 2 + CucharaCatapulta.LARGO_CUADRADO_CUCHARA / 2, 0)
+
+    PROYECTIL_CATAPULTA = new Esfera(CucharaCatapulta.RADIO_PROYECTIL, MATERIAL_PIEDRA);
+    PROYECTIL_CATAPULTA.setPosition(CucharaCatapulta.RADIO_PROYECTIL + CucharaCatapulta.ESPESOR / 2, 0, 0);
+    cabezaCuchara.addChild(PROYECTIL_CATAPULTA)
+
     mango.addChild(cabezaCuchara);
 
     const ovilloCuchara = new Cilindro(
@@ -572,6 +578,8 @@ CucharaCatapulta.ANCHO_OVILLO = CucharaCatapulta.ANCHO_MANGO / 2;
 CucharaCatapulta.DISTANCIA_ENTRE_EJES_DE_TRAVESAÑOS = TravesañoDelantero.DIST_CENTRO_PLATAFORMA_A_EJE_TRAVESAÑO_DELANTERO + TravesañoTrasero.DIST_CENTRO_PLATAFORMA_A_EJE_TRAVESAÑO_TRASERO
 CucharaCatapulta.DISTANCIA_EJE_CONTRAPESO_A_BORDE_CUCHARA = 0.2;
 CucharaCatapulta.DISTANCIA_EJE_CONTRAPESO_A_EJE_CUCHARA = (CucharaCatapulta.LARGO_MANGO / 2) - CucharaCatapulta.DESPLAZAMIENTO_CUCHARA_SOBRE_EJE - CucharaCatapulta.DISTANCIA_EJE_CONTRAPESO_A_BORDE_CUCHARA
+CucharaCatapulta.RADIO_PROYECTIL = CucharaCatapulta.LARGO_CUADRADO_CUCHARA / 3;
+
 ContrapesoCuchara.ANCHO_INF_LINGOTES = TravesañoTrasero.ANCHO_INF_LINGOTES * 0.7;
 ContrapesoCuchara.ANCHO_SUP_LINGOTES = ContrapesoCuchara.ANCHO_INF_LINGOTES / 2.5;
 ContrapesoCuchara.ALTURA_LINGOTES = CucharaCatapulta.ESPESOR + EjeTravesañoDelantero.RADIO_EJE;

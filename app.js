@@ -31,6 +31,7 @@ var VELOCIDAD_ANIMACION = 1;
 var PAUSA = false;
 var TIEMPO = 0;
 var DEBUG_EJES = false;
+var PROYECTIL_CATAPULTA = null;
 var EJES_DE_COORDEANDAS = null;
 
 function setupWebGL() {
