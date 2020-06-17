@@ -311,23 +311,52 @@ class TravesañoTrasero extends Objeto3D {
 class EjeTravesañoTrasero extends Objeto3D {
   constructor() {
     super();
-      const eje = new Cilindro(EjeTravesañoTrasero.RADIO_EJE, EjeTravesañoTrasero.LARGO_EJE, MATERIAL_MADERA_OSCURA);
-      this.addChild(eje)
+    this.eje = new Cilindro(EjeTravesañoTrasero.RADIO_EJE, EjeTravesañoTrasero.LARGO_EJE, MATERIAL_MADERA_OSCURA);
+    this._setupAnimacion();
 
-      const contraEje1 = new ContraEjeTravesañoTrasero();
-      const contraEje2 = new ContraEjeTravesañoTrasero();
+    this.addChild(this.eje)
 
-      contraEje1.setPosition(- ContraEjeTravesañoTrasero.DISTANCIA_CENTRO_A_CONTRAEJES, 0, 0);
-      contraEje1.setRotation(0, Math.PI / 2, Math.PI / 2);
-      this.addChild(contraEje1);
+    const contraEje1 = new ContraEjeTravesañoTrasero();
+    const contraEje2 = new ContraEjeTravesañoTrasero();
 
-      contraEje2.setPosition(+ ContraEjeTravesañoTrasero.DISTANCIA_CENTRO_A_CONTRAEJES, 0, 0);
-      contraEje2.setRotation(0, Math.PI / 2, Math.PI / 2);
-      this.addChild(contraEje2);
+    contraEje1.setPosition(- ContraEjeTravesañoTrasero.DISTANCIA_CENTRO_A_CONTRAEJES, 0, 0);
+    contraEje1.setRotation(0, Math.PI / 2, Math.PI / 2);
+    this.eje.addChild(contraEje1);
 
-      const ovillo = new Ovillo();
-      OVILLO_TRAVESAÑO_TRASERO = ovillo;
-      this.addChild(ovillo);
+    contraEje2.setPosition(+ ContraEjeTravesañoTrasero.DISTANCIA_CENTRO_A_CONTRAEJES, 0, 0);
+    contraEje2.setRotation(0, Math.PI / 2, Math.PI / 2);
+    this.eje.addChild(contraEje2);
+
+    const ovillo = new Ovillo();
+    OVILLO_TRAVESAÑO_TRASERO = ovillo;
+    this.addChild(ovillo);
+  }
+
+  _setupAnimacion = () => {
+    this.disparar = false;
+    this.eje.setAnimacion((ejeTravesañoTrasero) => {
+      if (this.disparar) {
+        const VELOCIDAD = 20;
+        const ANGULO_MAX = 2 * Math.PI; // 1 vuelta
+        const anguloDeRotacion = Math.max(-ANGULO_MAX, -(TIEMPO - this.tiempoInicial) * VELOCIDAD * ANGULO_MAX);
+        ejeTravesañoTrasero.setRotation(anguloDeRotacion, 0, 0);
+      }
+    });
+
+    document.addEventListener('keydown', event => {
+      switch (event.keyCode) {
+        // Barra espaciadora => Disparamos catapulta
+        case 32: {
+          this.eje.setRotation(0, 0, 0);
+          this.disparar = !this.disparar;
+          this.tiempoInicial = TIEMPO;
+        }
+
+        default: {
+          break;
+        }
+      }
+    });
   }
 }
 
