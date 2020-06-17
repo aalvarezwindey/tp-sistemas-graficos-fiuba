@@ -12,14 +12,16 @@ class Objeto3D {
     this.geometry = geometry;
     this.gl = glContext;
     this.animaciones = [];
-
     this.matrizDeRotacion = null;
+    this.autoUpdateModelMatrix = true;
 
     this._updateModelMatrix();
   }
 
   // Private
   _updateModelMatrix() {
+    if (!this.autoUpdateModelMatrix) return;
+
     this.modelMatrix = mat4.create();
     mat4.translate(this.modelMatrix, this.modelMatrix, this.position);
 
@@ -37,7 +39,9 @@ class Objeto3D {
     mat4.transpose(this.normalMatrix, this.normalMatrix);
 
     // Actualizamos la parent matrix de los hijos
-    this.children.forEach(child => child.setParentMatrix(this.modelMatrix));
+    const matrix = mat4.create();
+    mat4.multiply(matrix, this.parentMatrix, this.modelMatrix);
+    this.children.forEach(child => child.setParentMatrix(matrix));
   }
 
   _isAbstractObject() {
@@ -57,13 +61,20 @@ class Objeto3D {
   // Public
   render(parentMatrix) {
     const { gl } = this;
+    let matrix;
     this.parentMatrix = parentMatrix;
 
     // Ejecutamos las animaciones
     this.animaciones.forEach(animacion => animacion(this));
-
-    const matrix = mat4.create();
-    mat4.multiply(matrix, this.parentMatrix, this.modelMatrix);
+    if (!this.autoUpdateModelMatrix) {
+      /* console.log('[render] modelo', this.modelMatrix);
+      console.log('[render] padre', this.parentMatrix); */
+      matrix = mat4.create();
+      mat4.multiply(matrix, mat4.create(), this.modelMatrix);
+    } else {
+      matrix = mat4.create();
+      mat4.multiply(matrix, this.parentMatrix, this.modelMatrix);
+    }
 
     // TODO: check normal matrix
     this._renderTriangleMesh(matrix, this.normalMatrix);
@@ -79,13 +90,26 @@ class Objeto3D {
     this.material = material;
   }
 
-  addChild(child) {
-    this.children.push(child);
-    child.setParentMatrix(this.modelMatrix);
+  getModelMatrix() {
+    const matrix = mat4.create();
+    mat4.multiply(matrix, this.parentMatrix, this.modelMatrix)
+    return matrix;
   }
 
-  setParentMatrix(matrix) {
-    this.parentMatrix = matrix;
+  addChild(child) {
+    this.children.push(child);
+    const matrix = mat4.create();
+    mat4.multiply(matrix, this.parentMatrix, this.modelMatrix);
+    child.setParentMatrix(matrix);
+  }
+
+  setParentMatrix(parentMatrix) {
+    this.parentMatrix = parentMatrix;
+
+    // Actualizamos la parent matrix de los hijos
+    const matrix = mat4.create();
+    mat4.multiply(matrix, this.parentMatrix, this.modelMatrix);
+    this.children.forEach(child => child.setParentMatrix(matrix));
   }
 
   removeChild(child) {

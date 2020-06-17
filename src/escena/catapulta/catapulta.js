@@ -121,8 +121,8 @@ class EjeTravesañoDelantero extends Objeto3D {
 
     this.setAnimacion((ejeTravesañoDelantero) => {
       if (this.disparar) {
-        const VELOCIDAD = 20;
-        const ANGULO_MAX = Math.PI / 4;
+        const VELOCIDAD = 5;
+        const ANGULO_MAX = Math.PI / 2;
         const anguloDeRotacion = Math.max(-ANGULO_MAX, -(TIEMPO - this.tiempoInicial) * VELOCIDAD * ANGULO_MAX);
         ejeTravesañoDelantero.setRotation(anguloDeRotacion, 0, 0);
 
@@ -130,10 +130,6 @@ class EjeTravesañoDelantero extends Objeto3D {
 
         // Seteamos esta variable para poder contrarrestar el giro en el contrapeso
         cuchara.contrapeso.eje.setRotation(anguloDeRotacion, 0, 0);
-      } else {
-        ejeTravesañoDelantero.setRotation(0, 0, 0);
-        cuchara.contrapeso.eje.setRotation(0, 0, 0);
-        HILO.setEstadoInicial();
       }
     });
 
@@ -141,6 +137,9 @@ class EjeTravesañoDelantero extends Objeto3D {
       switch (event.keyCode) {
         // Barra espaciadora => Disparamos catapulta
         case 32: {
+          this.setRotation(0, 0, 0);
+          cuchara.contrapeso.eje.setRotation(0, 0, 0);
+          HILO.setEstadoInicial();
           this.disparar = !this.disparar;
           this.tiempoInicial = TIEMPO;
         }
@@ -188,7 +187,8 @@ class CucharaCatapulta extends Objeto3D {
       CucharaCatapulta.ANCHO_OVILLO,
       MATERIAL_HILO
     );
-    OVILLO_CUCHARA =  ovilloCuchara;
+    OVILLO_CUCHARA = ovilloCuchara;
+    ovilloCuchara.addChild(EJES_DE_COORDEANDAS);
 
     ovilloCuchara.setPosition(0, EjeTravesañoDelantero.RADIO_EJE, CucharaCatapulta.DISTANCIA_ENTRE_EJES_DE_TRAVESAÑOS);
     ovilloCuchara.setRotation(0, Math.PI / 2, 0);
@@ -353,30 +353,88 @@ class ContraEjeTravesañoTrasero extends Objeto3D {
 class Hilo extends Objeto3D {
   constructor() {
     super();
-    this.distanciaInicial = vec3.distance(OVILLO_CUCHARA.getWorldCoordinates(), OVILLO_TRAVESAÑO_TRASERO.getWorldCoordinates());
     this.hilo = new Cilindro(Hilo.RADIO, 1, MATERIAL_HILO);
-
+    this.hilo.addChild(EJES_DE_COORDEANDAS)
     this.setEstadoInicial();
     this.addChild(this.hilo);
-    OVILLO_TRAVESAÑO_TRASERO.addChild(this);
+    OVILLO_CUCHARA.addChild(this);
+    OVILLO_TRAVESAÑO_TRASERO.addChild(EJES_DE_COORDEANDAS);
   }
 
   actualizarRotacion = () => {
-    const p1 = OVILLO_CUCHARA.getWorldCoordinates();
-    const p2 = OVILLO_TRAVESAÑO_TRASERO.getWorldCoordinates()
-    const distancia = vec3.distance(p1, p2);
+    P1 = OVILLO_CUCHARA.getWorldCoordinates();
+    P2 = OVILLO_TRAVESAÑO_TRASERO.getWorldCoordinates()
 
-    const matrizDeRotacion = mat4.create()
-    mat4.targetTo(matrizDeRotacion, p1, p2, [0, 1, 0]);
-    this.hilo.matrizDeRotacion = matrizDeRotacion;
-    this.hilo.setPosition(0, distancia / 2, 0);
-    this.hilo.setScale(distancia, 1, 1);
+    const inversaModeloP1 = mat4.create();
+    mat4.invert(inversaModeloP1, OVILLO_CUCHARA.getModelMatrix())
+    const P2_en_coordenadas_de_P1 = vec3.create();
+    vec3.transformMat4(P2_en_coordenadas_de_P1, P2, inversaModeloP1);
+
+    const anguloExtraDeRotacion = Math.atan2(P2_en_coordenadas_de_P1[1], P2_en_coordenadas_de_P1[0]);
+/* 
+    console.log('P2_en_coordenadas_de_P1', P2_en_coordenadas_de_P1);
+    console.log('anguloExtraDeRotacion', anguloExtraDeRotacion); */
+
+    PUNTO_1.setPosition(...P1);
+    PUNTO_2.setPosition(...P2);
+    const distancia = vec3.distance(P1, P2);
+    this.hilo.setPosition(0, 0, 0);
+    this.hilo.setRotation(0, 0, anguloExtraDeRotacion);
+    this.hilo.setScale(distancia * 2, 1, 1);
+/*     const vectorQueUneAmbosPuntos = vec3.normalize(vec3.sub(P1, P2));
+
+    // Calculo el versor -z segun el ovillo del travesaño trasero
+    const vectorQueApuntaHaciaDondeMiraLaCatapulta = vec4.create();
+    vec4.transformMat4(vectorQueApuntaHaciaDondeMiraLaCatapulta, [0, 0, -1, 0], OVILLO_TRAVESAÑO_TRASERO.getModelMatrix());
+    console.log('vectorQueApuntaHaciaDondeMiraLaCatapulta', vectorQueApuntaHaciaDondeMiraLaCatapulta)
+    vec3.sub(vectorQueUneAmbosPuntos, P2, P1);
+    const anguloDeRotacion = vec3.angle(vectorQueUneAmbosPuntos, [0, 0, 1]);
+    console.log('Rotacion', anguloDeRotacion); */
+    //this.hilo.autoUpdateModelMatrix = false;
+
+    // Devuelve la matriz del MatPadre_OVILLO_CUCHARA x MatModelo_OVILLO_CUCHARA
+    //this.hilo.setParentMatrix(OVILLO_CUCHARA.getModelMatrix());
+/*     ;
+
+    const matRot = mat4.create();
+    mat4.lookAt(matRot, P1, P2, [1, 0, 0]); */
+/*     console.log('matRot antes', matRot);
+    matRot[12] = 0;
+    matRot[13] = 0;
+    matRot[14] = 0;
+    console.log('matRot dsp', matRot); */
+
+    //mat4.lookAt(matRot, [0, 0, 0], [1, 0, 1], [0, 1, 0]);
+
+    //mat4.rotate(matRot, matRot, Math.PI / 4, [0, 0, 1]);
+
+    //mat4.identity(matRot)
+
+    /* const aux = mat4.create(); */
+    //mat4.translate(aux, aux, [0, -distancia/2, 0]);
+
+    //mat4.rotate(aux, aux, Math.PI / 2, [0, 0, 1]);
+
+/*     mat4.scale(aux, aux, [distancia, 1, 1]);
+    mat4.multiply(aux, matRot, aux);
+ */
+
+    //this.hilo.modelMatrix = aux;
+
+    /* console.log('[actualizarRotacion] modelo', matFinal);
+    console.log('[actualizarRotacion] padre', OVILLO_CUCHARA.getModelMatrix()); */
   }
 
   setEstadoInicial() {
-    this.hilo.setPosition(0, this.distanciaInicial / 2, 0);
+    this.hilo.autoUpdateModelMatrix = true
+    //this.hilo.matrizDeRotacion = null
+    P1 = OVILLO_CUCHARA.getWorldCoordinates();
+    P2 = OVILLO_TRAVESAÑO_TRASERO.getWorldCoordinates();
+    console.log('INITIAL STATE', 'P1', 'P2', P1, P2);
+    const distanciaInicial = vec3.distance(P1, P2);
+    this.hilo.setPosition(0, -distanciaInicial / 2, 0);
     this.hilo.setRotation(0, 0, Math.PI / 2);
-    this.hilo.setScale(this.distanciaInicial, 1, 1);
+    this.hilo.setScale(distanciaInicial, 1, 1);
   }
 }
 
@@ -396,11 +454,11 @@ class Catapulta extends Objeto3D {
     trenDelantero.setPosition(0, 0, - Catapulta.DISTANCIA_ENTRE_TRENES_DE_RUEDAS / 2);
     trenTrasero.setPosition(0, 0, + Catapulta.DISTANCIA_ENTRE_TRENES_DE_RUEDAS / 2);
 
+    HILO = new Hilo();
+
     this.addChild(trenDelantero);
     this.addChild(trenTrasero);
     this.addChild(plataforma);
-
-    HILO = new Hilo();
 
     this._inicarControles();
   }

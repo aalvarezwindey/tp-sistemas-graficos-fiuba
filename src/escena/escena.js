@@ -3,9 +3,12 @@ import Catapulta from "./catapulta/catapulta.js";
 import Cilindro from "../geometria/objetos_3d/cilindro.js";
 import Prisma from "../geometria/objetos_3d/prisma.js";
 import EjesDeCoordenadas from "../geometria/objetos_3d/ejes_de_coordenadas.js";
+import Lingote from "../geometria/objetos_3d/lingote.js";
+import Castillo from "./castillo/castillo.js";
 
 class Escena {
   constructor(shadersManager, gestorDeCamaras) {
+    EJES_DE_COORDEANDAS = new EjesDeCoordenadas();
     this.objetos = [];
     this.shadersManager = shadersManager;
     this.gestorDeCamaras = gestorDeCamaras;
@@ -24,22 +27,37 @@ class Escena {
     this.objetos.push(objeto);
 
     this.catapulta = new Catapulta();
-    this.catapulta.setPosition(0, 1, 0);
+    this.catapulta.setPosition(0, 0, 0);
     this.objetos.push(this.catapulta);
     this.gestorDeCamaras.setPersonaParaCamaraTerceraPersona(this.catapulta);
 
+    this.castillo = new Castillo();
+    this.castillo.setPosition(30, 0, 0);
+    this.objetos.push(this.castillo);
+
     var cilindro = new Cilindro(1, 10);
-    cilindro.setPosition(1, 10, 0);
+    cilindro.setPosition(100, 100, 100);
     this.objetos.push(cilindro)
 
     var prisma = new Prisma(1, 3, 2);
-    prisma.setPosition(-1, 10, 10);
+    prisma.setPosition(2, 2, 2);
     cilindro.addChild(prisma);
 
-    EJES_DE_COORDEANDAS = new EjesDeCoordenadas();
+    var lingote = new Lingote(10, 5, 4, 2);
+    lingote.setPosition(3, 3, 3);
+    prisma.addChild(lingote)
 
-    console.log('WORLD CILNDRO', cilindro.getWorldCoordinates())
+    PUNTO_1 = new Cilindro(0, 0);
+    PUNTO_1.setPosition(...P1)
+    this.objetos.push(PUNTO_1)
+
+    PUNTO_2 = new Cilindro(0, 0);
+    PUNTO_2.setPosition(...P2)
+    this.objetos.push(PUNTO_2)
+
+    console.log('WORLD cilindro', cilindro.getWorldCoordinates())
     console.log('WORLD prisma', prisma.getWorldCoordinates())
+    console.log('WORLD lingote', lingote.getWorldCoordinates())
   }
 
   _iniciarHandlers = () => {
