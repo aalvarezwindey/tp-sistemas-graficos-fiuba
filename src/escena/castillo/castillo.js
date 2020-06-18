@@ -2,23 +2,28 @@ import Objeto3D from '../../geometria/objeto_3d.js'
 import Prisma from '../../geometria/objetos_3d/prisma.js';
 
 class DivisorDePisos extends Objeto3D {
-  constructor() {
+  constructor(largoPiso, anchoPiso) {
     super()
 
-    this.divisor = new Prisma(DivisorDePisos.LARGO, DivisorDePisos.ANCHO, DivisorDePisos.ALTURA);
+    this.divisor = new Prisma(
+      DivisorDePisos.LARGO(largoPiso, anchoPiso),
+      DivisorDePisos.ANCHO(largoPiso, anchoPiso),
+      DivisorDePisos.ALTURA,
+      MATERIAL_BEIGE
+    );
     this.divisor.setRotation(0, 0, Math.PI / 2);
     this.addChild(this.divisor);
   }
 }
 
 class Piso extends Objeto3D {
-  constructor(ultimo) {
+  constructor(largo, ancho, ultimo) {
     super();
 
-    this.piso = new Prisma(Piso.LARGO, Piso.ANCHO, Piso.ALTURA);
+    this.piso = new Prisma(largo, ancho, Piso.ALTURA, MATERIAL_BEIGE);
 
     if (!ultimo) {
-      const divisor = new DivisorDePisos();
+      const divisor = new DivisorDePisos(largo, ancho);
       divisor.setPosition(0, Piso.ALTURA / 2, 0);
       this.piso.addChild(divisor);
     }
@@ -28,29 +33,31 @@ class Piso extends Objeto3D {
 }
 
 class Castillo extends Objeto3D {
-  constructor() {
+  constructor(pisos = Castillo.CANTIDAD_DE_PISOS_DEFAULT, largo = Piso.LARGO_DEFAULT, ancho = Piso.ANCHO_DEFAULT) {
     super();
-    this.cantidadDePisos = 5;
+    this.cantidadDePisos = pisos;
     this.pisos = [];
 
     for (let i = 0 ; i < this.cantidadDePisos ; i++) {
       const ultimo = i === this.cantidadDePisos - 1;
-      const piso = new Piso();
-      piso.setPosition(0, (Piso.ALTURA / 2) * (i + 1), 0);
+      const piso = new Piso(largo, ancho, ultimo);
+      piso.setPosition(0, Piso.ALTURA / 2 + Piso.ALTURA * i, 0);
       this.pisos.push(piso);
       this.addChild(piso);
     }
   }
 }
 
-Piso.LARGO = 5;
-Piso.ANCHO = 10;
+Castillo.CANTIDAD_DE_PISOS_DEFAULT = 3;
+
+Piso.LARGO_DEFAULT = 5;
+Piso.ANCHO_DEFAULT = 10;
 Piso.ALTURA = 5;
 
-DivisorDePisos.EXCEDENTE = Math.max(Piso.LARGO, Piso.ANCHO) * 0.5;
-DivisorDePisos.LARGO = Piso.LARGO + DivisorDePisos.EXCEDENTE;
-DivisorDePisos.ANCHO = Piso.ANCHO + DivisorDePisos.EXCEDENTE;
-DivisorDePisos.ALTURA = 0.3;
+DivisorDePisos.EXCEDENTE = (largoPiso, anchoPiso) => Math.max(largoPiso, anchoPiso) * 0.02;
+DivisorDePisos.LARGO = (largoPiso, anchoPiso) => largoPiso + DivisorDePisos.EXCEDENTE(largoPiso, anchoPiso);
+DivisorDePisos.ANCHO = (largoPiso, anchoPiso) => anchoPiso + DivisorDePisos.EXCEDENTE(largoPiso, anchoPiso);
+DivisorDePisos.ALTURA = 0.2;
 
 
 export default Castillo;

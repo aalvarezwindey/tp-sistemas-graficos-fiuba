@@ -6,6 +6,7 @@ import Piedra from "./types/piedra.js";
 import Rojo from "./types/rojo.js";
 import Verde from "./types/verde.js";
 import Azul from "./types/azul.js";
+import Beige from "./types/beige.js";
 
 window.webGLApp = {
   ...window.webGLApp,
@@ -16,5 +17,6 @@ window.webGLApp = {
   Piedra: Piedra,
   Rojo: Rojo,
   Verde: Verde,
-  Azul: Azul
+  Azul: Azul,
+  Beige: Beige,
 }

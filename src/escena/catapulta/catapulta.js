@@ -11,7 +11,6 @@ var OVILLO_CUCHARA = null;
 var OVILLO_TRAVESAÑO_TRASERO = null;
 var HILO = null;
 
-
 class Rueda extends Objeto3D {
   constructor() {
     super();
