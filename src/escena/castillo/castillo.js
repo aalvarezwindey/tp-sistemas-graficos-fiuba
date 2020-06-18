@@ -1,6 +1,22 @@
 import Objeto3D from '../../geometria/objeto_3d.js'
 import Prisma from '../../geometria/objetos_3d/prisma.js';
 
+class TechoCastillo extends Objeto3D {
+  constructor(largoPiso, anchoPiso) {
+    super();
+
+    this.techo = new Prisma(
+      DivisorDePisos.LARGO(largoPiso, anchoPiso),
+      DivisorDePisos.ANCHO(largoPiso, anchoPiso),
+      TechoCastillo.ALTURA,
+      MATERIAL_LOZA_AZUL
+    );
+    this.techo.setRotation(0, 0, Math.PI / 2);
+
+    this.addChild(this.techo);
+  }
+}
+
 class DivisorDePisos extends Objeto3D {
   constructor(largoPiso, anchoPiso) {
     super()
@@ -26,6 +42,10 @@ class Piso extends Objeto3D {
       const divisor = new DivisorDePisos(largo, ancho);
       divisor.setPosition(0, Piso.ALTURA / 2, 0);
       this.piso.addChild(divisor);
+    } else {
+      const techo = new TechoCastillo(largo, ancho);
+      techo.setPosition(0, Piso.ALTURA / 2 + TechoCastillo.ALTURA / 2, 0);
+      this.piso.addChild(techo);
     }
 
     this.addChild(this.piso);
@@ -58,6 +78,8 @@ DivisorDePisos.EXCEDENTE = (largoPiso, anchoPiso) => Math.max(largoPiso, anchoPi
 DivisorDePisos.LARGO = (largoPiso, anchoPiso) => largoPiso + DivisorDePisos.EXCEDENTE(largoPiso, anchoPiso);
 DivisorDePisos.ANCHO = (largoPiso, anchoPiso) => anchoPiso + DivisorDePisos.EXCEDENTE(largoPiso, anchoPiso);
 DivisorDePisos.ALTURA = 0.2;
+
+TechoCastillo.ALTURA = Piso.ALTURA;
 
 
 export default Castillo;

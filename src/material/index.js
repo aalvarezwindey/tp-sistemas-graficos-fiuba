@@ -7,6 +7,7 @@ import Rojo from "./types/rojo.js";
 import Verde from "./types/verde.js";
 import Azul from "./types/azul.js";
 import Beige from "./types/beige.js";
+import LozaAzul from './types/loza_azul.js';
 
 window.webGLApp = {
   ...window.webGLApp,
@@ -19,4 +20,5 @@ window.webGLApp = {
   Verde: Verde,
   Azul: Azul,
   Beige: Beige,
+  LozaAzul, LozaAzul
 }

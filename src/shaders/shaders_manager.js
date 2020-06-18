@@ -7,6 +7,7 @@ const ROJO = 'eje_rojo';
 const VERDE = 'eje_verde';
 const AZUL = 'eje_azul';
 const BEIGE = 'beige';
+const LOZA_AZUL = 'loza_azul';
 
 const SHADERS_FILE_NAMES = [
   DEFAULT,
@@ -17,7 +18,8 @@ const SHADERS_FILE_NAMES = [
   ROJO,
   VERDE,
   AZUL,
-  BEIGE
+  BEIGE,
+  LOZA_AZUL
 ];
 
 class ShadersManager {
@@ -31,6 +33,7 @@ class ShadersManager {
   static get VERDE() { return VERDE }
   static get AZUL() { return AZUL }
   static get BEIGE() { return BEIGE }
+  static get LOZA_AZUL() { return LOZA_AZUL }
 
   static async init(glContext, baseUrl = 'src/shaders/glsl') {
     const results = await Promise.all(SHADERS_FILE_NAMES.map(fileName => {
