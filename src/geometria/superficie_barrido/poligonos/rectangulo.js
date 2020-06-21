@@ -35,6 +35,19 @@ class Rectangulo extends Poligono {
     this.centro.posicion = vec3.fromValues(0, 0, 0);
     this.centro.normal = vec3.fromValues(0, 0, 1);
   }
+
+  getVertice(vertice, nivel) {
+    if (!this.transformacion) return vertice;
+
+    return this.transformacion(vertice, nivel);
+  }
+
+  // TODO: Quizas el centro nunca deberia transformarse entonces esta func no tiene sentido
+  getCentro(nivel) {
+    if (!this.transformacion) return this.centro;
+
+    return this.centro;
+  }
 }
 
 export default Rectangulo;

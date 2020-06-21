@@ -36,6 +36,14 @@ class Trapecio extends Poligono {
     this.centro.posicion = vec3.fromValues(0, 0, 0);
     this.centro.normal = vec3.fromValues(0, 0, 1);
   }
+
+  getVertice(vertice, nivel) {
+    if (!this.transformacion) return vertice;
+  }
+
+  getCentro(nivel) {
+    if (!this.transformacion) return this.centro;
+  }
 }
 
 export default Trapecio;

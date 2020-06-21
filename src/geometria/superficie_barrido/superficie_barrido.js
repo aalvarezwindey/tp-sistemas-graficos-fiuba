@@ -46,8 +46,9 @@ class SuperficieBarrido extends Geometry {
       // Tejido de primer tapa
       if (nivel === 0 && this.cerrado) {
         this.poligono.vertices.forEach(v => {
+          const centro = this.poligono.getCentro(u);
           this._tejerNivelParaVertice({
-            vertice: this.poligono.centro,
+            vertice: centro,
             matrizDeNivel,
             matrizDeNormales,
             bufferDePosicion,
@@ -58,8 +59,9 @@ class SuperficieBarrido extends Geometry {
 
       this.poligono.vertices.forEach(vertice => {
         // Tejido normal de nivel
+        const verticeTransformadoSegunNivel = this.poligono.getVertice(vertice, u);
         this._tejerNivelParaVertice({
-          vertice,
+          vertice: verticeTransformadoSegunNivel,
           matrizDeNivel,
           matrizDeNormales,
           bufferDePosicion,
@@ -70,8 +72,9 @@ class SuperficieBarrido extends Geometry {
       // Tejido de última tapa
       if (nivel === niveles && this.cerrado) {
         this.poligono.vertices.forEach(v => {
+          const centro = this.poligono.getCentro(u);
           this._tejerNivelParaVertice({
-            vertice: this.poligono.centro,
+            vertice: centro,
             matrizDeNivel,
             matrizDeNormales,
             bufferDePosicion,

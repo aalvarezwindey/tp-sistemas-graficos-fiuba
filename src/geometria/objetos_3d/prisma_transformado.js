@@ -5,13 +5,12 @@ import SuperficieBarrido from '../superficie_barrido/superficie_barrido.js';
 
 // Crea un Prisma de una altura 'alto y un perfil ractangular de 'lado1'x'lado2',
 // ubicando su centro en el centro de masa del mismo
-class Prisma extends Objeto3D {
-  constructor(lado1, lado2, alto, material = DEFAULT_MATERIAL, transformacionPoligono) {
+class PrismaTransformado extends Objeto3D {
+  constructor(lado1, lado2, alto, material = DEFAULT_MATERIAL, transformacion) {
     super();
 
     const rectangulo = new Rectangulo(lado1, lado2);
-
-    if (transformacionPoligono) rectangulo.setTransformacion(transformacionPoligono);
+    rectangulo.setTransformacion(transformacion);
 
     this.objeto = new Objeto3D({
       geometry: new SuperficieBarrido(rectangulo, new Recta(alto), true),
@@ -25,4 +24,4 @@ class Prisma extends Objeto3D {
   }
 }
 
-export default Prisma;
+export default PrismaTransformado;
