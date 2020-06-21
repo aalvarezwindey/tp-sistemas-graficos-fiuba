@@ -11,7 +11,7 @@ class Material {
     gl.bindBuffer(gl.ARRAY_BUFFER, position);
     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, position.itemSize, gl.FLOAT, false, 0, 0);
 
-    if (uv) {
+    if (uv && shaderProgram.textureCoordAttribute !== -1) {
       gl.bindBuffer(gl.ARRAY_BUFFER, uv);
       gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, uv.itemSize, gl.FLOAT, false, 0, 0);
     }
@@ -33,7 +33,11 @@ class Material {
     shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aPosition");
     gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
     shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aUv");
-    gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
+
+    if (shaderProgram.textureCoordAttribute !== -1) {
+      gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
+    }
+
     shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aNormal");
     gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
 
