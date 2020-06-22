@@ -175,17 +175,29 @@ class Castillo extends Objeto3D {
   }
 
   variarPisos = () => {
-    const cantidadDePisosNueva = ((this.pisos + 1) % this.MAX_CANTIDAD_PISOS) + this.MIN_CANTIDAD_PISOS
+    let cantidadDePisosNueva = this.cantidadDePisos + 1;
+    if (cantidadDePisosNueva > this.MAX_CANTIDAD_PISOS) {
+      cantidadDePisosNueva = this.MIN_CANTIDAD_PISOS;
+    }
+
     this._init(cantidadDePisosNueva, this.largo, this.ancho)
   }
 
   variarLargo = () => {
-    const nuevoLargo = ((this.largo + 1) % this.MAX_LARGO) + this.MIN_LARGO;
+    let nuevoLargo = this.largo + 1;
+    if (nuevoLargo > this.MAX_LARGO) {
+      nuevoLargo = this.MIN_LARGO;
+    }
+
     this._init(this.cantidadDePisos, nuevoLargo, this.ancho)
   }
 
   variarAncho = () => {
-    const nuevoAncho = ((this.ancho + 1) % this.MAX_ANCHO) + this.MIN_ANCHO
+    let nuevoAncho = this.ancho + 1;
+    if (nuevoAncho > this.MAX_ANCHO) {
+      nuevoAncho = this.MIN_ANCHO;
+    }
+
     this._init(this.cantidadDePisos, this.largo, nuevoAncho);
   }
 }
