@@ -43,6 +43,7 @@ class BezierCuadratica {
         this.derivadaSegunda0(t) * this.p0[1] + this.derivadaSegunda1(t) * this.p1[1] + this.derivadaSegunda2(t) * this.p2[1],
         this.derivadaSegunda0(t) * this.p0[2] + this.derivadaSegunda1(t) * this.p1[2] + this.derivadaSegunda2(t) * this.p2[2]
       );
+      vec3.normalize(vertice.normal, vertice.normal);
 
       // calculamos la normal como B = N x T
       vec3.cross(vertice.binormal, vertice.normal, vertice.tangente);

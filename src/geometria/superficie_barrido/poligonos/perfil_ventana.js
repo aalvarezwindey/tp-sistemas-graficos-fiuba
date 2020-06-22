@@ -1,7 +1,6 @@
 import Poligono, { Vertice } from "../poligono.js";
 import BezierCuadratica from "../../curvas/bezier/bezier_cuadratica.js";
 
-// Crea el perfil de la ventana con un cuadrado de 1x1 + una curva de bezier cuadratica
 class PerfilVentana extends Poligono {
   constructor(base, altura) {
     super();

@@ -6,6 +6,11 @@ import EjesDeCoordenadas from "../geometria/objetos_3d/ejes_de_coordenadas.js";
 import Lingote from "../geometria/objetos_3d/lingote.js";
 import Castillo from "./castillo/castillo.js";
 import Ventana from "../geometria/objetos_3d/ventana.js";
+import SuperficieBarrido from "../geometria/superficie_barrido/superficie_barrido.js";
+import PerfilTorre from "../geometria/superficie_barrido/poligonos/perfil_torre.js";
+import Circulo from "../geometria/superficie_barrido/poligonos/circulo.js";
+import Circunferencia from "../geometria/superficie_barrido/recorridos_parametricos/circunferencia.js";
+import Recta from "../geometria/superficie_barrido/recorridos_parametricos/recta.js";
 
 class Escena {
   constructor(shadersManager, gestorDeCamaras) {
@@ -36,6 +41,20 @@ class Escena {
     this.castillo.setPosition(0, 0, 0);
     this.objetos.push(this.castillo);
 
+    objeto = new Objeto3D({
+      geometry: new SuperficieBarrido(new PerfilTorre({
+        alturaInferior: 4,
+        radioInferior: 1,
+        alturaSuperior: 1,
+        radioSuperior: 1.5,
+      }), new Circunferencia(0.01)),
+      material: MATERIAL_BEIGE,
+      glContext: gl
+    })
+    objeto.addChild(EJES_DE_COORDEANDAS)
+    objeto.setPosition(10, 10, 0);
+    this.objetos.push(objeto)
+
     this.gestorDeCamaras.cambiarObjetivo(this.castillo);
   }
 
@@ -59,7 +78,7 @@ class Escena {
           break;
         }
 
-        case '1': {
+/*         case '1': {
           this.castillo.variarPisos()
           break;
         }
@@ -72,7 +91,7 @@ class Escena {
         case '3': {
           this.castillo.variarAncho()
           break;
-        }
+        } */
 
         // Detiene el paso del tiempo
         case 'p': {
