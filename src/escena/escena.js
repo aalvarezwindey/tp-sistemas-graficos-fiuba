@@ -5,6 +5,7 @@ import Prisma from "../geometria/objetos_3d/prisma.js";
 import EjesDeCoordenadas from "../geometria/objetos_3d/ejes_de_coordenadas.js";
 import Lingote from "../geometria/objetos_3d/lingote.js";
 import Castillo from "./castillo/castillo.js";
+import Ventana from "../geometria/objetos_3d/ventana.js";
 
 class Escena {
   constructor(shadersManager, gestorDeCamaras) {
@@ -55,6 +56,21 @@ class Escena {
           }
 
           this.gestorDeCamaras.cambiarObjetivo(this.objetos[this._indiceObjetoEnfocado])
+          break;
+        }
+
+        case '1': {
+          this.castillo.variarPisos()
+          break;
+        }
+
+        case '2': {
+          this.castillo.variarLargo()
+          break;
+        }
+
+        case '3': {
+          this.castillo.variarAncho()
           break;
         }
 
