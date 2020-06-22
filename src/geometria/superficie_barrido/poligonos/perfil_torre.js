@@ -2,7 +2,7 @@ import Poligono, { Vertice } from "../poligono.js";
 import BezierCubica from "../../curvas/bezier/bezier_cubica.js";
 
 class PerfilTorre extends Poligono {
-  constructor({ alturaInferior, radioInferior, alturaSuperior, radioSuperior }) {
+  constructor({ alturaInferior, radioInferior, alturaSuperior, radioSuperior, alturaCurva }) {
     super();
 
     /*  
@@ -42,7 +42,7 @@ class PerfilTorre extends Poligono {
           v5 = v4 + (0, -radioSuperior)
     */
 
-    const CTE = 1;
+    const CTE = alturaCurva / 2;
 
     const v0 = new Vertice()
     v0.posicion = vec3.fromValues(0, 0, 0);
@@ -69,13 +69,6 @@ class PerfilTorre extends Poligono {
 
     const v5 = new Vertice();
     v5.posicion = vec3.fromValues(v4.posicion[0] + radioSuperior, v4.posicion[1], v4.posicion[2]);
-
-    console.log('v0', v0.posicion)
-    console.log('v1', v1.posicion)
-    console.log('v2', v2.posicion)
-    console.log('v3', v3.posicion)
-    console.log('v4', v4.posicion)
-    console.log('v5', v5.posicion)
 
     const curvaBezierCubica = new BezierCubica(p0.posicion, p1.posicion, p2.posicion, p3.posicion, 20);
 

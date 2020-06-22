@@ -1,20 +1,11 @@
 import Objeto3D from "../geometria/objeto_3d.js";
 import Catapulta from "./catapulta/catapulta.js";
-import Cilindro from "../geometria/objetos_3d/cilindro.js";
-import Prisma from "../geometria/objetos_3d/prisma.js";
 import EjesDeCoordenadas from "../geometria/objetos_3d/ejes_de_coordenadas.js";
-import Lingote from "../geometria/objetos_3d/lingote.js";
 import Castillo from "./castillo/castillo.js";
-import Ventana from "../geometria/objetos_3d/ventana.js";
-import SuperficieBarrido from "../geometria/superficie_barrido/superficie_barrido.js";
-import PerfilTorre from "../geometria/superficie_barrido/poligonos/perfil_torre.js";
-import Circulo from "../geometria/superficie_barrido/poligonos/circulo.js";
-import Circunferencia from "../geometria/superficie_barrido/recorridos_parametricos/circunferencia.js";
-import Recta from "../geometria/superficie_barrido/recorridos_parametricos/recta.js";
 
 class Escena {
   constructor(shadersManager, gestorDeCamaras) {
-    EJES_DE_COORDEANDAS = new EjesDeCoordenadas();
+    EJES_DE_COORDENADAS = new EjesDeCoordenadas();
     this.objetos = [];
     this.shadersManager = shadersManager;
     this.gestorDeCamaras = gestorDeCamaras;
@@ -39,21 +30,8 @@ class Escena {
 
     this.castillo = new Castillo();
     this.castillo.setPosition(0, 0, 0);
+    this.castillo.setScale(2, 2, 2)
     this.objetos.push(this.castillo);
-
-    objeto = new Objeto3D({
-      geometry: new SuperficieBarrido(new PerfilTorre({
-        alturaInferior: 4,
-        radioInferior: 1,
-        alturaSuperior: 1,
-        radioSuperior: 1.5,
-      }), new Circunferencia(0.01)),
-      material: MATERIAL_BEIGE,
-      glContext: gl
-    })
-    objeto.addChild(EJES_DE_COORDEANDAS)
-    objeto.setPosition(10, 10, 0);
-    this.objetos.push(objeto)
 
     this.gestorDeCamaras.cambiarObjetivo(this.castillo);
   }
@@ -108,9 +86,9 @@ class Escena {
         case '0': {
           DEBUG_EJES = !DEBUG_EJES;
           if (DEBUG_EJES) {
-            this.objetos.forEach(obj => obj.addChild(EJES_DE_COORDEANDAS));
+            this.objetos.forEach(obj => obj.addChild(EJES_DE_COORDENADAS));
           } else {
-            this.objetos.forEach(obj => obj.removeChild(EJES_DE_COORDEANDAS));
+            this.objetos.forEach(obj => obj.removeChild(EJES_DE_COORDENADAS));
           }
           break;
         }

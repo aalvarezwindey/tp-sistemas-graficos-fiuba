@@ -34,7 +34,7 @@ var PAUSA = false;
 var TIEMPO = 0;
 var DEBUG_EJES = false;
 var PROYECTIL_CATAPULTA = null;
-var EJES_DE_COORDEANDAS = null;
+var EJES_DE_COORDENADAS = null;
 
 function setupWebGL() {
   //set the clear color
