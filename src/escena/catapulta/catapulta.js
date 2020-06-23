@@ -10,6 +10,7 @@ import Esfera from '../../geometria/objetos_3d/esfera.js';
 var OVILLO_CUCHARA = null;
 var OVILLO_TRAVESAÑO_TRASERO = null;
 var HILO = null;
+var FRONTAL_CATAPULTA = null;
 
 class Rueda extends Objeto3D {
   constructor() {
@@ -160,6 +161,15 @@ class EjeTravesañoDelantero extends Objeto3D {
   }
 }
 
+class ProyectilCatapulta extends Objeto3D {
+  constructor(radio) {
+    super();
+    this.radio = radio;
+    this.proyectil = new Esfera(radio, MATERIAL_PIEDRA);
+    this.addChild(this.proyectil);
+  }
+}
+
 class CucharaCatapulta extends Objeto3D {
   constructor() {
     super();
@@ -189,15 +199,20 @@ class CucharaCatapulta extends Objeto3D {
 
     cabezaCuchara.setPosition(0, CucharaCatapulta.LARGO_MANGO / 2 + CucharaCatapulta.LARGO_CUADRADO_CUCHARA / 2, 0)
 
-    PROYECTIL_CATAPULTA = new Esfera(CucharaCatapulta.RADIO_PROYECTIL, MATERIAL_PIEDRA);
+    PROYECTIL_CATAPULTA = new ProyectilCatapulta(CucharaCatapulta.RADIO_PROYECTIL);
     PROYECTIL_CATAPULTA.setPosition(CucharaCatapulta.RADIO_PROYECTIL + CucharaCatapulta.ESPESOR / 2, 0, 0);
     cabezaCuchara.addChild(PROYECTIL_CATAPULTA);
 
     cabezaCuchara.setAnimacion((cabCuchara) => {
       if (PROYECTIL_DESPRENDIDO) {
-        cabCuchara.removeChild(PROYECTIL_CATAPULTA);
+        if (cabCuchara.hasChild(PROYECTIL_CATAPULTA)) {
+          POSICION_MUNDO_PROYECTIL_ANTES_DE_DESPRENDERSE = PROYECTIL_CATAPULTA.getWorldCoordinates();
+          FRONTAL_CATAPULTA_AL_DISPARAR = FRONTAL_CATAPULTA.map(v => -v);
+          TIEMPO_INICIAL_DESPRENDIMIENTO = TIEMPO;
+          cabCuchara.removeChild(PROYECTIL_CATAPULTA);
+        }
       } else {
-        if (cabCuchara.children.indexOf(PROYECTIL_CATAPULTA) === -1) {
+        if (!cabCuchara.hasChild(PROYECTIL_CATAPULTA)) {
           cabCuchara.addChild(PROYECTIL_CATAPULTA);
         }
       }
@@ -450,6 +465,7 @@ class Catapulta extends Objeto3D {
     this.OFFSET_DE_ROTACION = Math.PI / 8;
     this.OFFSET_DE_MOVIMIENTO = 10;
     this.frontal = [0, 0, 1];
+    FRONTAL_CATAPULTA = this.frontal;
 
     const trenDelantero = new TrenDeRuedas();
     const trenTrasero = new TrenDeRuedas();
@@ -538,6 +554,8 @@ class Catapulta extends Objeto3D {
     // Tomamos la rotacion en Y de la catapulta
     mat4.fromYRotation(m, this.sistemaDeReferencia.rotation[1]);
     vec3.transformMat4(this.frontal, this.frontal, m);
+
+    FRONTAL_CATAPULTA = this.frontal;
   }
 }
 

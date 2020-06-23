@@ -127,6 +127,8 @@ class Objeto3D {
     }
   }
 
+  hasChild = child => this.children.indexOf(child) !== -1;
+
   setPosition(x, y, z) {
     this.position = vec3.fromValues(x, y, z);
     this._updateModelMatrix();

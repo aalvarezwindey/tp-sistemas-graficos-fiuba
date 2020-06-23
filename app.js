@@ -35,9 +35,13 @@ var VELOCIDAD_ANIMACION = 1;
 var PAUSA = false;
 var TIEMPO = 0;
 var DEBUG_EJES = false;
+var EJES_DE_COORDENADAS = null;
+
 var PROYECTIL_CATAPULTA = null;
 var PROYECTIL_DESPRENDIDO = false;
-var EJES_DE_COORDENADAS = null;
+var POSICION_MUNDO_PROYECTIL_ANTES_DE_DESPRENDERSE = null;
+var FRONTAL_CATAPULTA_AL_DISPARAR = null;
+var TIEMPO_INICIAL_DESPRENDIMIENTO = null;
 
 function setupWebGL() {
   //set the clear color

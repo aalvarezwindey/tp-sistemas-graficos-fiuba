@@ -22,7 +22,6 @@ class Escena {
     let objeto;
 
     this.terreno = new Terreno();
-    this.terreno.addChild(EJES_DE_COORDENADAS)
     this.terreno.setPosition(0, 0, 0);
     this.terreno.setRotation(-Math.PI / 2, 0, 0);
     this.objetos.push(this.terreno);
@@ -36,6 +35,36 @@ class Escena {
     this.castillo = new Castillo();
     this.castillo.setPosition(0, 0, 0);
     this.objetos.push(this.castillo);
+
+    this.proyectilDesprendido = new Objeto3D();
+    this.proyectilDesprendido.setAnimacion(sistemaDeReferencia => {
+      if (PROYECTIL_DESPRENDIDO) {
+        if (!sistemaDeReferencia.hasChild(PROYECTIL_CATAPULTA) && POSICION_MUNDO_PROYECTIL_ANTES_DE_DESPRENDERSE) {
+          sistemaDeReferencia.addChild(PROYECTIL_CATAPULTA);
+          sistemaDeReferencia.setPosition(...POSICION_MUNDO_PROYECTIL_ANTES_DE_DESPRENDERSE);
+        }
+
+        const x0 = POSICION_MUNDO_PROYECTIL_ANTES_DE_DESPRENDERSE[0];
+        const y0 = POSICION_MUNDO_PROYECTIL_ANTES_DE_DESPRENDERSE[1];
+        const z0 = POSICION_MUNDO_PROYECTIL_ANTES_DE_DESPRENDERSE[2];
+        const V_FRONTAL_0 = 10;
+        const V_VERTICAL_0 = 5;
+        const g = 9.81;
+        const v_animacion = 10;
+        const t = (TIEMPO - TIEMPO_INICIAL_DESPRENDIMIENTO) * v_animacion;
+
+        const x = x0 + FRONTAL_CATAPULTA_AL_DISPARAR[0] * V_FRONTAL_0 * t;
+        const y = Math.max(y0 + V_VERTICAL_0 * t - 0.5 * g * t * t, PROYECTIL_CATAPULTA.radio); // Validamos que no toco el piso
+        const z = z0 + FRONTAL_CATAPULTA_AL_DISPARAR[2] * V_FRONTAL_0 * t;
+
+        sistemaDeReferencia.setPosition(x, y, z);
+      } else {
+        if (sistemaDeReferencia.hasChild(PROYECTIL_CATAPULTA)) {
+          sistemaDeReferencia.removeChild(PROYECTIL_CATAPULTA);
+        }
+      }
+    });
+    this.objetos.push(this.proyectilDesprendido);
 
     objeto = new Objeto3D({
       geometry: new SuperficieBarrido(new PerfilTorreMuralla(), new Circunferencia(0.01), false),
