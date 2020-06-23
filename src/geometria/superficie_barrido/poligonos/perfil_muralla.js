@@ -47,11 +47,13 @@ class PerfilMuralla extends Poligono {
         // un valor de anchoCurva1 + anchoCurva2 + anchoCanaleta/2 y de ahi espejamos los vertices y obtenemos la otra mitad
     */
 
-    const alturaCurva1 = 12;
-    const alturaCurva2 = 1/2;
-    const anchoCurva1 = 1;
-    const anchoCurva2 = 0.5;
-    const anchoCanaleta = 2;
+    const SCALE_FACTOR = 0.5;
+
+    const alturaCurva1 = 12 * SCALE_FACTOR;
+    const alturaCurva2 = 0.5 * SCALE_FACTOR;
+    const anchoCurva1 = 1 * SCALE_FACTOR;
+    const anchoCurva2 = 0.5 * SCALE_FACTOR;
+    const anchoCanaleta = 2 * SCALE_FACTOR;
 
     const offset = - (anchoCurva1 + anchoCurva2 + anchoCanaleta / 2);
 

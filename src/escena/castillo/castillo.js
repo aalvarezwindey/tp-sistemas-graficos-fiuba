@@ -5,6 +5,7 @@ import SuperficieBarrido from '../../geometria/superficie_barrido/superficie_bar
 import PerfilTorre from '../../geometria/superficie_barrido/poligonos/perfil_torre.js';
 import Circunferencia from '../../geometria/superficie_barrido/recorridos_parametricos/circunferencia.js';
 import PerfilTechoTorre from '../../geometria/superficie_barrido/poligonos/perfil_techo_torre.js';
+import PerfilMuralla from '../../geometria/superficie_barrido/poligonos/perfil_muralla.js';
 
 class TechoCastillo extends Objeto3D {
   constructor(largoPiso, anchoPiso) {
@@ -147,6 +148,21 @@ class Piso extends Objeto3D {
   }
 }
 
+class Muralla extends Objeto3D {
+  constructor(radio, cantidadDeLados) {
+    super();
+
+    this.muralla = new Objeto3D({
+      geometry: new SuperficieBarrido(new PerfilMuralla(), new Circunferencia(radio), false, cantidadDeLados - 1),
+      material: MATERIAL_PIEDRA,
+      glContext: gl
+    });
+    this.muralla.setRotation(-Math.PI / 2, 0, 0);
+
+    this.addChild(this.muralla)
+  }
+}
+
 class TorreCastillo extends Objeto3D {
   constructor(alturaDeLosPisos, cantidadDePisos) {
     super();
@@ -211,16 +227,22 @@ class Castillo extends Objeto3D {
   MAX_CANTIDAD_PISOS = 8;
   MIN_CANTIDAD_PISOS = 1;
 
-  constructor(pisos = Castillo.CANTIDAD_DE_PISOS_DEFAULT, largo = Piso.LARGO_DEFAULT, ancho = Piso.ANCHO_DEFAULT) {
+  constructor(
+    pisos = Castillo.CANTIDAD_DE_PISOS_DEFAULT, 
+    largo = Piso.LARGO_DEFAULT, 
+    ancho = Piso.ANCHO_DEFAULT, 
+    cantidadDeLadosDeLaMuralla = Muralla.CANTIDAD_DE_LADOS_DEFAULT
+  ) {
     super();
-    this._init(pisos, largo, ancho)
+    this._init(pisos, largo, ancho, cantidadDeLadosDeLaMuralla)
   }
 
-  _init(pisos, largo, ancho) {
+  _init(pisos, largo, ancho, cantidadDeLadosDeLaMuralla) {
     this.cantidadDePisos = pisos;
     this.pisos = [];
     this.largo = largo;
     this.ancho = ancho;
+    this.cantidadDeLadosDeLaMuralla = cantidadDeLadosDeLaMuralla;
 
     // Pisos
     for (let i = 0 ; i < this.cantidadDePisos ; i++) {
@@ -246,6 +268,14 @@ class Castillo extends Objeto3D {
     this.addChild(torre2);
     this.addChild(torre3);
     this.addChild(torre4);
+
+    // Muralla
+    const muralla = new Muralla(
+      Math.max(this.ancho, this.largo) * Muralla.FACTOR_EXCEDENTE,
+      cantidadDeLadosDeLaMuralla
+    );
+
+    this.addChild(muralla);
   }
 
   variarPisos = () => {
@@ -254,7 +284,7 @@ class Castillo extends Objeto3D {
       cantidadDePisosNueva = this.MIN_CANTIDAD_PISOS;
     }
 
-    this._init(cantidadDePisosNueva, this.largo, this.ancho)
+    this._init(cantidadDePisosNueva, this.largo, this.ancho, this.cantidadDeLadosDeLaMuralla)
   }
 
   variarLargo = () => {
@@ -263,7 +293,7 @@ class Castillo extends Objeto3D {
       nuevoLargo = this.MIN_LARGO;
     }
 
-    this._init(this.cantidadDePisos, nuevoLargo, this.ancho)
+    this._init(this.cantidadDePisos, nuevoLargo, this.ancho, this.cantidadDeLadosDeLaMuralla)
   }
 
   variarAncho = () => {
@@ -272,11 +302,14 @@ class Castillo extends Objeto3D {
       nuevoAncho = this.MIN_ANCHO;
     }
 
-    this._init(this.cantidadDePisos, this.largo, nuevoAncho);
+    this._init(this.cantidadDePisos, this.largo, nuevoAncho, this.cantidadDeLadosDeLaMuralla);
   }
 }
 
 Castillo.CANTIDAD_DE_PISOS_DEFAULT = 3;
+
+Muralla.CANTIDAD_DE_LADOS_DEFAULT = 8;
+Muralla.FACTOR_EXCEDENTE = 1.20;
 
 Piso.LARGO_DEFAULT = 5;
 Piso.ANCHO_DEFAULT = 10;

@@ -33,22 +33,11 @@ class Escena {
     this.gestorDeCamaras.setPersonaParaCamaraTerceraPersona(this.catapulta);
 
     this.castillo = new Castillo();
-    this.castillo.setPosition(30, 0, 30);
+    this.castillo.setPosition(0, 0, 0);
     this.castillo.setScale(2, 2, 2)
     this.objetos.push(this.castillo);
 
-    objeto = new Objeto3D({
-      geometry: new SuperficieBarrido(new PerfilMuralla(), new Circunferencia(15), false, 5),
-      material: MATERIAL_PIEDRA,
-      glContext: gl
-    });
-    objeto.setPosition(0, 0, 0);
-    objeto.setRotation(-Math.PI / 2, 0, 0);
-
-    objeto.addChild(EJES_DE_COORDENADAS);
-    this.objetos.push(objeto);
-
-    this.gestorDeCamaras.cambiarObjetivo(objeto);
+    this.gestorDeCamaras.cambiarObjetivo(this.castillo);
   }
 
   _iniciarHandlers = () => {
