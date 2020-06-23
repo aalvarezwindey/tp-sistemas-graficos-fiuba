@@ -94,12 +94,6 @@ class PerfilMuralla extends Poligono {
     }
 
     this.centro.posicion = [anchoCurva1, alturaCurva1 / 2, 0];
-
-    console.log(v0, v1, v2, v3)
-
-    console.log('w3', w3);
-    console.log('x0', x0)
-
   }
 
   getVertice(vertice, nivel) {
