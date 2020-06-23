@@ -36,6 +36,7 @@ var PAUSA = false;
 var TIEMPO = 0;
 var DEBUG_EJES = false;
 var PROYECTIL_CATAPULTA = null;
+var PROYECTIL_DESPRENDIDO = false;
 var EJES_DE_COORDENADAS = null;
 
 function setupWebGL() {

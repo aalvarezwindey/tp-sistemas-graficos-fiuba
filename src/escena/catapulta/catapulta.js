@@ -127,6 +127,11 @@ class EjeTravesañoDelantero extends Objeto3D {
         const VELOCIDAD = 20;
         const ANGULO_MAX = Math.PI / 4;
         const anguloDeRotacion = Math.max(-ANGULO_MAX, -(TIEMPO - this.tiempoInicial) * VELOCIDAD * ANGULO_MAX);
+        
+        if (Math.abs(anguloDeRotacion) === ANGULO_MAX) {
+          PROYECTIL_DESPRENDIDO = true;
+        }
+
         ejeTravesañoDelantero.setRotation(anguloDeRotacion, 0, 0);
 
         HILO.actualizarRotacion();
@@ -186,7 +191,17 @@ class CucharaCatapulta extends Objeto3D {
 
     PROYECTIL_CATAPULTA = new Esfera(CucharaCatapulta.RADIO_PROYECTIL, MATERIAL_PIEDRA);
     PROYECTIL_CATAPULTA.setPosition(CucharaCatapulta.RADIO_PROYECTIL + CucharaCatapulta.ESPESOR / 2, 0, 0);
-    cabezaCuchara.addChild(PROYECTIL_CATAPULTA)
+    cabezaCuchara.addChild(PROYECTIL_CATAPULTA);
+
+    cabezaCuchara.setAnimacion((cabCuchara) => {
+      if (PROYECTIL_DESPRENDIDO) {
+        cabCuchara.removeChild(PROYECTIL_CATAPULTA);
+      } else {
+        if (cabCuchara.children.indexOf(PROYECTIL_CATAPULTA) === -1) {
+          cabCuchara.addChild(PROYECTIL_CATAPULTA);
+        }
+      }
+    })
 
     mango.addChild(cabezaCuchara);
 
@@ -355,6 +370,7 @@ class EjeTravesañoTrasero extends Objeto3D {
           this.eje.setRotation(0, 0, 0);
           this.disparar = !this.disparar;
           this.tiempoInicial = TIEMPO;
+          PROYECTIL_DESPRENDIDO = false;
         }
 
         default: {
@@ -420,7 +436,9 @@ class Hilo extends Objeto3D {
 
     // Calculamos la matriz de modelado manualmente para poder aplicar las transformaciones en distinto orden
     this.hilo.setRotation(0, 0, anguloExtraDeRotacion);
-    this.hilo.setScale(distancia, 1, 1);
+
+    // El x2 es por el ajuste de escala desde la clase Escena
+    this.hilo.setScale(distancia * 2, 1, 1);
   }
 }
 

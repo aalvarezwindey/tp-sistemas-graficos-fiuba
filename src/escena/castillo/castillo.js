@@ -172,7 +172,7 @@ class TorreCastillo extends Objeto3D {
       TorreCastillo.cantidadDePisos = cantidadDePisos;
 
       const alturaInferior = ((TorreCastillo.cantidadDePisos - 1) + TorreCastillo.EXCEDENTE_PORCENTUAL_RESPECTO_ALTURA_PISO_PARA_ALTURA_INFERIOR) * TorreCastillo.alturaDeLosPisos 
-      const alturaSuperior = TorreCastillo.alturaDeLosPisos;
+      const alturaSuperior = TorreCastillo.alturaDeLosPisos * 0.8
       TorreCastillo.altura = alturaInferior + alturaSuperior + TorreCastillo.ALTURA_CURVA;
 
       // Volvemos a setear la geometria
@@ -335,7 +335,7 @@ Piso.LARGO_DEFAULT = 10;
 Piso.ANCHO_DEFAULT = 20;
 Piso.ALTURA = 3;
 
-TechoCastillo.ALTURA = Piso.ALTURA * 1.2;
+TechoCastillo.ALTURA = Piso.ALTURA * 1.4;
 TechoCastillo.LARGO_PORCENTUAL_FINAL_DISMINUIDO = 0.95;
 TechoCastillo.ANCHO_PORCENTUAL_FINAL_DISMINUIDO = 0.40;
 

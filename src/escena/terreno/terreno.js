@@ -31,12 +31,10 @@ class Terreno extends Objeto3D {
     );
     this.agua.setRotation(0, Math.PI / 2, 0);
     this.agua.setPosition(0, 0, - (Terreno.DISTANCIA_AGUA_BORDE_TIERRA + Terreno.PROFUNDIDAD_AGUA / 2))
-    this.agua.addChild(EJES_DE_COORDENADAS);
     this.terreno.setPosition(0, 0, -Terreno.PROFUNDIDAD_AGUA);
 
     this.isla = new Cilindro(Terreno.RADIO_ISLA, Terreno.PROFUNDIDAD_AGUA, MATERIAL_CESPED);
     this.isla.setRotation(0, Math.PI / 2, 0);
-    this.isla.addChild(EJES_DE_COORDENADAS);
     this.isla.setPosition(0, 0, - Terreno.PROFUNDIDAD_AGUA / 2);
 
     this.puente = new Prisma(Terreno.LARGO_PUENTE, Terreno.ANCHO_PUENTE, Terreno.PROFUNDIDAD_AGUA, MATERIAL_CESPED);
