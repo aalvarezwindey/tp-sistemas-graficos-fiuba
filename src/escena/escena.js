@@ -2,6 +2,10 @@ import Objeto3D from "../geometria/objeto_3d.js";
 import Catapulta from "./catapulta/catapulta.js";
 import EjesDeCoordenadas from "../geometria/objetos_3d/ejes_de_coordenadas.js";
 import Castillo from "./castillo/castillo.js";
+import SuperficieBarrido from "../geometria/superficie_barrido/superficie_barrido.js";
+import PerfilMuralla from "../geometria/superficie_barrido/poligonos/perfil_muralla.js";
+import Recta from "../geometria/superficie_barrido/recorridos_parametricos/recta.js";
+import Circunferencia from "../geometria/superficie_barrido/recorridos_parametricos/circunferencia.js";
 
 class Escena {
   constructor(shadersManager, gestorDeCamaras) {
@@ -29,11 +33,22 @@ class Escena {
     this.gestorDeCamaras.setPersonaParaCamaraTerceraPersona(this.catapulta);
 
     this.castillo = new Castillo();
-    this.castillo.setPosition(0, 0, 0);
+    this.castillo.setPosition(30, 0, 30);
     this.castillo.setScale(2, 2, 2)
     this.objetos.push(this.castillo);
 
-    this.gestorDeCamaras.cambiarObjetivo(this.castillo);
+    objeto = new Objeto3D({
+      geometry: new SuperficieBarrido(new PerfilMuralla(), new Circunferencia(15), false, 5),
+      material: MATERIAL_PIEDRA,
+      glContext: gl
+    });
+    objeto.setPosition(0, 0, 0);
+    objeto.setRotation(-Math.PI / 2, 0, 0);
+
+    objeto.addChild(EJES_DE_COORDENADAS);
+    this.objetos.push(objeto);
+
+    this.gestorDeCamaras.cambiarObjetivo(objeto);
   }
 
   _iniciarHandlers = () => {
