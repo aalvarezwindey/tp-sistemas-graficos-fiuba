@@ -1,6 +1,8 @@
 class Geometry {
   constructor() {
     this.buffers = {};
+
+    this.usos = 0;
   }
 
   _setupIndexBuffer(definicion = { filas: 100, columnas: 100 }) {
@@ -31,6 +33,22 @@ class Geometry {
     webgl_index_buffer.numItems = indexBuffer.length;
 
     this.buffers.index = webgl_index_buffer;
+  }
+
+  use() {
+    this.usos = this.usos + 1;
+  }
+
+  destroy() {
+    this.usos = this.usos - 1;
+
+    if (this.usos === 0) {
+      for (let key in this.buffers) {
+        if (this.buffers.hasOwnProperty(key)) {
+          gl.deleteBuffer(this.buffers[key]);
+        }
+      }
+    }
   }
 }
 

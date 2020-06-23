@@ -8,6 +8,8 @@ import Verde from "./types/verde.js";
 import Azul from "./types/azul.js";
 import Beige from "./types/beige.js";
 import LozaAzul from './types/loza_azul.js';
+import Cesped from "./types/cesped.js";
+import Agua from "./types/agua.js";
 
 window.webGLApp = {
   ...window.webGLApp,
@@ -20,5 +22,7 @@ window.webGLApp = {
   Verde: Verde,
   Azul: Azul,
   Beige: Beige,
-  LozaAzul, LozaAzul
+  LozaAzul: LozaAzul,
+  Agua: Agua,
+  Cesped: Cesped
 }

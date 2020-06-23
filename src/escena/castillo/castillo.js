@@ -227,6 +227,9 @@ class Castillo extends Objeto3D {
   MAX_CANTIDAD_PISOS = 8;
   MIN_CANTIDAD_PISOS = 1;
 
+  MIN_MURALLAS = 4;
+  MAX_MURALLAS = 8;
+
   constructor(
     pisos = Castillo.CANTIDAD_DE_PISOS_DEFAULT, 
     largo = Piso.LARGO_DEFAULT, 
@@ -238,6 +241,13 @@ class Castillo extends Objeto3D {
   }
 
   _init(pisos, largo, ancho, cantidadDeLadosDeLaMuralla) {
+    // Primero eliminamos las instancias viejas si las hay
+    this.children.forEach(child => {
+      child.destroy();
+      this.removeChild(child);
+    });
+    this.children = []
+
     this.cantidadDePisos = pisos;
     this.pisos = [];
     this.largo = largo;
@@ -270,16 +280,17 @@ class Castillo extends Objeto3D {
     this.addChild(torre4);
 
     // Muralla
+    const radioMuralla = Math.sqrt(Math.pow(this.ancho, 2) + Math.pow(this.largo, 2));
     const muralla = new Muralla(
-      Math.max(this.ancho, this.largo) * Muralla.FACTOR_EXCEDENTE,
+      radioMuralla * Muralla.FACTOR_EXCEDENTE,
       cantidadDeLadosDeLaMuralla
     );
 
     this.addChild(muralla);
   }
 
-  variarPisos = () => {
-    let cantidadDePisosNueva = this.cantidadDePisos + 1;
+  variarPisos = (val) => {
+    let cantidadDePisosNueva = val || this.cantidadDePisos + 1;
     if (cantidadDePisosNueva > this.MAX_CANTIDAD_PISOS) {
       cantidadDePisosNueva = this.MIN_CANTIDAD_PISOS;
     }
@@ -287,8 +298,8 @@ class Castillo extends Objeto3D {
     this._init(cantidadDePisosNueva, this.largo, this.ancho, this.cantidadDeLadosDeLaMuralla)
   }
 
-  variarLargo = () => {
-    let nuevoLargo = this.largo + 1;
+  variarLargo = (val) => {
+    let nuevoLargo = val || this.largo + 1;
     if (nuevoLargo > this.MAX_LARGO) {
       nuevoLargo = this.MIN_LARGO;
     }
@@ -296,23 +307,32 @@ class Castillo extends Objeto3D {
     this._init(this.cantidadDePisos, nuevoLargo, this.ancho, this.cantidadDeLadosDeLaMuralla)
   }
 
-  variarAncho = () => {
-    let nuevoAncho = this.ancho + 1;
+  variarAncho = (val) => {
+    let nuevoAncho = val || this.ancho + 1;
     if (nuevoAncho > this.MAX_ANCHO) {
       nuevoAncho = this.MIN_ANCHO;
     }
 
     this._init(this.cantidadDePisos, this.largo, nuevoAncho, this.cantidadDeLadosDeLaMuralla);
   }
+
+  variarMuralla = (val) => {
+    let nuevasMurallas = val || this.cantidadDeLadosDeLaMuralla + 1;
+    if (nuevasMurallas > this.MAX_MURALLAS) {
+      nuevasMurallas = this.MIN_MURALLAS;
+    }
+
+    this._init(this.cantidadDePisos, this.largo, this.ancho, nuevasMurallas);
+  }
 }
 
 Castillo.CANTIDAD_DE_PISOS_DEFAULT = 3;
 
 Muralla.CANTIDAD_DE_LADOS_DEFAULT = 8;
-Muralla.FACTOR_EXCEDENTE = 1.20;
+Muralla.FACTOR_EXCEDENTE = 1.10;
 
-Piso.LARGO_DEFAULT = 5;
-Piso.ANCHO_DEFAULT = 10;
+Piso.LARGO_DEFAULT = 10;
+Piso.ANCHO_DEFAULT = 20;
 Piso.ALTURA = 3;
 
 TechoCastillo.ALTURA = Piso.ALTURA * 1.2;

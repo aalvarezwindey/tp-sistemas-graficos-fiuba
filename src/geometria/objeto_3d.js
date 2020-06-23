@@ -10,11 +10,26 @@ class Objeto3D {
     this.children = [];
     this.material = material;
     this.geometry = geometry;
+
+    if (this.geometry) {
+      // Para llevar una referencia de quienes usan los buffers
+      geometry.use();
+    }
+
     this.gl = glContext;
     this.animaciones = [];
     this.autoUpdateModelMatrix = true;
 
     this._updateModelMatrix();
+  }
+
+  destroy() {
+    if (this.geometry) {
+      //console.log('[object_3d.js] destroying', this.geometry)
+      this.geometry.destroy();
+    }
+
+    this.children.forEach(child => child.destroy());
   }
 
   // Private
@@ -72,6 +87,11 @@ class Objeto3D {
 
   setGeometry(geometry) {
     this.geometry = geometry;
+
+    if (this.geometry) {
+      // Para llevar una referencia de quienes usan los buffers
+      geometry.use();
+    }
   }
 
   setMaterial(material) {

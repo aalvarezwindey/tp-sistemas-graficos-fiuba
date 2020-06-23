@@ -4,7 +4,7 @@ const {
   Plano,
   ShadersManager,
   GestorDeCamaras,
-  DefaultMaterial, MaderaClara, MaderaOscura, Hilo, Piedra, Rojo, Verde, Azul, Beige, LozaAzul,
+  DefaultMaterial, MaderaClara, MaderaOscura, Hilo, Piedra, Rojo, Verde, Azul, Beige, LozaAzul, Cesped, Agua,
   Escena
 } = window.webGLApp;
 
@@ -29,6 +29,8 @@ var MATERIAL_VERDE = null;
 var MATERIAL_AZUL = null;
 var MATERIAL_BEIGE = null;
 var MATERIAL_LOZA_AZUL = null;
+var MATERIAL_AGUA = null;
+var MATERIAL_CESPED = null;
 var VELOCIDAD_ANIMACION = 1;
 var PAUSA = false;
 var TIEMPO = 0;
@@ -64,23 +66,12 @@ function drawScene() {
   escena.render(rootMatrix);
 }
 
-
-/* function animate() {
-  mat4.identity(modelMatrix);
-
-  mat4.identity(normalMatrix);
-  mat4.multiply(normalMatrix, camera.getViewMatrix(), modelMatrix);
-  mat4.invert(normalMatrix, normalMatrix);
-  mat4.transpose(normalMatrix, normalMatrix);
-}
- */
 function tick() {
   requestAnimationFrame(tick);
   if (!PAUSA) {
     TIEMPO += 0.1 * VELOCIDAD_ANIMACION * 1/60;
   }
   drawScene();
-  //animate();
 }
 
 function startWebGLApp() {
@@ -107,6 +98,8 @@ function startWebGLApp() {
       MATERIAL_AZUL = new Azul(shadersManager);
       MATERIAL_BEIGE = new Beige(shadersManager);
       MATERIAL_LOZA_AZUL = new LozaAzul(shadersManager);
+      MATERIAL_CESPED = new Cesped(shadersManager);
+      MATERIAL_AGUA = new Agua(shadersManager);
       escena = new Escena(shaders, gestorDeCamaras);
       escena.updateProjectionMatrix(projMatrix);
       tick();

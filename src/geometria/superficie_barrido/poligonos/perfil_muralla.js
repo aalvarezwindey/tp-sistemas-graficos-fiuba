@@ -49,7 +49,7 @@ class PerfilMuralla extends Poligono {
 
     const SCALE_FACTOR = 0.5;
 
-    const alturaCurva1 = 12 * SCALE_FACTOR;
+    const alturaCurva1 = 8 * SCALE_FACTOR;
     const alturaCurva2 = 0.5 * SCALE_FACTOR;
     const anchoCurva1 = 1 * SCALE_FACTOR;
     const anchoCurva2 = 0.5 * SCALE_FACTOR;
@@ -71,6 +71,9 @@ class PerfilMuralla extends Poligono {
 
     const x0 = new Vertice();
     x0.posicion = [offset + anchoCurva1 + anchoCurva2 + anchoCanaleta / 2, alturaCurva1, 0];
+    x0.normal = [0, 1, 0];
+    x0.tangente = [1, 0, 0];
+    x0.binormal = [0,0,1]
 
     const curvaBspline1 = new BSplineCuadratica(
       { puntosDeControl: [v0, v1, v2, v3] },
@@ -110,4 +113,4 @@ class PerfilMuralla extends Poligono {
   }
 }
 
-export default PerfilMuralla;2
+export default PerfilMuralla;

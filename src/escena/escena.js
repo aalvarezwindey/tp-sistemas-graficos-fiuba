@@ -6,6 +6,8 @@ import SuperficieBarrido from "../geometria/superficie_barrido/superficie_barrid
 import PerfilMuralla from "../geometria/superficie_barrido/poligonos/perfil_muralla.js";
 import Recta from "../geometria/superficie_barrido/recorridos_parametricos/recta.js";
 import Circunferencia from "../geometria/superficie_barrido/recorridos_parametricos/circunferencia.js";
+import PerfilTorreMuralla from "../geometria/superficie_barrido/poligonos/perfil_torre_muralla.js";
+import Terreno from "./terreno/terreno.js";
 
 class Escena {
   constructor(shadersManager, gestorDeCamaras) {
@@ -19,13 +21,12 @@ class Escena {
 
     let objeto;
 
-    objeto = new Objeto3D({
-      geometry: new Plano(200, 200),
-      material: DEFAULT_MATERIAL,
-      glContext: gl
-    });
-    objeto.setPosition(0, 0, 0);
-    this.objetos.push(objeto);
+    this.terreno = new Terreno();
+    this.terreno.addChild(EJES_DE_COORDENADAS)
+    this.terreno.setPosition(0, 0, 0);
+    this.terreno.setRotation(-Math.PI / 2, 0, 0);
+    this.objetos.push(this.terreno);
+
 
     this.catapulta = new Catapulta();
     this.catapulta.setPosition(30, 0, 0);
@@ -34,10 +35,25 @@ class Escena {
 
     this.castillo = new Castillo();
     this.castillo.setPosition(0, 0, 0);
-    this.castillo.setScale(2, 2, 2)
     this.objetos.push(this.castillo);
 
+    objeto = new Objeto3D({
+      geometry: new SuperficieBarrido(new PerfilTorreMuralla(), new Circunferencia(0.01), false),
+      material: MATERIAL_PIEDRA,
+      glContext: gl
+    });
+    objeto.setPosition(0, 50, 50);
+    //objeto.setScale(1,1,4)
+    objeto.addChild(EJES_DE_COORDENADAS)
+    this.objetos.push(objeto);
+
+    this._ajustarEscalaDeEscena();    
+
     this.gestorDeCamaras.cambiarObjetivo(this.castillo);
+  }
+
+  _ajustarEscalaDeEscena = () => {
+    this.objetos.forEach(obj => obj.setScale(0.5, 0.5, 0.5));
   }
 
   _iniciarHandlers = () => {
@@ -60,7 +76,7 @@ class Escena {
           break;
         }
 
-/*         case '1': {
+        case '1': {
           this.castillo.variarPisos()
           break;
         }
@@ -73,7 +89,12 @@ class Escena {
         case '3': {
           this.castillo.variarAncho()
           break;
-        } */
+        }
+
+        case '4': {
+          this.castillo.variarMuralla()
+          break;
+        }
 
         // Detiene el paso del tiempo
         case 'p': {

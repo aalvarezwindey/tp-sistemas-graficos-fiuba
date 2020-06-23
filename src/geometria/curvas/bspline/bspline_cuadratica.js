@@ -20,7 +20,7 @@ class BSplineCuadratica {
       const p0 = puntosDeControl[terna];
       const p1 = puntosDeControl[terna + 1];
       const p2 = puntosDeControl[terna + 2];
-      
+
       for (let i = 0 ; i <= definicion ; i++) {
         const t = i / definicion;
 
