@@ -21,17 +21,22 @@ class CamaraTerceraPersona {
     })
   }
 
-  setPersona = p => this.persona = p;
+  setPersona = p => {
+    this.persona = p;
+  };
 
   getMatrizDeVista = () => {
+    //console.log('[camara_tercera_persna][getMatrizDeVista]')
     const matrizDeVista = mat4.create();
     const alturaCamara = this.persona.altura ? this.persona.altura + this.OFFSET_ALTURA : this.OFFSET_ALTURA * this.FACTOR_ALTURA_DEFAULT;
+    const posicionMundoPersona = this.persona.sistemaDeReferencia.getWorldCoordinates();
     const posicionCamara = vec3.fromValues(
-      this.persona.position[0] + this.persona.frontal[0] * this.distanciaAPersona,
-      this.persona.position[1] + alturaCamara,
-      this.persona.position[2] + this.persona.frontal[2] * this.distanciaAPersona,
-    )
-    mat4.lookAt(matrizDeVista, posicionCamara, this.persona.position, [0, 1, 0]);
+      posicionMundoPersona[0] + this.persona.frontal[0] * this.distanciaAPersona,
+      posicionMundoPersona[1] + alturaCamara,
+      posicionMundoPersona[2] + this.persona.frontal[2] * this.distanciaAPersona,
+    );
+
+    mat4.lookAt(matrizDeVista, posicionCamara, posicionMundoPersona, [0, 1, 0]);
     return matrizDeVista;
   }
 }
