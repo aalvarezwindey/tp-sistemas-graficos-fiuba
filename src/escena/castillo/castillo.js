@@ -6,6 +6,7 @@ import PerfilTorre from '../../geometria/superficie_barrido/poligonos/perfil_tor
 import Circunferencia from '../../geometria/superficie_barrido/recorridos_parametricos/circunferencia.js';
 import PerfilTechoTorre from '../../geometria/superficie_barrido/poligonos/perfil_techo_torre.js';
 import PerfilMuralla from '../../geometria/superficie_barrido/poligonos/perfil_muralla.js';
+import Rectangulo from '../../geometria/superficie_barrido/poligonos/rectangulo.js';
 import PerfilTorreMuralla from '../../geometria/superficie_barrido/poligonos/perfil_torre_muralla.js';
 
 class TechoCastillo extends Objeto3D {
@@ -163,6 +164,11 @@ class TorreMuralla extends Objeto3D {
         new Circunferencia(0.01),
         false
       );
+
+      TorreMuralla.geometriaToroide = new SuperficieBarrido(
+        new Rectangulo(TorreMuralla.ANCHO_TOROIDE, TorreMuralla.ALTO_TOROIDE),
+        new Circunferencia(TorreMuralla.radioTorre - TorreMuralla.ANCHO_TOROIDE / 2)
+      )
     }
 
     this.torre = new Objeto3D({
@@ -170,6 +176,14 @@ class TorreMuralla extends Objeto3D {
       material: MATERIAL_PIEDRA,
       glContext: gl
     });
+
+    this.toroideRectangular = new Objeto3D({
+      geometry: TorreMuralla.geometriaToroide,
+      material: MATERIAL_PIEDRA,
+      glContext: gl
+    });
+    this.toroideRectangular.setPosition(0, 0, alturaTorre + (TorreMuralla.ALTO_TOROIDE / 2));
+    this.torre.addChild(this.toroideRectangular); 
 
     this.addChild(this.torre);
   }
@@ -180,7 +194,7 @@ class Muralla extends Objeto3D {
     super();
 
     this.muralla = new Objeto3D({
-      geometry: new SuperficieBarrido(new PerfilMuralla(altura, Muralla.ANCHO), new Circunferencia(radio), false, cantidadDeLados - 1),
+      geometry: new SuperficieBarrido(new PerfilMuralla(altura, Muralla.ANCHO), new Circunferencia(radio, 0.1), false, cantidadDeLados - 1),
       material: MATERIAL_PIEDRA,
       glContext: gl
     });
@@ -192,6 +206,10 @@ class Muralla extends Objeto3D {
       torreMuralla.setPosition(radio * Math.cos(anguloDeRotacion), radio * Math.sin(anguloDeRotacion), 0);
       this.muralla.addChild(torreMuralla);
     }
+
+    // giro para que un lado apunte al puente
+    const giro = (2 * Math.PI / cantidadDeLados) / 2;
+    this.setRotation(0, giro, 0)
 
     this.addChild(this.muralla)
   }
@@ -386,6 +404,8 @@ Muralla.ANCHO = 4;
 
 TorreMuralla.ALTURA_EXCEDENTE_PORCENTUAL = 0.30;
 TorreMuralla.RADIO = 4;
+TorreMuralla.ANCHO_TOROIDE = 0.2 * TorreMuralla.RADIO;
+TorreMuralla.ALTO_TOROIDE = TorreMuralla.ANCHO_TOROIDE * 1.7;
 
 Piso.LARGO_DEFAULT = 10;
 Piso.ANCHO_DEFAULT = 20;
