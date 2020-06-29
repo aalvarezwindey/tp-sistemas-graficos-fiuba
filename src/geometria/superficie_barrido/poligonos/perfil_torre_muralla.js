@@ -3,52 +3,26 @@ import BSplineCuadratica from "../../curvas/bspline/bspline_cuadratica.js";
 
 
 class PerfilTorreMuralla extends Poligono {
-  constructor() {
+  constructor(r = 7, h = 17.5) {
     super();
-
-    /*  
-
-    */
-
-    const SCALE_FACTOR = 0.5;
-
-    const radio = 8 * SCALE_FACTOR;
-    const alturaCurva1 = 3 * SCALE_FACTOR;
-    const alturaCurva2 = 3 * SCALE_FACTOR;
-    const anchoCurva = 1;
-
-    const offset = - (radio);
-
-
-
-    const v0 = [offset + 0, -alturaCurva1, 0];
-    const v1 = [offset + 0, alturaCurva1, 0];
-    const v2 = [offset + anchoCurva * 2, alturaCurva1, 0];
-    const v3 = [offset + anchoCurva * 2, alturaCurva1 + alturaCurva2, 0];
-    const v4 = [offset + 0, alturaCurva1 + alturaCurva2, 0];
-
+    
+    const v0 = [r - 1, - (10/35) * h, 0];
+    const v1 = [r + 1, + (10/35) * h, 0];
+    const v2 = [r - 3, + (30/35) * h, 0];
+    const v3 = [r + 3, + (40/35) * h, 0];
     const x0 = new Vertice();
-    x0.posicion = [offset + radio, alturaCurva1 + alturaCurva2, 0];
-    const x1 = new Vertice();
-    x1.posicion = [offset + radio, 0, 0];
-    const x2 = new Vertice();
-    x2.posicion = [offset, 0, 0];
+    x0.posicion = [0, h, 0];
+    x0.normal = [0, 1, 0];
+    x0.tangente = [1, 0, 0];
+    x0.binormal = [0, 0, 1];
 
-    [x0, x1, x2].forEach(x => {
-      x.normal = [0, 1, 0];
-      x.tangente = [1, 0, 0];
-      x.binormal = [0,0,1];
-    });
+    const puntosDeControl = [v0, v1, v2, v3];
 
-    const curvaBspline1 = new BSplineCuadratica(
-      { puntosDeControl: [v0, v1, v2, v3, v4] },
-      20,
-    );
+    const curva = new BSplineCuadratica({ puntosDeControl });
 
+    this.vertices.push(...curva.vertices, x0)
 
-    this.vertices.push(...curvaBspline1.vertices, x0, x1, x2);
-
-    this.centro.posicion = [radio / 2, alturaCurva1 / 2, 0];
+    this.centro.posicion = [r / 2, h / 4, 0];
   }
 
   getVertice(vertice, nivel) {

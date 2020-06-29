@@ -6,6 +6,7 @@ import PerfilTorre from '../../geometria/superficie_barrido/poligonos/perfil_tor
 import Circunferencia from '../../geometria/superficie_barrido/recorridos_parametricos/circunferencia.js';
 import PerfilTechoTorre from '../../geometria/superficie_barrido/poligonos/perfil_techo_torre.js';
 import PerfilMuralla from '../../geometria/superficie_barrido/poligonos/perfil_muralla.js';
+import PerfilTorreMuralla from '../../geometria/superficie_barrido/poligonos/perfil_torre_muralla.js';
 
 class TechoCastillo extends Objeto3D {
   constructor(largoPiso, anchoPiso) {
@@ -148,6 +149,33 @@ class Piso extends Objeto3D {
   }
 }
 
+class TorreMuralla extends Objeto3D {
+  constructor(radioTorre, alturaTorre) {
+    super();
+
+    if (radioTorre !== TorreMuralla.radioTorre || alturaTorre !== TorreMuralla.alturaTorre) {
+      TorreMuralla.radioTorre = radioTorre;
+      TorreMuralla.alturaTorre = alturaTorre;
+
+      // Volvemos a setear la geometria
+      TorreMuralla.geometriaTorre = new SuperficieBarrido(
+        new PerfilTorreMuralla(radioTorre, alturaTorre),
+        new Circunferencia(0.01),
+        false
+      );
+    }
+
+    this.torre = new Objeto3D({
+      geometry: TorreMuralla.geometriaTorre,
+      material: MATERIAL_PIEDRA,
+      glContext: gl
+    });
+
+    this.addChild(EJES_DE_COORDENADAS);
+    this.addChild(this.torre);
+  }
+}
+
 class Muralla extends Objeto3D {
   constructor(radio, cantidadDeLados) {
     super();
@@ -158,6 +186,13 @@ class Muralla extends Objeto3D {
       glContext: gl
     });
     this.muralla.setRotation(-Math.PI / 2, 0, 0);
+
+    for (let i = 0; i < cantidadDeLados; i++) {
+      const torreMuralla = new TorreMuralla(TorreMuralla.RADIO, TorreMuralla.ALTURA);
+      const anguloDeRotacion = i * (2 * Math.PI / cantidadDeLados);
+      torreMuralla.setPosition(radio * Math.cos(anguloDeRotacion), radio * Math.sin(anguloDeRotacion), 0);
+      this.muralla.addChild(torreMuralla);
+    }
 
     this.addChild(this.muralla)
   }
@@ -330,6 +365,9 @@ Castillo.CANTIDAD_DE_PISOS_DEFAULT = 3;
 
 Muralla.CANTIDAD_DE_LADOS_DEFAULT = 8;
 Muralla.FACTOR_EXCEDENTE = 1.10;
+
+TorreMuralla.ALTURA = 17.5
+TorreMuralla.RADIO = 4;
 
 Piso.LARGO_DEFAULT = 10;
 Piso.ANCHO_DEFAULT = 20;
