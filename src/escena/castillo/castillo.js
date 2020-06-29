@@ -200,6 +200,7 @@ class Muralla extends Objeto3D {
     });
     this.muralla.setRotation(-Math.PI / 2, 0, 0);
 
+    // torres
     for (let i = 0; i < cantidadDeLados; i++) {
       const torreMuralla = new TorreMuralla(TorreMuralla.RADIO, altura + altura * TorreMuralla.ALTURA_EXCEDENTE_PORCENTUAL);
       const anguloDeRotacion = i * (2 * Math.PI / cantidadDeLados);
@@ -207,9 +208,34 @@ class Muralla extends Objeto3D {
       this.muralla.addChild(torreMuralla);
     }
 
+    // puerta
+    const ANCHO_MARCO = (Math.PI / 8) * radio / 2;
+    const ALTO_MARCO = altura * 1.2;
+    const PROFUNDIDAD_MARCO = Muralla.ANCHO * 1.2;
+
+    const ANCHO_PUERTA = ANCHO_MARCO * 0.9;
+    const ALTO_PUERTA = ALTO_MARCO * 0.95;
+    const PROFUNDIDAD_PUERTA = PROFUNDIDAD_MARCO * 1.1;
+
+    this.marcoPuerta = new Prisma(ANCHO_MARCO, ALTO_MARCO, PROFUNDIDAD_MARCO, MATERIAL_PIEDRA);
+    this.puerta = new Prisma(ANCHO_PUERTA, ALTO_PUERTA, PROFUNDIDAD_PUERTA, MATERIAL_MADERA_CLARA);
+    this.puerta.setPosition(0, 0, -(ALTO_MARCO - ALTO_PUERTA) / 2);
+    this.marcoPuerta.addChild(this.puerta);
+
     // giro para que un lado apunte al puente
     const giro = (2 * Math.PI / cantidadDeLados) / 2;
-    this.setRotation(0, giro, 0)
+    this.setRotation(0, giro, 0);
+
+    this.marcoPuerta.setRotation(0, 0, -giro);
+
+    // Calculamos XY de la puerta, en base al punto medio entre la torre0 y la ultima torre
+    const x0 = radio;
+    const y0 = 0;
+    const xn = radio * Math.cos((cantidadDeLados - 1) * Math.PI * 2 / cantidadDeLados);
+    const yn = radio * Math.sin((cantidadDeLados - 1) * Math.PI * 2 / cantidadDeLados);
+    this.marcoPuerta.setPosition((x0 + xn) / 2, (y0 + yn) / 2, ALTO_MARCO / 2);
+    this.marcoPuerta.addChild(EJES_DE_COORDENADAS)
+    this.muralla.addChild(this.marcoPuerta);
 
     this.addChild(this.muralla)
   }
