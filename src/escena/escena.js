@@ -150,7 +150,7 @@ class Escena {
 
   _mostrarControles() {
     alert(`
-      Presione [T] para cambiar el tipo de cámara
+      Presione [T] para cambiar el tipo de cámara (utilice la rueda del mouse para acercar o alejar la cámara orbital y la cámara de tercera persona)
       Presione [C] para cambiar de foco en la cámara orbital
       Presione [W, A, S, D] para moverse en la cámara de primera persona
       Presione [U, H, J, K] para mover la catapulta
