@@ -12,6 +12,7 @@ var mat4 = glMatrix.mat4;
 var mat3 = glMatrix.mat3;
 var vec3 = glMatrix.vec3;
 var vec4 = glMatrix.vec4;
+var DAT_GUI = dat;
 
 var gl = null;
 var canvas = null;

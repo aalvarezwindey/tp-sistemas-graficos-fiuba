@@ -2,11 +2,6 @@ import Objeto3D from "../geometria/objeto_3d.js";
 import Catapulta from "./catapulta/catapulta.js";
 import EjesDeCoordenadas from "../geometria/objetos_3d/ejes_de_coordenadas.js";
 import Castillo from "./castillo/castillo.js";
-import SuperficieBarrido from "../geometria/superficie_barrido/superficie_barrido.js";
-import PerfilMuralla from "../geometria/superficie_barrido/poligonos/perfil_muralla.js";
-import Recta from "../geometria/superficie_barrido/recorridos_parametricos/recta.js";
-import Circunferencia from "../geometria/superficie_barrido/recorridos_parametricos/circunferencia.js";
-import PerfilTorreMuralla from "../geometria/superficie_barrido/poligonos/perfil_torre_muralla.js";
 import Terreno from "./terreno/terreno.js";
 
 class Escena {
@@ -18,8 +13,6 @@ class Escena {
     this._indiceObjetoEnfocado = 0;
 
     this._iniciarHandlers();
-
-    let objeto;
 
     this.terreno = new Terreno();
     this.terreno.setPosition(0, 0, 0);
@@ -69,6 +62,117 @@ class Escena {
     this._ajustarEscalaDeEscena();    
 
     this.gestorDeCamaras.cambiarObjetivo(this.castillo);
+
+    this._iniciarMenuDatGUI();
+  }
+
+  _iniciarMenuDatGUI() {
+    this.CONFIG_KEYS = {
+      CASTILLO: {
+        PISOS: 'Cantidad de pisos',
+        LARGO: 'Largo del castillo',
+        ANCHO: 'Ancho del castillo',
+        LADOS_MURALLA: 'Cantidad de lados de la muralla',
+        ALTURA_MURALLA: 'Altura de la muralla'
+      },
+      BOTON: {
+        GENERAR_ESCENA: 'GENERAR ESCENA',
+        MOSTRAR_CONTROLES: 'MOSTRAR CONTROLES'
+      }
+    }
+
+    this.CONFIGURACION = {
+      [this.CONFIG_KEYS.CASTILLO.PISOS]: 3,
+      [this.CONFIG_KEYS.CASTILLO.LARGO]: 10,
+      [this.CONFIG_KEYS.CASTILLO.ANCHO]: 20,
+      [this.CONFIG_KEYS.CASTILLO.LADOS_MURALLA]: 8,
+      [this.CONFIG_KEYS.CASTILLO.ALTURA_MURALLA]: 7,
+
+      [this.CONFIG_KEYS.BOTON.GENERAR_ESCENA]: () => {
+        this._regenerarEscena();
+      },
+
+      [this.CONFIG_KEYS.BOTON.MOSTRAR_CONTROLES]: () => {
+        this._mostrarControles();
+      }
+    };
+
+    this.gui = new dat.gui.GUI();
+    this.gui.width = 500;
+
+    this.gui.remember(this.CONFIGURACION);
+    this.carpetaCastillo = this.gui.addFolder('Castillo');
+    this.carpetaCastillo.closed = false;
+
+    this.carpetaCastillo.add(
+      this.CONFIGURACION, 
+      this.CONFIG_KEYS.CASTILLO.PISOS
+    )
+    .min(this.castillo.MIN_CANTIDAD_PISOS)
+    .max(this.castillo.MAX_CANTIDAD_PISOS)
+    .step(1);
+
+    this.carpetaCastillo.add(
+      this.CONFIGURACION, 
+      this.CONFIG_KEYS.CASTILLO.LARGO
+    )
+    .min(this.castillo.MIN_LARGO)
+    .max(this.castillo.MAX_LARGO)
+    .step(0.1);
+
+    this.carpetaCastillo.add(
+      this.CONFIGURACION, 
+      this.CONFIG_KEYS.CASTILLO.ANCHO
+    )
+    .min(this.castillo.MIN_ANCHO)
+    .max(this.castillo.MAX_ANCHO)
+    .step(0.1);
+
+    this.carpetaCastillo.add(
+      this.CONFIGURACION, 
+      this.CONFIG_KEYS.CASTILLO.LADOS_MURALLA
+    )
+    .min(this.castillo.MIN_MURALLAS)
+    .max(this.castillo.MAX_MURALLAS)
+    .step(1);
+
+    this.carpetaCastillo.add(
+      this.CONFIGURACION, 
+      this.CONFIG_KEYS.CASTILLO.ALTURA_MURALLA
+    )
+    .min(this.castillo.MIN_ALTURA_MURALLA)
+    .max(this.castillo.MAX_ALTURA_MURALLA)
+    .step(0.1);
+
+    this.gui.add(this.CONFIGURACION, this.CONFIG_KEYS.BOTON.GENERAR_ESCENA);
+    this.gui.add(this.CONFIGURACION, this.CONFIG_KEYS.BOTON.MOSTRAR_CONTROLES);
+  }
+
+  _mostrarControles() {
+    alert(`
+      Presione [T] para cambiar el tipo de cámara
+      Presione [C] para cambiar de foco en la cámara orbital
+      Presione [W, A, S, D] para moverse en la cámara de primera persona
+      Presione [U, H, J, K] para mover la catapulta
+      Presione [BARRA ESPACIADORA] para disparar la catapulta (o resetear el disparo)
+      Presione los números [1, 2, 3, 4, 5] para variar parámetros del castillo
+    `);
+  }
+
+  _regenerarEscena() {
+    console.log(this.CONFIG_KEYS.CASTILLO.PISOS, this.CONFIGURACION[this.CONFIG_KEYS.CASTILLO.PISOS]);
+    console.log(this.CONFIG_KEYS.CASTILLO.LARGO, this.CONFIGURACION[this.CONFIG_KEYS.CASTILLO.LARGO]);
+    console.log(this.CONFIG_KEYS.CASTILLO.ANCHO, this.CONFIGURACION[this.CONFIG_KEYS.CASTILLO.ANCHO]);
+    console.log(this.CONFIG_KEYS.CASTILLO.LADOS_MURALLA, this.CONFIGURACION[this.CONFIG_KEYS.CASTILLO.LADOS_MURALLA]);
+    console.log(this.CONFIG_KEYS.CASTILLO.ALTURA_MURALLA, this.CONFIGURACION[this.CONFIG_KEYS.CASTILLO.ALTURA_MURALLA]);
+
+    this.castillo._init(
+      this.CONFIGURACION[this.CONFIG_KEYS.CASTILLO.PISOS],
+      this.CONFIGURACION[this.CONFIG_KEYS.CASTILLO.LARGO],
+      this.CONFIGURACION[this.CONFIG_KEYS.CASTILLO.ANCHO],
+      this.CONFIGURACION[this.CONFIG_KEYS.CASTILLO.LADOS_MURALLA],
+      this.CONFIGURACION[this.CONFIG_KEYS.CASTILLO.ALTURA_MURALLA]
+    );
   }
 
   _ajustarEscalaDeEscena = () => {
