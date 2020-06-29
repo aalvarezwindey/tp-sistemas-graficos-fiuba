@@ -66,16 +66,6 @@ class Escena {
     });
     this.objetos.push(this.proyectilDesprendido);
 
-    objeto = new Objeto3D({
-      geometry: new SuperficieBarrido(new PerfilTorreMuralla(), new Circunferencia(0.01), false),
-      material: MATERIAL_PIEDRA,
-      glContext: gl
-    });
-    objeto.setPosition(0, 50, 50);
-    //objeto.setScale(1,1,4)
-    objeto.addChild(EJES_DE_COORDENADAS)
-    this.objetos.push(objeto);
-
     this._ajustarEscalaDeEscena();    
 
     this.gestorDeCamaras.cambiarObjetivo(this.castillo);
@@ -121,7 +111,12 @@ class Escena {
         }
 
         case '4': {
-          this.castillo.variarMuralla()
+          this.castillo.variarLadosDeMuralla()
+          break;
+        }
+
+        case '5': {
+          this.castillo.variarAlturaDeMuralla()
           break;
         }
 

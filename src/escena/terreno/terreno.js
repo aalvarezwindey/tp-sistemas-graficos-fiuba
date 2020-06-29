@@ -50,7 +50,7 @@ class Terreno extends Objeto3D {
 Terreno.PROFUNDIDAD_AGUA = 3
 
 Terreno.MAX_LADO_CASTILLO = 20;
-Terreno.RADIO_ISLA = Terreno.MAX_LADO_CASTILLO * 1.3;
+Terreno.RADIO_ISLA = Terreno.MAX_LADO_CASTILLO * 1.5;
 Terreno.RADIO_AGUA = Terreno.RADIO_ISLA * 2;
 Terreno.LARGO_TERRENO = 50;
 Terreno.LARGO_PUENTE = Terreno.RADIO_AGUA - Terreno.RADIO_ISLA;

@@ -171,24 +171,23 @@ class TorreMuralla extends Objeto3D {
       glContext: gl
     });
 
-    this.addChild(EJES_DE_COORDENADAS);
     this.addChild(this.torre);
   }
 }
 
 class Muralla extends Objeto3D {
-  constructor(radio, cantidadDeLados) {
+  constructor(radio, cantidadDeLados, altura) {
     super();
 
     this.muralla = new Objeto3D({
-      geometry: new SuperficieBarrido(new PerfilMuralla(), new Circunferencia(radio), false, cantidadDeLados - 1),
+      geometry: new SuperficieBarrido(new PerfilMuralla(altura, Muralla.ANCHO), new Circunferencia(radio), false, cantidadDeLados - 1),
       material: MATERIAL_PIEDRA,
       glContext: gl
     });
     this.muralla.setRotation(-Math.PI / 2, 0, 0);
 
     for (let i = 0; i < cantidadDeLados; i++) {
-      const torreMuralla = new TorreMuralla(TorreMuralla.RADIO, TorreMuralla.ALTURA);
+      const torreMuralla = new TorreMuralla(TorreMuralla.RADIO, altura + altura * TorreMuralla.ALTURA_EXCEDENTE_PORCENTUAL);
       const anguloDeRotacion = i * (2 * Math.PI / cantidadDeLados);
       torreMuralla.setPosition(radio * Math.cos(anguloDeRotacion), radio * Math.sin(anguloDeRotacion), 0);
       this.muralla.addChild(torreMuralla);
@@ -265,17 +264,21 @@ class Castillo extends Objeto3D {
   MIN_MURALLAS = 4;
   MAX_MURALLAS = 8;
 
+  MIN_ALTURA_MURALLA = 4;
+  MAX_ALTURA_MURALLA = 8;
+
   constructor(
     pisos = Castillo.CANTIDAD_DE_PISOS_DEFAULT, 
     largo = Piso.LARGO_DEFAULT, 
     ancho = Piso.ANCHO_DEFAULT, 
-    cantidadDeLadosDeLaMuralla = Muralla.CANTIDAD_DE_LADOS_DEFAULT
+    cantidadDeLadosDeLaMuralla = Muralla.CANTIDAD_DE_LADOS_DEFAULT,
+    alturaMuralla = Muralla.ALTURA_DEFAULT
   ) {
     super();
-    this._init(pisos, largo, ancho, cantidadDeLadosDeLaMuralla)
+    this._init(pisos, largo, ancho, cantidadDeLadosDeLaMuralla, alturaMuralla)
   }
 
-  _init(pisos, largo, ancho, cantidadDeLadosDeLaMuralla) {
+  _init(pisos, largo, ancho, cantidadDeLadosDeLaMuralla, alturaMuralla) {
     // Primero eliminamos las instancias viejas si las hay
     this.children.forEach(child => {
       child.destroy();
@@ -288,6 +291,7 @@ class Castillo extends Objeto3D {
     this.largo = largo;
     this.ancho = ancho;
     this.cantidadDeLadosDeLaMuralla = cantidadDeLadosDeLaMuralla;
+    this.alturaMuralla = alturaMuralla;
 
     // Pisos
     for (let i = 0 ; i < this.cantidadDePisos ; i++) {
@@ -318,8 +322,11 @@ class Castillo extends Objeto3D {
     const radioMuralla = Math.sqrt(Math.pow(this.ancho, 2) + Math.pow(this.largo, 2));
     const muralla = new Muralla(
       radioMuralla * Muralla.FACTOR_EXCEDENTE,
-      cantidadDeLadosDeLaMuralla
+      cantidadDeLadosDeLaMuralla,
+      this.alturaMuralla
     );
+
+    this.setRotation(0, Math.PI / 2, 0)
 
     this.addChild(muralla);
   }
@@ -330,7 +337,7 @@ class Castillo extends Objeto3D {
       cantidadDePisosNueva = this.MIN_CANTIDAD_PISOS;
     }
 
-    this._init(cantidadDePisosNueva, this.largo, this.ancho, this.cantidadDeLadosDeLaMuralla)
+    this._init(cantidadDePisosNueva, this.largo, this.ancho, this.cantidadDeLadosDeLaMuralla, this.alturaMuralla)
   }
 
   variarLargo = (val) => {
@@ -339,7 +346,7 @@ class Castillo extends Objeto3D {
       nuevoLargo = this.MIN_LARGO;
     }
 
-    this._init(this.cantidadDePisos, nuevoLargo, this.ancho, this.cantidadDeLadosDeLaMuralla)
+    this._init(this.cantidadDePisos, nuevoLargo, this.ancho, this.cantidadDeLadosDeLaMuralla, this.alturaMuralla)
   }
 
   variarAncho = (val) => {
@@ -348,16 +355,25 @@ class Castillo extends Objeto3D {
       nuevoAncho = this.MIN_ANCHO;
     }
 
-    this._init(this.cantidadDePisos, this.largo, nuevoAncho, this.cantidadDeLadosDeLaMuralla);
+    this._init(this.cantidadDePisos, this.largo, nuevoAncho, this.cantidadDeLadosDeLaMuralla, this.alturaMuralla);
   }
 
-  variarMuralla = (val) => {
+  variarLadosDeMuralla = (val) => {
     let nuevasMurallas = val || this.cantidadDeLadosDeLaMuralla + 1;
     if (nuevasMurallas > this.MAX_MURALLAS) {
       nuevasMurallas = this.MIN_MURALLAS;
     }
 
-    this._init(this.cantidadDePisos, this.largo, this.ancho, nuevasMurallas);
+    this._init(this.cantidadDePisos, this.largo, this.ancho, nuevasMurallas, this.alturaMuralla);
+  }
+
+  variarAlturaDeMuralla = (val) => {
+    let nuevaAltura = val || this.alturaMuralla + 1;
+    if (nuevaAltura > this.MAX_ALTURA_MURALLA) {
+      nuevaAltura = this.MIN_ALTURA_MURALLA;
+    }
+
+    this._init(this.cantidadDePisos, this.largo, this.ancho, this.cantidadDeLadosDeLaMuralla, nuevaAltura);
   }
 }
 
@@ -365,8 +381,10 @@ Castillo.CANTIDAD_DE_PISOS_DEFAULT = 3;
 
 Muralla.CANTIDAD_DE_LADOS_DEFAULT = 8;
 Muralla.FACTOR_EXCEDENTE = 1.10;
+Muralla.ALTURA_DEFAULT = 7;
+Muralla.ANCHO = 4;
 
-TorreMuralla.ALTURA = 17.5
+TorreMuralla.ALTURA_EXCEDENTE_PORCENTUAL = 0.30;
 TorreMuralla.RADIO = 4;
 
 Piso.LARGO_DEFAULT = 10;
