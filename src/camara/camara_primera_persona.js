@@ -27,7 +27,19 @@ class CamaraPrimeraPersona {
     this.lateral = [1, 0, 0];
     this.rotacion = 0;
 
+    this.isMouseDown = false
+
+    document.addEventListener('mousedown', event => {
+      this.isMouseDown = true;
+    })
+
+    document.addEventListener('mouseup', event => {
+      this.isMouseDown = false;
+    });
+
     document.addEventListener('mousemove', event => {
+      if (!this.isMouseDown) return;
+
       this.mouse.x = event.clientX || event.pageX;
       this.mouse.y = event.clientY || event.pageY;
 
