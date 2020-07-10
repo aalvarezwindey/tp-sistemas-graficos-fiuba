@@ -29,7 +29,7 @@ class CamaraPrimeraPersona {
 
     this.isMouseDown = false
 
-    document.addEventListener('mousedown', event => {
+    canvas.addEventListener('mousedown', event => {
       this.isMouseDown = true;
     })
 
@@ -37,7 +37,7 @@ class CamaraPrimeraPersona {
       this.isMouseDown = false;
     });
 
-    document.addEventListener('mousemove', event => {
+    canvas.addEventListener('mousemove', event => {
       if (!this.isMouseDown) return;
 
       this.mouse.x = event.clientX || event.pageX;

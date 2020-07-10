@@ -8,7 +8,7 @@ class CamaraTerceraPersona {
     this.MAX_DISTANCIA_A_PERSONA = 45;
     this.distanciaAPersona = 30;
 
-    document.addEventListener('wheel', event => {
+    canvas.addEventListener('wheel', event => {
       if (event.deltaY > 0) {
         // Scrolling up
         this.distanciaAPersona = Math.min(this.MAX_DISTANCIA_A_PERSONA, this.distanciaAPersona + this.OFFSET_DISTANCIA)

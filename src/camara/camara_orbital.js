@@ -20,7 +20,7 @@ class CamaraOrbital {
     this.alfa = 0;
     this.beta = Math.PI / 2;
 
-    document.addEventListener('mousemove', event => {
+    canvas.addEventListener('mousemove', event => {
       this.mouse.x = event.clientX || event.pageX;
       this.mouse.y = event.clientY || event.pageY;
 
@@ -38,7 +38,7 @@ class CamaraOrbital {
       this.isMouseDown = false;
     });
 
-    document.addEventListener('wheel', event => {
+    canvas.addEventListener('wheel', event => {
       if (event.deltaY > 0) {
         // Scrolling up
         this.radio += this.deltaRadio;
