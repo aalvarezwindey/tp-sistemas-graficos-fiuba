@@ -42,9 +42,11 @@ class PerfilTechoTorre extends Poligono {
 
     const v0 = new Vertice()
     v0.posicion = vec3.fromValues(0, 0, 0);
+    v0.normal = [0, -1, 0];
 
     const v1 = new Vertice();
     v1.posicion = vec3.fromValues(v0.posicion[0] - radio, v0.posicion[1], v0.posicion[2]);
+    v1.normal = [0, -1, 0];
     const p0 = v1;
 
     const p1 = new Vertice();
@@ -53,12 +55,18 @@ class PerfilTechoTorre extends Poligono {
     
     const v2 = new Vertice();
     v2.posicion = vec3.fromValues(v0.posicion[0], v0.posicion[1] + altura, v0.posicion[2]);
+    v2.normal = [0, 1, 0];
     const p3 = v2;
     
     const p2 = new Vertice();
     p2.posicion = vec3.fromValues(p3.posicion[0], p3.posicion[1] - (altura * CTE_PORCENTUAL_ALTURA), p3.posicion[2]);
   
     const curvaBezierCubica = new BezierCubica(p0.posicion, p1.posicion, p2.posicion, p3.posicion, 20);
+
+    curvaBezierCubica.vertices.forEach(v => {
+      // Rotamos la tangente 90 grados para obtener la normal
+      vec3.rotateZ(v.normal, v.tangente, [0, 0, 0], Math.PI / 2);
+    })
 
     this.vertices.push(v0);
     this.vertices.push(v1);

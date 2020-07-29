@@ -23,52 +23,47 @@ class PerfilVentana extends Poligono {
         Base
     */
 
-    const vertice1 = new Vertice();
-    vertice1.posicion = vec3.fromValues(base / 2, altura / 2, 0);
-    vertice1.normal = vec3.fromValues(0, 0, 1);
-    vertice1.tangente = vec3.fromValues(0, 1, 0);
-    vertice1.binormal = vec3.fromValues(1, 0, 0);
+    const v1 = new Vertice();
+    const v2 = new Vertice();
+    v1.posicion = [base / 2, altura / 2, 0];
+    v1.normal = [1, 0, 0];
+    v1.binormal = [0, 0, 1];
+    v2.posicion = [base / 2, -altura / 2, 0];
+    v2.normal = [1, 0, 0];
+    v2.binormal = [0, 0, 1];
 
-    const vertice2 = new Vertice();
-    vertice2.posicion = vec3.fromValues(base / 2, -altura / 2, 0);
-    vertice2.normal = vec3.fromValues(0, 0, 1);
-    vertice2.tangente = vec3.fromValues(0, 1, 0);
-    vertice2.binormal = vec3.fromValues(1, 0, 0);
+    const v3 = new Vertice();
+    const v4 = new Vertice();
+    v3.posicion = [base / 2, -altura / 2, 0];
+    v3.normal = [0, -1, 0];
+    v3.binormal = [0, 0, 1];
+    v4.posicion = [-base / 2, -altura / 2, 0];
+    v4.normal = [0, -1, 0];
+    v4.binormal = [0, 0, 1];
 
-    const vertice3 = new Vertice();
-    vertice3.posicion = vec3.fromValues(-base / 2, -altura / 2, 0);
-    vertice3.normal = vec3.fromValues(0, 0, 1);
-    vertice3.tangente = vec3.fromValues(0, 1, 0);
-    vertice3.binormal = vec3.fromValues(1, 0, 0);
-
-    const vertice4 = new Vertice();
-    vertice4.posicion = vec3.fromValues(-base / 2, altura / 2, 0);
-    vertice4.normal = vec3.fromValues(0, 0, 1);
-    vertice4.tangente = vec3.fromValues(0, 1, 0);
-    vertice4.binormal = vec3.fromValues(1, 0, 0);
+    const v5 = new Vertice();
+    const v6 = new Vertice();
+    v5.posicion = [-base / 2, -altura / 2, 0];
+    v5.normal = [-1, 0, 0];
+    v5.binormal = [0, 0, 1];
+    v6.posicion = [-base / 2, altura / 2, 0];
+    v6.normal = [-1, 0, 0];
+    v6.binormal = [0, 0, 1];
 
     const curvaBezier = new BezierCuadratica(
-      vertice1.posicion,
+      v1.posicion,
       [0, alturaPuntoDeControlIntermedio, 0],
-      vertice4.posicion
+      v6.posicion
     );
 
-    this.vertices.push(vertice4);
-
-    // Adaptamos la tangente, normal y binormal para que sea acorde a la base de la ventana
     curvaBezier.vertices.forEach(v => {
-      v.normal = vec3.fromValues(0, 0, 1);
-      v.tangente = vec3.fromValues(0, 1, 0);
-      v.binormal = vec3.fromValues(1, 0, 0);
+      // Rotamos la tangente 90 grados para obtener la normal
+      vec3.rotateZ(v.normal, v.tangente, [0, 0, 0], -Math.PI / 2);
+      v.binormal = [0, 0, 1];
     })
 
-
     this.vertices.push(...curvaBezier.vertices);
-    this.vertices.push(vertice1);
-    this.vertices.push(vertice2);
-    this.vertices.push(vertice3);
-    // Repetimos el primer vértice para cerrar bien el polígono
-    this.vertices.push(vertice4);
+    [v1, v2, v3, v4, v5, v6].forEach(v => this.vertices.push(v));
 
     this.centro.posicion = vec3.fromValues(base / 2, altura/ 2, 0);
     this.centro.normal = vec3.fromValues(0, 0, 1);

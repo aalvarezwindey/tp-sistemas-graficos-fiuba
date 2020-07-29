@@ -36,6 +36,12 @@ class PerfilMuralla extends Poligono {
       20
     );
 
+    [...curvaBspline1.vertices, ...curvaBspline2.vertices].forEach(v => {
+      // Rotamos la tangente 90 grados para obtener la normal
+      vec3.rotateZ(v.normal, v.tangente, [0, 0, 0], -Math.PI / 2);
+    })
+
+    
     this.vertices.push(...curvaBspline1.vertices, ...curvaBspline2.vertices, x0);
 
     // Espejamos los vertices para crear la otra mitad del perfil

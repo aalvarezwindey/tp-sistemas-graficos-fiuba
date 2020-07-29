@@ -21,9 +21,9 @@ class Poligono {
 class Vertice {
   constructor(x = 0, y = 0, z = 0) {
     this.posicion = vec3.fromValues(x, y, z);
-    this.normal = vec3.fromValues(0, 0, 1);
-    this.tangente = vec3.fromValues(0, 1, 0);
-    this.binormal = vec3.fromValues(1, 0, 0);
+    this.normal = vec3.fromValues(0, 1, 0);
+    this.tangente = vec3.fromValues(1, 0, 0);
+    this.binormal = vec3.fromValues(0, 0, 1);
   }
 
   clone() {

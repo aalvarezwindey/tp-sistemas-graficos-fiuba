@@ -19,8 +19,17 @@ class PerfilTorreMuralla extends Poligono {
     const puntosDeControl = [v0, v1, v2, v3];
 
     const curva = new BSplineCuadratica({ puntosDeControl });
+    curva.vertices.forEach(v => {
+      // Rotamos la tangente 90 grados para obtener la normal
+      vec3.rotateZ(v.normal, v.tangente, [0, 0, 0], -Math.PI / 2);
+    })
 
-    this.vertices.push(...curva.vertices, x0)
+    // Vertice de fin de curva
+    const x1 = curva.vertices[curva.vertices.length - 1].clone();
+    x1.normal = [0, 1, 0];
+    x1.tangente = [1, 0, 0];
+
+    this.vertices.push(...curva.vertices, x1, x0)
 
     this.centro.posicion = [r / 2, h / 4, 0];
   }

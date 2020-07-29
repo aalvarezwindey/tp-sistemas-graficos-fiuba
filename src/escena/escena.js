@@ -16,33 +16,10 @@ class Escena {
 
     this._iniciarHandlers();
 
-    const CUBO_DEBUG = new Prisma(4, 4, 4, MATERIAL_PRUEBA_NORMALES, (a, b) => a, 'CUBO_DEBUG');
-    CUBO_DEBUG.setPosition(40, 2, 0);
-    CUBO_DEBUG.setAnimacion((cubo) => {
-      cubo.setRotation(0, TIEMPO * 4, 0)
-    })
-    this.objetos.push(CUBO_DEBUG);
-
-    const CILINDRO_DEBUG = new Cilindro(2, 5, MATERIAL_PRUEBA_NORMALES);
-    CILINDRO_DEBUG.setPosition(40, 2, 5);
-    CILINDRO_DEBUG.setAnimacion((c) => {
-      c.setRotation(0, TIEMPO * 4, TIEMPO * 4)
-    })
-    this.objetos.push(CILINDRO_DEBUG);
-
-    const CILINDRO_DEBUG_2 = new Cilindro(2, 5, MATERIAL_PRUEBA_NORMALES);
-    CILINDRO_DEBUG_2.setPosition(40, 2, -5);
-    CILINDRO_DEBUG_2.setRotation(0, 0, Math.PI / 2);
-    CILINDRO_DEBUG_2.setAnimacion((c) => {
-      c.setRotation(TIEMPO * 4, TIEMPO * 4, 0)
-    })
-    this.objetos.push(CILINDRO_DEBUG_2)
-    
-
     const EJES_EN_SENTIDO_MUNDO = new Objeto3D();
     EJES_EN_SENTIDO_MUNDO.addChild(EJES_DE_COORDENADAS);
-    EJES_EN_SENTIDO_MUNDO.setPosition(35, 0, 0);
-    this.objetos.push(EJES_EN_SENTIDO_MUNDO);
+    EJES_EN_SENTIDO_MUNDO.setPosition(20, 0, 0);
+    //this.objetos.push(EJES_EN_SENTIDO_MUNDO);
 
     this.terreno = new Terreno();
     this.terreno.setPosition(0, 0, 0);

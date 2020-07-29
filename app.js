@@ -47,7 +47,7 @@ var TIEMPO_INICIAL_DESPRENDIMIENTO = null;
 
 function setupWebGL() {
   //set the clear color
-  gl.clearColor(0.7, .7, .7, 1.0);
+  gl.clearColor(25/255, 121/255, 169/255, 1.0);
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   gl.viewport(0, 0, window.innerWidth, window.innerHeight);
   gl.enable(gl.DEPTH_TEST);
