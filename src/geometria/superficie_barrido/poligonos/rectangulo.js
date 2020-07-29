@@ -3,37 +3,77 @@ import Poligono, { Vertice } from "../poligono.js";
 class Rectangulo extends Poligono {
   constructor(base, altura) {
     super();
-
+    /*
+      v6 y v7           
+      *----------------* v1 y v8
+      |                |
+      |                |
+      |                |
+      |                |
+      *----------------* v2 y v3
+      v4 y v5
+    */
     this.base = base;
     this.altura = altura;
 
-    const vertice1 = new Vertice();
-    vertice1.posicion = vec3.fromValues(base / 2, altura / 2, 0);
-    this.vertices.push(vertice1);
+    // Segmento v1 - v2
+    const v1 = new Vertice();
+    v1.posicion = [base / 2, altura / 2, 0];
+    v1.tangente = [0, -1, 0];
+    v1.normal = [1, 0, 0];
+    v1.binormal = [0, 0, 1];
 
-    const vertice2 = new Vertice();
-    vertice2.posicion = vec3.fromValues(base / 2, -altura / 2, 0);
-    this.vertices.push(vertice2);
+    const v2 = new Vertice();
+    v2.posicion = [base / 2, -altura / 2, 0];
+    v2.tangente = [0, -1, 0];
+    v2.normal = [1, 0, 0];
+    v2.binormal = [0, 0, 1];
 
-    const vertice3 = new Vertice();
-    vertice3.posicion = vec3.fromValues(-base / 2, -altura / 2, 0);
-    this.vertices.push(vertice3);
 
-    const vertice4 = new Vertice();
-    vertice4.posicion = vec3.fromValues(-base / 2, altura / 2, 0);
-    this.vertices.push(vertice4);
+    // Segmento v3 - v4
+    const v3 = new Vertice();
+    v3.posicion = [base / 2, -altura / 2, 0];
+    v3.tangente = [-1, 0, 0];
+    v3.normal = [0, -1, 0];
+    v3.binormal = [0, 0, 1];
 
-    // Repetimos el primer vértice para cerrar bien el polígono
-    this.vertices.push(vertice1);
+    const v4 = new Vertice();
+    v4.posicion = [-base / 2, -altura / 2, 0];
+    v4.tangente = [-1, 0, 0];
+    v4.normal = [0, -1, 0];
+    v4.binormal = [0, 0, 1];
 
-    this.vertices.forEach(v => {
-      v.normal = vec3.fromValues(1, 0, 0);
-      v.tangente = vec3.fromValues(0, 0, 1);
-      v.binormal = vec3.fromValues(0, 1, 0);
-    });
+
+    // Segmento v5 - v6
+    const v5 = new Vertice();
+    v5.posicion = [-base / 2, -altura / 2, 0];
+    v5.tangente = [0, 1, 0];
+    v5.normal = [-1, 0, 0];
+    v5.binormal = [0, 0, 1];
+
+    const v6 = new Vertice();
+    v6.posicion = [-base / 2, altura / 2, 0];
+    v6.tangente = [0, 1, 0];
+    v6.normal = [-1, 0, 0];
+    v6.binormal = [0, 0, 1];
+
+
+    // Segmento v7 - v8
+    const v7 = new Vertice();
+    v7.posicion = [-base / 2, altura / 2, 0];
+    v7.tangente = [1, 0, 0];
+    v7.normal = [0, 1, 0];
+    v7.binormal = [0, 0, 1];
+
+    const v8 = new Vertice();
+    v8.posicion = [base / 2, altura / 2, 0];
+    v8.tangente = [1, 0, 0];
+    v8.normal = [0, 1, 0];
+    v8.binormal = [0, 0, 1];
 
     this.centro.posicion = vec3.fromValues(0, 0, 0);
-    this.centro.normal = vec3.fromValues(0, 0, 1);
+
+    [v1, v2, v3, v4, v5, v6, v7, v8].forEach(v => this.vertices.push(v));
   }
 
   getVertice(vertice, nivel) {

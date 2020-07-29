@@ -54,6 +54,15 @@ class PerfilVentana extends Poligono {
     );
 
     this.vertices.push(vertice4);
+
+    // Adaptamos la tangente, normal y binormal para que sea acorde a la base de la ventana
+    curvaBezier.vertices.forEach(v => {
+      v.normal = vec3.fromValues(0, 0, 1);
+      v.tangente = vec3.fromValues(0, 1, 0);
+      v.binormal = vec3.fromValues(1, 0, 0);
+    })
+
+
     this.vertices.push(...curvaBezier.vertices);
     this.vertices.push(vertice1);
     this.vertices.push(vertice2);
@@ -61,7 +70,7 @@ class PerfilVentana extends Poligono {
     // Repetimos el primer vértice para cerrar bien el polígono
     this.vertices.push(vertice4);
 
-    this.centro.posicion = vec3.fromValues(0, 0, 0);
+    this.centro.posicion = vec3.fromValues(base / 2, altura/ 2, 0);
     this.centro.normal = vec3.fromValues(0, 0, 1);
   }
 

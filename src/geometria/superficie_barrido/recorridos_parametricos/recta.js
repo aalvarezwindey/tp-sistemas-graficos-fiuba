@@ -5,7 +5,7 @@ class Recta extends RecorridoParametrico {
     super();
     this.largo = largo;
 
-    this.sentido = null;
+    this.sentido = 'x';
   }
 
   getPosicion(u) {
@@ -19,15 +19,30 @@ class Recta extends RecorridoParametrico {
   }
 
   getTangente(u) {
-    return [1, 0, 0];
+    switch(this.sentido) {
+      case 'x': return [1, 0, 0];
+      case 'y': return [0, 1, 0];
+      case 'z': return [0, 0, 1];
+      default: return [1, 0, 0];
+    }
   }
 
   getNormal(u) {
-    return [0, 1, 0];
+    switch(this.sentido) {
+      case 'x': return [0, 1, 0];
+      case 'y': return [0, 0, 1];
+      case 'z': return [1, 0, 0];
+      default: return [0, 1, 0];
+    }
   }
 
   getBinormal(u) {
-    return [0, 0, 1];
+    switch(this.sentido) {
+      case 'x': return [0, 0, 1];
+      case 'y': return [1, 0, 0];
+      case 'z': return [0, 1, 0];
+      default: return [0, 0, 1];
+    }
   }
 }
 

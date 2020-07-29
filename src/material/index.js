@@ -10,6 +10,7 @@ import Beige from "./types/beige.js";
 import LozaAzul from './types/loza_azul.js';
 import Cesped from "./types/cesped.js";
 import Agua from "./types/agua.js";
+import PruebaNormales from './types/prueba_normales.js';
 
 window.webGLApp = {
   ...window.webGLApp,
@@ -24,5 +25,6 @@ window.webGLApp = {
   Beige: Beige,
   LozaAzul: LozaAzul,
   Agua: Agua,
-  Cesped: Cesped
+  Cesped: Cesped,
+  PruebaNormales: PruebaNormales
 }

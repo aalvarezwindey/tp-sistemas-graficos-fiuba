@@ -17,7 +17,7 @@ class BezierCubica {
     this.derivada2 = function(u) { return -9*u*u+6*u;}		 // -9u2 +6u
     this.derivada3 = function(u) { return 3*u*u; }			   // 3u2
 
-    this.derivadaSegunda0 = function(u) { return (-6 * u) + 6; } 
+    this.derivadaSegunda0 = function(u) { return -6*u + 6; } 
     this.derivadaSegunda1 = function(u) { return (18 * u) - 12; }  
     this.derivadaSegunda2 = function(u) { return (-18 * u) + 6; }
     this.derivadaSegunda3 = function(u) { return (6 * u); }
@@ -53,6 +53,7 @@ class BezierCubica {
       vec3.cross(vertice.binormal, vertice.normal, vertice.tangente);
       vec3.normalize(vertice.binormal, vertice.binormal);
 
+      
       this.vertices.push(vertice);
     }
   }

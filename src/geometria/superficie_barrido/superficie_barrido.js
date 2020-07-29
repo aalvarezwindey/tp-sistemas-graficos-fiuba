@@ -47,6 +47,9 @@ class SuperficieBarrido extends Geometry {
       if (nivel === 0 && this.cerrado) {
         this.poligono.vertices.forEach(v => {
           const centro = this.poligono.getCentro(u);
+          vec3.negate(centro.normal, v.binormal);
+
+          
           this._tejerNivelParaVertice({
             vertice: centro,
             matrizDeNivel,
@@ -58,10 +61,21 @@ class SuperficieBarrido extends Geometry {
       }
 
       this.poligono.vertices.forEach(vertice => {
+        let v;
         // Tejido normal de nivel
         const verticeTransformadoSegunNivel = this.poligono.getVertice(vertice, u);
+        v = verticeTransformadoSegunNivel.clone();
+        
+        if (this.cerrado && nivel === 0) {
+          vec3.negate(v.normal, v.binormal);
+        }
+
+        if (this.cerrado && nivel === niveles) {
+          v.normal = v.binormal;
+        }
+
         this._tejerNivelParaVertice({
-          vertice: verticeTransformadoSegunNivel,
+          vertice: v,
           matrizDeNivel,
           matrizDeNormales,
           bufferDePosicion,
@@ -73,6 +87,8 @@ class SuperficieBarrido extends Geometry {
       if (nivel === niveles && this.cerrado) {
         this.poligono.vertices.forEach(v => {
           const centro = this.poligono.getCentro(u);
+          centro.normal = v.binormal;
+          
           this._tejerNivelParaVertice({
             vertice: centro,
             matrizDeNivel,
@@ -109,13 +125,7 @@ class SuperficieBarrido extends Geometry {
     // this.buffers.uv = webgl_uvs_buffer;
   }
 
-  _tejerNivelParaVertice = ({
-    vertice,
-    matrizDeNivel,
-    matrizDeNormales,
-    bufferDePosicion,
-    bufferDeNormal
-  }) => {
+  _tejerNivelParaVertice = ({ vertice, matrizDeNivel, matrizDeNormales, bufferDePosicion, bufferDeNormal }) => {
     // Calculamos la posicion con la matriz de nivel
     const posicionTransformada = vec4.create();
     vec4.transformMat4(
@@ -138,7 +148,11 @@ class SuperficieBarrido extends Geometry {
       matrizDeNormales
     );
 
-    bufferDeNormal.push(...normalTransformada);
+    bufferDeNormal.push(
+      normalTransformada[0],
+      normalTransformada[1],
+      normalTransformada[2]
+    );
   }
 }
 

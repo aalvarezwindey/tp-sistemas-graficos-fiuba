@@ -167,7 +167,8 @@ class TorreMuralla extends Objeto3D {
 
       TorreMuralla.geometriaToroide = new SuperficieBarrido(
         new Rectangulo(TorreMuralla.ANCHO_TOROIDE, TorreMuralla.ALTO_TOROIDE),
-        new Circunferencia(TorreMuralla.radioTorre - TorreMuralla.ANCHO_TOROIDE / 2)
+        new Circunferencia(TorreMuralla.radioTorre - TorreMuralla.ANCHO_TOROIDE / 2),
+        false
       )
     }
 

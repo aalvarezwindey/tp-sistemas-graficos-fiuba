@@ -1,6 +1,7 @@
 class Objeto3D {
-  constructor(params = { geometry: null, material: null, glContext: gl }) {
-    const { geometry, material, glContext } = params;
+  constructor(params = { geometry: null, material: null, glContext: gl, id: '' }) {
+    const { geometry, material, glContext, id } = params;
+    this.id = id;
     this.modelMatrix = mat4.create();
     this.normalMatrix = mat4.create();
     this.parentMatrix = mat4.create();
@@ -43,13 +44,14 @@ class Objeto3D {
     mat4.rotate(this.modelMatrix, this.modelMatrix, this.rotation[2], [0, 0, 1]);
     mat4.scale(this.modelMatrix, this.modelMatrix, this.scale);
 
-    // Update normal matrix
-    mat4.invert(this.normalMatrix, this.modelMatrix);
-    mat4.transpose(this.normalMatrix, this.normalMatrix);
-
     // Actualizamos la parent matrix de los hijos
     const matrix = mat4.create();
     mat4.multiply(matrix, this.parentMatrix, this.modelMatrix);
+
+    // Update normal matrix
+    mat4.invert(this.normalMatrix, matrix);
+    mat4.transpose(this.normalMatrix, this.normalMatrix);
+
     this.children.forEach(child => child.setParentMatrix(matrix));
   }
 
@@ -113,11 +115,7 @@ class Objeto3D {
 
   setParentMatrix(parentMatrix) {
     this.parentMatrix = parentMatrix;
-
-    // Actualizamos la parent matrix de los hijos
-    const matrix = mat4.create();
-    mat4.multiply(matrix, this.parentMatrix, this.modelMatrix);
-    this.children.forEach(child => child.setParentMatrix(matrix));
+    this._updateModelMatrix();
   }
 
   removeChild(child) {

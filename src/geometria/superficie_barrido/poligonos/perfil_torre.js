@@ -72,6 +72,10 @@ class PerfilTorre extends Poligono {
 
     const curvaBezierCubica = new BezierCubica(p0.posicion, p1.posicion, p2.posicion, p3.posicion, 20);
 
+    [v0, v1, v2, v3, v4, v5].forEach(v => {
+      v.switchNormalYTangente()
+    })
+
     this.vertices.push(v0);
     this.vertices.push(v1);
     this.vertices.push(v2);

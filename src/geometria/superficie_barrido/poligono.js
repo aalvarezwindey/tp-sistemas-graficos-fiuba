@@ -36,6 +36,56 @@ class Vertice {
 
     return cloned;
   }
+
+  NaT_TaB_BaN() {
+    const aux1 = this.normal;
+    const aux2 = this.tangente;
+    const aux3 = this.binormal;
+
+    this.normal = aux2;
+    this.tangente = aux3;
+    this.binormal = aux1;
+  }
+
+  NaB_TaN_BaT() {
+    const aux1 = this.normal;
+    const aux2 = this.tangente;
+    const aux3 = this.binormal;
+
+    this.normal = aux3;
+    this.tangente = aux1;
+    this.binormal = aux2;
+  }
+
+  switchNormalYBinormal() {
+    const aux1 = this.normal;
+    const aux2 = this.tangente;
+    const aux3 = this.binormal;
+
+    this.normal = aux3;
+    this.tangente = aux2;
+    this.binormal = aux1;
+  }
+
+  switchNormalYTangente() {
+    const aux1 = this.normal;
+    const aux2 = this.tangente;
+    const aux3 = this.binormal;
+
+    this.normal = aux2;
+    this.tangente = aux1;
+    this.binormal = aux2;
+  }
+
+  switchBinormalYTangenete() {
+    const aux1 = this.normal;
+    const aux2 = this.tangente;
+    const aux3 = this.binormal;
+
+    this.normal = aux1;
+    this.tangente = aux3;
+    this.binormal = aux2;
+  }
 }
 
 export { Vertice };

@@ -10,6 +10,7 @@ const BEIGE = 'beige';
 const LOZA_AZUL = 'loza_azul';
 const CESPED = 'cesped';
 const AGUA = 'agua';
+const PRUEBA_NORMALES = 'prueba_normales';
 
 const SHADERS_FILE_NAMES = [
   DEFAULT,
@@ -23,7 +24,8 @@ const SHADERS_FILE_NAMES = [
   BEIGE,
   LOZA_AZUL,
   CESPED,
-  AGUA
+  AGUA,
+  PRUEBA_NORMALES
 ];
 
 class ShadersManager {
@@ -40,6 +42,7 @@ class ShadersManager {
   static get LOZA_AZUL() { return LOZA_AZUL }
   static get CESPED() { return CESPED }
   static get AGUA() { return AGUA }
+  static get PRUEBA_NORMALES() { return PRUEBA_NORMALES }
 
   static async init(glContext, baseUrl = 'src/shaders/glsl') {
     const results = await Promise.all(SHADERS_FILE_NAMES.map(fileName => {
