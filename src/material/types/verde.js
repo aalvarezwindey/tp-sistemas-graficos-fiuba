@@ -5,7 +5,7 @@ class Verde extends Material {
   constructor(shaderManager) {
     super();
     this.shaderProgram = shaderManager.program(ShadersManager.VERDE);
-    this._initShader();
+
   }
 }
 

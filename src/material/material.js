@@ -21,31 +21,6 @@ class Material {
 
     //gl.uniform1i(shaderProgram.useLightingUniform, true);
   }
-
-  // Private
-  // TODO: if we use the same name for attributes and uniform variables this setups may be on the shaders_manager file
-  _initShader() {
-    return
-    const { shaderProgram } = this;
-
-    gl.useProgram(shaderProgram);
-
-    // Configure shader attributes
-    shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aPosition");
-    gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
-    shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aUv");
-
-    if (shaderProgram.textureCoordAttribute !== -1) {
-      gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
-    }
-
-    shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aNormal");
-    gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
-
-    // Configure uniforms
-    shaderProgram.modelMatrixUniform = gl.getUniformLocation(shaderProgram, "modelMatrix");
-    shaderProgram.normalMatrixUniform = gl.getUniformLocation(shaderProgram, "normalMatrix");
-  }
 }
 
 export default Material;

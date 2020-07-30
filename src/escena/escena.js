@@ -78,7 +78,7 @@ class Escena {
   _iniciarIluminacion() {
     this.RADIO_SOL = 1
     this.sol = new FuenteDeLuzPuntual(this.RADIO_SOL);
-    const RADIO_ORBITA = 7.0;
+    const RADIO_ORBITA = 100;
     const posicionSolInicial = [0.0, 3.0, RADIO_ORBITA];
     this.sol.setPosition(...posicionSolInicial);
     shadersManager.updatePosicionSol(posicionSolInicial);
@@ -86,7 +86,8 @@ class Escena {
 
     this.sol.setAnimacion(s => {
       const _2pi = Math.PI * 2;
-      const nuevaPosicion = [RADIO_ORBITA * Math.sin(TIEMPO * _2pi), 3.0, RADIO_ORBITA * Math.cos(TIEMPO * _2pi)];
+      const VELOCIDAD_ORBITA = TIEMPO * 5;
+      const nuevaPosicion = [RADIO_ORBITA * Math.sin(VELOCIDAD_ORBITA * _2pi), 3.0, RADIO_ORBITA * Math.cos(VELOCIDAD_ORBITA * _2pi)];
       s.setPosition(...nuevaPosicion);
       shadersManager.updatePosicionSol(nuevaPosicion);
     })

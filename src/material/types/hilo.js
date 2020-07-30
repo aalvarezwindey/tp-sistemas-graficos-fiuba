@@ -5,7 +5,7 @@ class Hilo extends Material {
   constructor(shaderManager) {
     super();
     this.shaderProgram = shaderManager.program(ShadersManager.HILO);
-    this._initShader();
+
   }
 }
 

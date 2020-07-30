@@ -5,7 +5,7 @@ class MaderaClara extends Material {
   constructor(shaderManager) {
     super();
     this.shaderProgram = shaderManager.program(ShadersManager.MADERA_CLARA);
-    this._initShader();
+
   }
 }
 

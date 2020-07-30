@@ -26,7 +26,6 @@ class Objeto3D {
 
   destroy() {
     if (this.geometry) {
-      //console.log('[object_3d.js] destroying', this.geometry)
       this.geometry.destroy();
     }
 

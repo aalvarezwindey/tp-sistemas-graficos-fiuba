@@ -5,7 +5,7 @@ class Azul extends Material {
   constructor(shaderManager) {
     super();
     this.shaderProgram = shaderManager.program(ShadersManager.AZUL);
-    this._initShader();
+
   }
 }
 

@@ -5,7 +5,7 @@ class MaderaOscura extends Material {
   constructor(shaderManager) {
     super();
     this.shaderProgram = shaderManager.program(ShadersManager.MADERA_OSCURA);
-    this._initShader();
+
   }
 }
 

@@ -116,7 +116,7 @@ class ShadersManager {
 
       this.programs[fileName] = glProgram;
 
-      function _initShader(shaderProgram) {    
+      function _initShader(shaderProgram, fileName) {
         gl.useProgram(shaderProgram);
     
         // Configure shader attributes
@@ -134,9 +134,10 @@ class ShadersManager {
         // Configure uniforms
         shaderProgram.modelMatrixUniform = gl.getUniformLocation(shaderProgram, "modelMatrix");
         shaderProgram.normalMatrixUniform = gl.getUniformLocation(shaderProgram, "normalMatrix");
+        shaderProgram.posicionSolUniform = gl.getUniformLocation(shaderProgram, "posicionSol")
       }
 
-      _initShader(glProgram);
+      _initShader(glProgram, fileName);
     });
   }
 
@@ -162,12 +163,7 @@ class ShadersManager {
   updatePosicionSol = (posicionSol) => {
     for (let [_shaderName, program] of Object.entries(this.programs)) {
       gl.useProgram(program);
-      const posicionSolUniform = gl.getUniformLocation(program, "posicionSol");
-      if (!TIEMPO) {
-        console.log('_shaderName, program', _shaderName, program)
-        console.log('posSolUniform', posicionSolUniform);
-      }
-      gl.uniform3fv(posicionSolUniform, posicionSol);
+      gl.uniform3fv(program.posicionSolUniform, posicionSol);
     }
   }
 
@@ -175,9 +171,6 @@ class ShadersManager {
     for (let [_shaderName, program] of Object.entries(this.programs)) {
       gl.useProgram(program);
       const projMatrixUniform = gl.getUniformLocation(program, "projMatrix");
-      if (!TIEMPO) {
-        console.log('projMatrixUniform', projMatrixUniform);
-      }
       gl.uniformMatrix4fv(projMatrixUniform, false, projectionMatrix);
     }
   }

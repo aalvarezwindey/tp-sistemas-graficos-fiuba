@@ -5,7 +5,7 @@ class Rojo extends Material {
   constructor(shaderManager) {
     super();
     this.shaderProgram = shaderManager.program(ShadersManager.ROJO);
-    this._initShader();
+
   }
 }
 

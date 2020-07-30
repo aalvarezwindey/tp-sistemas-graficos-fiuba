@@ -5,7 +5,7 @@ class LozaAzul extends Material {
   constructor(shaderManager) {
     super();
     this.shaderProgram = shaderManager.program(ShadersManager.LOZA_AZUL);
-    this._initShader();
+
   }
 }
 

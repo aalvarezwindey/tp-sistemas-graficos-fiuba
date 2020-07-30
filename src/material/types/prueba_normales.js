@@ -5,7 +5,7 @@ class PruebaNormales extends Material {
   constructor(shaderManager) {
     super();
     this.shaderProgram = shaderManager.program(ShadersManager.PRUEBA_NORMALES);
-    this._initShader();
+
   }
 }
 

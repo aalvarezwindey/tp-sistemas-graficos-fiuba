@@ -1,6 +1,7 @@
 precision highp float;
 varying vec3 vNormal;
 varying vec3 vPosWorld;
+varying vec3 vPosicionSol;
 varying vec2 vUv;
 
 void main(void) {

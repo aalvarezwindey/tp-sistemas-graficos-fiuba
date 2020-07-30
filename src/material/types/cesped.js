@@ -5,7 +5,7 @@ class Cesped extends Material {
   constructor(shaderManager) {
     super();
     this.shaderProgram = shaderManager.program(ShadersManager.CESPED);
-    this._initShader();
+
   }
 }
 

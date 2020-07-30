@@ -5,7 +5,7 @@ class DefaultMaterial extends Material {
   constructor(shaderManager) {
     super();
     this.shaderProgram = shaderManager.program(ShadersManager.DEFAULT);
-    this._initShader();
+
   }
 }
 

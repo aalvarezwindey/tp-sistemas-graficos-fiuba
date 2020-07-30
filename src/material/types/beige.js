@@ -5,7 +5,7 @@ class Beige extends Material {
   constructor(shaderManager) {
     super();
     this.shaderProgram = shaderManager.program(ShadersManager.BEIGE);
-    this._initShader();
+
   }
 }
 

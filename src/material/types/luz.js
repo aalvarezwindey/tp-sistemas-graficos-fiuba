@@ -5,7 +5,7 @@ class Luz extends Material {
   constructor(shaderManager) {
     super();
     this.shaderProgram = shaderManager.program(ShadersManager.LUZ);
-    this._initShader();
+
   }
 }
 

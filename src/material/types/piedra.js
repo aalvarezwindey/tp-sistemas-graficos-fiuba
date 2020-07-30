@@ -5,7 +5,7 @@ class Piedra extends Material {
   constructor(shaderManager) {
     super();
     this.shaderProgram = shaderManager.program(ShadersManager.PIEDRA);
-    this._initShader();
+
   }
 }
 

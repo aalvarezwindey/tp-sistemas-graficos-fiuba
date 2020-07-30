@@ -5,7 +5,7 @@ class Agua extends Material {
   constructor(shaderManager) {
     super();
     this.shaderProgram = shaderManager.program(ShadersManager.AGUA);
-    this._initShader();
+
   }
 }
 
