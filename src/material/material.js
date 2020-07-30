@@ -25,6 +25,7 @@ class Material {
   // Private
   // TODO: if we use the same name for attributes and uniform variables this setups may be on the shaders_manager file
   _initShader() {
+    return
     const { shaderProgram } = this;
 
     gl.useProgram(shaderProgram);

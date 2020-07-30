@@ -11,6 +11,7 @@ const LOZA_AZUL = 'loza_azul';
 const CESPED = 'cesped';
 const AGUA = 'agua';
 const PRUEBA_NORMALES = 'prueba_normales';
+const LUZ = 'luz';
 
 const SHADERS_FILE_NAMES = [
   DEFAULT,
@@ -25,7 +26,8 @@ const SHADERS_FILE_NAMES = [
   LOZA_AZUL,
   CESPED,
   AGUA,
-  PRUEBA_NORMALES
+  PRUEBA_NORMALES,
+  LUZ
 ];
 
 class ShadersManager {
@@ -43,13 +45,14 @@ class ShadersManager {
   static get CESPED() { return CESPED }
   static get AGUA() { return AGUA }
   static get PRUEBA_NORMALES() { return PRUEBA_NORMALES }
+  static get LUZ() { return LUZ }
 
   static async init(glContext, baseUrl = 'src/shaders/glsl') {
     const results = await Promise.all(SHADERS_FILE_NAMES.map(fileName => {
       return new Promise((resolve, reject) => {
         Promise.all([
           fetch(`${baseUrl}/fs_${fileName}.glsl`),
-          fetch(`${baseUrl}/vs_${fileName}.glsl`)
+          fetch(`${baseUrl}/vs_${'default'}.glsl`)
         ])
         .then(([ fragmentResult, vertexResult ]) => {
           if (fragmentResult.ok && vertexResult.ok) {
@@ -112,6 +115,28 @@ class ShadersManager {
       }
 
       this.programs[fileName] = glProgram;
+
+      function _initShader(shaderProgram) {    
+        gl.useProgram(shaderProgram);
+    
+        // Configure shader attributes
+        shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aPosition");
+        gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+        shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aUv");
+    
+        if (shaderProgram.textureCoordAttribute !== -1) {
+          gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
+        }
+    
+        shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aNormal");
+        gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+    
+        // Configure uniforms
+        shaderProgram.modelMatrixUniform = gl.getUniformLocation(shaderProgram, "modelMatrix");
+        shaderProgram.normalMatrixUniform = gl.getUniformLocation(shaderProgram, "normalMatrix");
+      }
+
+      _initShader(glProgram);
     });
   }
 
@@ -130,6 +155,19 @@ class ShadersManager {
       gl.useProgram(program);
       const viewMatrixUniform = gl.getUniformLocation(program, "viewMatrix");
       gl.uniformMatrix4fv(viewMatrixUniform, false, viewMatrix);
+      gl.unifo
+    }
+  }
+
+  updatePosicionSol = (posicionSol) => {
+    for (let [_shaderName, program] of Object.entries(this.programs)) {
+      gl.useProgram(program);
+      const posicionSolUniform = gl.getUniformLocation(program, "posicionSol");
+      if (!TIEMPO) {
+        console.log('_shaderName, program', _shaderName, program)
+        console.log('posSolUniform', posicionSolUniform);
+      }
+      gl.uniform3fv(posicionSolUniform, posicionSol);
     }
   }
 
@@ -137,6 +175,9 @@ class ShadersManager {
     for (let [_shaderName, program] of Object.entries(this.programs)) {
       gl.useProgram(program);
       const projMatrixUniform = gl.getUniformLocation(program, "projMatrix");
+      if (!TIEMPO) {
+        console.log('projMatrixUniform', projMatrixUniform);
+      }
       gl.uniformMatrix4fv(projMatrixUniform, false, projectionMatrix);
     }
   }

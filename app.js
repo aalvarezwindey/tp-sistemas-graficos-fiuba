@@ -4,7 +4,7 @@ const {
   Plano,
   ShadersManager,
   GestorDeCamaras,
-  DefaultMaterial, MaderaClara, MaderaOscura, Hilo, Piedra, Rojo, Verde, Azul, Beige, LozaAzul, Cesped, Agua, PruebaNormales,
+  DefaultMaterial, MaderaClara, MaderaOscura, Hilo, Piedra, Rojo, Verde, Azul, Beige, LozaAzul, Cesped, Agua, PruebaNormales, Luz,
   Escena
 } = window.webGLApp;
 
@@ -33,6 +33,7 @@ var MATERIAL_LOZA_AZUL = null;
 var MATERIAL_AGUA = null;
 var MATERIAL_CESPED = null;
 var MATERIAL_PRUEBA_NORMALES = null;
+var MATERIAL_LUZ = null;
 var VELOCIDAD_ANIMACION = 1;
 var PAUSA = false;
 var TIEMPO = 0;
@@ -107,6 +108,7 @@ function startWebGLApp() {
       MATERIAL_LOZA_AZUL = new LozaAzul(shadersManager);
       MATERIAL_CESPED = new Cesped(shadersManager);
       MATERIAL_AGUA = new Agua(shadersManager);
+      MATERIAL_LUZ = new Luz(shadersManager);
       MATERIAL_PRUEBA_NORMALES = new PruebaNormales(shadersManager);
 
       escena = new Escena(shaders, gestorDeCamaras);

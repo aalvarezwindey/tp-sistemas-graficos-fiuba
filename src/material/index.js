@@ -11,6 +11,7 @@ import LozaAzul from './types/loza_azul.js';
 import Cesped from "./types/cesped.js";
 import Agua from "./types/agua.js";
 import PruebaNormales from './types/prueba_normales.js';
+import Luz from "./types/luz.js";
 
 window.webGLApp = {
   ...window.webGLApp,
@@ -26,5 +27,6 @@ window.webGLApp = {
   LozaAzul: LozaAzul,
   Agua: Agua,
   Cesped: Cesped,
-  PruebaNormales: PruebaNormales
+  PruebaNormales: PruebaNormales,
+  Luz: Luz
 }

@@ -5,6 +5,7 @@ import Castillo from "./castillo/castillo.js";
 import Terreno from "./terreno/terreno.js";
 import Prisma from "../geometria/objetos_3d/prisma.js";
 import Cilindro from "../geometria/objetos_3d/cilindro.js";
+import FuenteDeLuzPuntual from "../iluminacion/fuente_de_luz_puntual.js";
 
 class Escena {
   constructor(shadersManager, gestorDeCamaras) {
@@ -26,10 +27,6 @@ class Escena {
     this.terreno.setRotation(-Math.PI / 2, 0, 0);
     this.objetos.push(this.terreno);
 
-
-
-
-
     this.catapulta = new Catapulta();
     this.catapulta.setPosition(30, 0, 0);
     this.objetos.push(this.catapulta);
@@ -38,6 +35,8 @@ class Escena {
     this.castillo = new Castillo();
     this.castillo.setPosition(0, 0, 0);
     this.objetos.push(this.castillo);
+
+    this._iniciarIluminacion();
 
     this.proyectilDesprendido = new Objeto3D();
     this.proyectilDesprendido.setAnimacion(sistemaDeReferencia => {
@@ -74,6 +73,23 @@ class Escena {
     this.gestorDeCamaras.cambiarObjetivo(this.castillo);
 
     this._iniciarMenuDatGUI();
+  }
+
+  _iniciarIluminacion() {
+    this.RADIO_SOL = 1
+    this.sol = new FuenteDeLuzPuntual(this.RADIO_SOL);
+    const RADIO_ORBITA = 7.0;
+    const posicionSolInicial = [0.0, 3.0, RADIO_ORBITA];
+    this.sol.setPosition(...posicionSolInicial);
+    shadersManager.updatePosicionSol(posicionSolInicial);
+    this.objetos.push(this.sol);
+
+    this.sol.setAnimacion(s => {
+      const _2pi = Math.PI * 2;
+      const nuevaPosicion = [RADIO_ORBITA * Math.sin(TIEMPO * _2pi), 3.0, RADIO_ORBITA * Math.cos(TIEMPO * _2pi)];
+      s.setPosition(...nuevaPosicion);
+      shadersManager.updatePosicionSol(nuevaPosicion);
+    })
   }
 
   _iniciarMenuDatGUI() {
