@@ -30,12 +30,14 @@ class CamaraOrbital {
       }
     });
 
-    document.addEventListener('mousedown', event => {
+    canvas.addEventListener('mousedown', event => {
       this.isMouseDown = true;
     })
 
-    document.addEventListener('mouseup', event => {
+    canvas.addEventListener('mouseup', event => {
       this.isMouseDown = false;
+      this.clientXAnterior = 0;
+      this.clientYAnterior = 0;
     });
 
     canvas.addEventListener('wheel', event => {
