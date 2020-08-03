@@ -78,16 +78,16 @@ class Escena {
   _iniciarIluminacion() {
     this.RADIO_SOL = 1
     this.sol = new FuenteDeLuzPuntual(this.RADIO_SOL);
-    const RADIO_ORBITA = 100;
+    const RADIO_ORBITA = 20;
     const posicionSolInicial = [0.0, 3.0, RADIO_ORBITA];
     this.sol.setPosition(...posicionSolInicial);
     shadersManager.updatePosicionSol(posicionSolInicial);
     this.objetos.push(this.sol);
-
+    return
     this.sol.setAnimacion(s => {
       const _2pi = Math.PI * 2;
       const VELOCIDAD_ORBITA = TIEMPO * 5;
-      const nuevaPosicion = [RADIO_ORBITA * Math.sin(VELOCIDAD_ORBITA * _2pi), 3.0, RADIO_ORBITA * Math.cos(VELOCIDAD_ORBITA * _2pi)];
+      const nuevaPosicion = [0.0, RADIO_ORBITA * Math.sin(VELOCIDAD_ORBITA * _2pi), RADIO_ORBITA * Math.cos(VELOCIDAD_ORBITA * _2pi)];
       s.setPosition(...nuevaPosicion);
       shadersManager.updatePosicionSol(nuevaPosicion);
     })
@@ -173,6 +173,9 @@ class Escena {
 
     this.gui.add(this.CONFIGURACION, this.CONFIG_KEYS.BOTON.GENERAR_ESCENA);
     this.gui.add(this.CONFIGURACION, this.CONFIG_KEYS.BOTON.MOSTRAR_CONTROLES);
+
+    // Inicializamos el menu cerrado
+    this.gui.closed = true;
   }
 
   _mostrarControles() {

@@ -196,7 +196,7 @@ class Muralla extends Objeto3D {
 
     this.muralla = new Objeto3D({
       geometry: new SuperficieBarrido(new PerfilMuralla(altura, Muralla.ANCHO), new Circunferencia(radio, 0.1), false, cantidadDeLados - 1),
-      material: MATERIAL_PRUEBA_NORMALES,
+      material: MATERIAL_PIEDRA,
       glContext: gl
     });
     this.muralla.setRotation(-Math.PI / 2, 0, 0);

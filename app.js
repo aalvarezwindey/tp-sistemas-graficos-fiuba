@@ -45,6 +45,7 @@ var PROYECTIL_DESPRENDIDO = false;
 var POSICION_MUNDO_PROYECTIL_ANTES_DE_DESPRENDERSE = null;
 var FRONTAL_CATAPULTA_AL_DISPARAR = null;
 var TIEMPO_INICIAL_DESPRENDIMIENTO = null;
+var GUI_MATERIALES = null;
 
 function setupWebGL() {
   //set the clear color

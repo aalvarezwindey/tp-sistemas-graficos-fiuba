@@ -3,7 +3,7 @@ import ShadersManager from "../../shaders/shaders_manager.js";
 
 class DefaultMaterial extends Material {
   constructor(shaderManager) {
-    super();
+    super('Default Material');
     this.shaderProgram = shaderManager.program(ShadersManager.DEFAULT);
 
   }

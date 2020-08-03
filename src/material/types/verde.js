@@ -3,7 +3,7 @@ import ShadersManager from "../../shaders/shaders_manager.js";
 
 class Verde extends Material {
   constructor(shaderManager) {
-    super();
+    super('Verde');
     this.shaderProgram = shaderManager.program(ShadersManager.VERDE);
 
   }

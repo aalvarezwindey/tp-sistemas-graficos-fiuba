@@ -13,6 +13,17 @@ const AGUA = 'agua';
 const PRUEBA_NORMALES = 'prueba_normales';
 const LUZ = 'luz';
 
+const USES_PHONG_FRAGMENT_SHADER = {
+  [MADERA_CLARA]: true,
+  [MADERA_OSCURA]: true,
+  [HILO]: true,
+  [PIEDRA]: true,
+  [BEIGE]: true,
+  [LOZA_AZUL]: true,
+  [CESPED]: true,
+  [AGUA]: true,
+}
+
 const SHADERS_FILE_NAMES = [
   DEFAULT,
   MADERA_CLARA,
@@ -50,8 +61,9 @@ class ShadersManager {
   static async init(glContext, baseUrl = 'src/shaders/glsl') {
     const results = await Promise.all(SHADERS_FILE_NAMES.map(fileName => {
       return new Promise((resolve, reject) => {
+        const fs_file_name = USES_PHONG_FRAGMENT_SHADER[fileName] ? 'phong' : fileName
         Promise.all([
-          fetch(`${baseUrl}/fs_${fileName}.glsl`),
+          fetch(`${baseUrl}/fs_${fs_file_name}.glsl`),
           fetch(`${baseUrl}/vs_${'default'}.glsl`)
         ])
         .then(([ fragmentResult, vertexResult ]) => {
@@ -116,7 +128,7 @@ class ShadersManager {
 
       this.programs[fileName] = glProgram;
 
-      function _initShader(shaderProgram, fileName) {
+      function _initShader(shaderProgram) {
         gl.useProgram(shaderProgram);
     
         // Configure shader attributes
@@ -134,10 +146,14 @@ class ShadersManager {
         // Configure uniforms
         shaderProgram.modelMatrixUniform = gl.getUniformLocation(shaderProgram, "modelMatrix");
         shaderProgram.normalMatrixUniform = gl.getUniformLocation(shaderProgram, "normalMatrix");
-        shaderProgram.posicionSolUniform = gl.getUniformLocation(shaderProgram, "posicionSol")
+        shaderProgram.posicionSolUniform = gl.getUniformLocation(shaderProgram, "posicionSol");
+
+        // Iluminacion
+        shaderProgram.colorAmbienteUniform = gl.getUniformLocation(shaderProgram, "colorAmbiente");
+        shaderProgram.colorDifusoUniform = gl.getUniformLocation(shaderProgram, "colorDifuso");
       }
 
-      _initShader(glProgram, fileName);
+      _initShader(glProgram);
     });
   }
 

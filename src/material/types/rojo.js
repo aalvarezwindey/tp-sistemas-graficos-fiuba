@@ -3,7 +3,7 @@ import ShadersManager from "../../shaders/shaders_manager.js";
 
 class Rojo extends Material {
   constructor(shaderManager) {
-    super();
+    super('Rojo');
     this.shaderProgram = shaderManager.program(ShadersManager.ROJO);
 
   }

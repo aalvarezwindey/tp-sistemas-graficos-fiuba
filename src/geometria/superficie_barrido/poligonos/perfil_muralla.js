@@ -38,7 +38,7 @@ class PerfilMuralla extends Poligono {
 
     [...curvaBspline1.vertices, ...curvaBspline2.vertices].forEach(v => {
       // Rotamos la tangente 90 grados para obtener la normal
-      vec3.rotateZ(v.normal, v.tangente, [0, 0, 0], -Math.PI / 2);
+      vec3.rotateZ(v.normal, v.tangente, [0, 0, 0], Math.PI / 2);
     })
 
     
@@ -49,6 +49,7 @@ class PerfilMuralla extends Poligono {
     for (let i = tamanioOriginal - 1 ; i >= 0 ; i--) {
       const verticeEspejado = this.vertices[i].clone();
       verticeEspejado.posicion[0] = - verticeEspejado.posicion[0];
+      verticeEspejado.normal[0] = - verticeEspejado.normal[0];
 
       this.vertices.push(verticeEspejado);
     }

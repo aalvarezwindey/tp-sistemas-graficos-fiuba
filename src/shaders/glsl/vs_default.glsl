@@ -10,10 +10,17 @@ uniform mat4 projMatrix;
 uniform mat4 normalMatrix;
 
 uniform vec3 posicionSol;
+varying vec3 vPosicionSol;
+
+uniform vec3 colorAmbiente;
+varying vec3 vColorAmbiente;
+
+uniform vec3 colorDifuso;
+varying vec3 vColorDifuso;
 
 varying vec3 vNormal;
 varying vec3 vPosWorld;
-varying vec3 vPosicionSol;
+
 varying vec2 vUv;
 
 void main(void) {
@@ -25,4 +32,6 @@ void main(void) {
     vNormal = (normalMatrix * vec4(aNormal, 1.0)).xyz;       //la normal en coordenadas de mundo
     vUv = uv;
     vPosicionSol = posicionSol;
+    vColorAmbiente = colorAmbiente;
+    vColorDifuso = colorDifuso;
 }

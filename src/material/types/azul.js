@@ -3,7 +3,7 @@ import ShadersManager from "../../shaders/shaders_manager.js";
 
 class Azul extends Material {
   constructor(shaderManager) {
-    super();
+    super('Azul');
     this.shaderProgram = shaderManager.program(ShadersManager.AZUL);
 
   }

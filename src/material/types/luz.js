@@ -3,7 +3,7 @@ import ShadersManager from "../../shaders/shaders_manager.js";
 
 class Luz extends Material {
   constructor(shaderManager) {
-    super();
+    super('Luz');
     this.shaderProgram = shaderManager.program(ShadersManager.LUZ);
 
   }
