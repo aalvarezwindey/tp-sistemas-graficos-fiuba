@@ -12,6 +12,7 @@ import Cesped from "./types/cesped.js";
 import Agua from "./types/agua.js";
 import PruebaNormales from './types/prueba_normales.js';
 import Luz from "./types/luz.js";
+import Vidrio from "./types/vidrio.js";
 
 window.webGLApp = {
   ...window.webGLApp,
@@ -28,5 +29,6 @@ window.webGLApp = {
   Agua: Agua,
   Cesped: Cesped,
   PruebaNormales: PruebaNormales,
-  Luz: Luz
+  Luz: Luz,
+  Vidrio: Vidrio
 }

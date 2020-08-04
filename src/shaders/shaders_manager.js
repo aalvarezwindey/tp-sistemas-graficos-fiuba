@@ -12,6 +12,7 @@ const CESPED = 'cesped';
 const AGUA = 'agua';
 const PRUEBA_NORMALES = 'prueba_normales';
 const LUZ = 'luz';
+const VIDRIO = 'vidrio';
 
 const USES_PHONG_FRAGMENT_SHADER = {
   [MADERA_CLARA]: true,
@@ -22,6 +23,7 @@ const USES_PHONG_FRAGMENT_SHADER = {
   [LOZA_AZUL]: true,
   [CESPED]: true,
   [AGUA]: true,
+  [VIDRIO]: true,
 }
 
 const SHADERS_FILE_NAMES = [
@@ -38,7 +40,8 @@ const SHADERS_FILE_NAMES = [
   CESPED,
   AGUA,
   PRUEBA_NORMALES,
-  LUZ
+  LUZ,
+  VIDRIO
 ];
 
 class ShadersManager {
@@ -57,6 +60,7 @@ class ShadersManager {
   static get AGUA() { return AGUA }
   static get PRUEBA_NORMALES() { return PRUEBA_NORMALES }
   static get LUZ() { return LUZ }
+  static get VIDRIO() { return VIDRIO }
 
   static async init(glContext, baseUrl = 'src/shaders/glsl') {
     const results = await Promise.all(SHADERS_FILE_NAMES.map(fileName => {

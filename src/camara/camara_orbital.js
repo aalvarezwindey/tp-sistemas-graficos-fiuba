@@ -15,9 +15,9 @@ class CamaraOrbital {
     this.clientYAnterior = 0;
     this.factorVelocidad = 0.01;
 
-    this.radio = 0;
+    this.radio = 20;
     this.deltaRadio = 0.4;
-    this.alfa = 0;
+    this.alfa = 10;
     this.beta = Math.PI / 2;
 
     canvas.addEventListener('mousemove', event => {

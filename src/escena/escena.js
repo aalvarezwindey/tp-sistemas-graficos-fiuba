@@ -76,18 +76,19 @@ class Escena {
   }
 
   _iniciarIluminacion() {
-    this.RADIO_SOL = 1
+    this.RADIO_SOL = 10
     this.sol = new FuenteDeLuzPuntual(this.RADIO_SOL);
-    const RADIO_ORBITA = 20;
-    const posicionSolInicial = [0.0, 3.0, RADIO_ORBITA];
+    this.RADIO_ORBITA = 80;
+    this.ALTURA_ORBITA = 0.0;
+    const posicionSolInicial = [0.0, this.ALTURA_ORBITA, this.RADIO_ORBITA];
     this.sol.setPosition(...posicionSolInicial);
     shadersManager.updatePosicionSol(posicionSolInicial);
     this.objetos.push(this.sol);
-    return
+    
     this.sol.setAnimacion(s => {
       const _2pi = Math.PI * 2;
-      const VELOCIDAD_ORBITA = TIEMPO * 5;
-      const nuevaPosicion = [0.0, RADIO_ORBITA * Math.sin(VELOCIDAD_ORBITA * _2pi), RADIO_ORBITA * Math.cos(VELOCIDAD_ORBITA * _2pi)];
+      const VELOCIDAD_ORBITA = TIEMPO * 5 * 0;
+      const nuevaPosicion = [0.0, this.ALTURA_ORBITA + this.RADIO_ORBITA * Math.sin(VELOCIDAD_ORBITA * _2pi), this.RADIO_ORBITA * Math.cos(VELOCIDAD_ORBITA * _2pi)];
       s.setPosition(...nuevaPosicion);
       shadersManager.updatePosicionSol(nuevaPosicion);
     })
@@ -230,26 +231,31 @@ class Escena {
         }
 
         case '1': {
+          break
           this.castillo.variarPisos()
           break;
         }
 
         case '2': {
+          break
           this.castillo.variarLargo()
           break;
         }
 
         case '3': {
+          break
           this.castillo.variarAncho()
           break;
         }
 
         case '4': {
+          break
           this.castillo.variarLadosDeMuralla()
           break;
         }
 
         case '5': {
+          break
           this.castillo.variarAlturaDeMuralla()
           break;
         }
@@ -263,6 +269,16 @@ class Escena {
         // Resetea el tiempo
         case 'r': {
           TIEMPO = 0;
+          break;
+        }
+
+        case '+': {
+          this.RADIO_ORBITA = Math.min(100, this.RADIO_ORBITA + 0.5);
+          break;
+        }
+
+        case '-': {
+          this.RADIO_ORBITA = Math.max(1, this.RADIO_ORBITA - 0.5);
           break;
         }
 

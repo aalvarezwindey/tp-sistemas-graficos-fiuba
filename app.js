@@ -4,7 +4,7 @@ const {
   Plano,
   ShadersManager,
   GestorDeCamaras,
-  DefaultMaterial, MaderaClara, MaderaOscura, Hilo, Piedra, Rojo, Verde, Azul, Beige, LozaAzul, Cesped, Agua, PruebaNormales, Luz,
+  DefaultMaterial, MaderaClara, MaderaOscura, Hilo, Piedra, Rojo, Verde, Azul, Beige, LozaAzul, Cesped, Agua, PruebaNormales, Luz, Vidrio,
   Escena
 } = window.webGLApp;
 
@@ -34,6 +34,8 @@ var MATERIAL_AGUA = null;
 var MATERIAL_CESPED = null;
 var MATERIAL_PRUEBA_NORMALES = null;
 var MATERIAL_LUZ = null;
+var MATERIAL_VIDRIO = null;
+
 var VELOCIDAD_ANIMACION = 1;
 var PAUSA = false;
 var TIEMPO = 0;
@@ -48,12 +50,6 @@ var TIEMPO_INICIAL_DESPRENDIMIENTO = null;
 var GUI_MATERIALES = null;
 
 function setupWebGL() {
-  //set the clear color
-  gl.clearColor(25/255, 121/255, 169/255, 1.0);
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  gl.viewport(0, 0, window.innerWidth, window.innerHeight);
-  gl.enable(gl.DEPTH_TEST);
-
   // Matrix de Proyeccion Perspectiva
   mat4.perspective(projMatrix, 45, canvas.width / canvas.height, 0.1, 100.0);
 
@@ -63,6 +59,10 @@ function setupWebGL() {
 function drawScene() {
   gl.canvas.width  = window.innerWidth;
   gl.canvas.height = window.innerHeight;
+
+  //set the clear color
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  gl.viewport(0, 0, window.innerWidth, window.innerHeight);
 
   // Actualizamos matriz de perspectiva
   mat4.perspective(projMatrix, 45, gl.canvas.width / gl.canvas.height, 0.1, 100.0);
@@ -94,6 +94,11 @@ function startWebGLApp() {
   }
 
   if (gl) {
+    const clearColor = [25/255, 121/255, 169/255, 1.0];
+    console.log("startWebGLApp -> clearColor", clearColor)
+    gl.clearColor(...clearColor);
+    gl.enable(gl.DEPTH_TEST);
+
     setupWebGL(); // configurar web GL
     ShadersManager.init(gl).then(shaders => {
       shadersManager = shaders;
@@ -111,9 +116,13 @@ function startWebGLApp() {
       MATERIAL_AGUA = new Agua(shadersManager);
       MATERIAL_LUZ = new Luz(shadersManager);
       MATERIAL_PRUEBA_NORMALES = new PruebaNormales(shadersManager);
+      MATERIAL_VIDRIO = new Vidrio(shadersManager);
 
       escena = new Escena(shaders, gestorDeCamaras);
       escena.updateProjectionMatrix(projMatrix);
+
+      
+
       tick();
     });
 

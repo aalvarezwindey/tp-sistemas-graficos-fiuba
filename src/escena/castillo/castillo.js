@@ -235,7 +235,6 @@ class Muralla extends Objeto3D {
     const xn = radio * Math.cos((cantidadDeLados - 1) * Math.PI * 2 / cantidadDeLados);
     const yn = radio * Math.sin((cantidadDeLados - 1) * Math.PI * 2 / cantidadDeLados);
     this.marcoPuerta.setPosition((x0 + xn) / 2, (y0 + yn) / 2, ALTO_MARCO / 2);
-    this.marcoPuerta.addChild(EJES_DE_COORDENADAS)
     this.muralla.addChild(this.marcoPuerta);
 
     this.addChild(this.muralla)

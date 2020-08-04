@@ -4,8 +4,8 @@ import ShadersManager from "../../shaders/shaders_manager.js";
 class Beige extends Material {
   constructor(shaderManager) {
     super('Pared Castillo', {
-      ambiente: [103.0 / 255.0, 107.0 / 255.0, 29.0 / 255.0],
-      difuso: [103.0 / 255.0, 107.0 / 255.0, 29.0 / 255.0]
+      ambiente: [13, 17, 1],
+      difuso: [10, 10, 5]
     });
     this.shaderProgram = shaderManager.program(ShadersManager.BEIGE);
   }

@@ -4,8 +4,8 @@ import ShadersManager from "../../shaders/shaders_manager.js";
 class Agua extends Material {
   constructor(shaderManager) {
     super('Agua', {
-      ambiente: [135.0 / 255.0, 167.0 / 255.0, 206.0 / 255.0],
-      difuso: [135.0 / 255.0, 167.0 / 255.0, 206.0 / 255.0]
+      ambiente: [8, 8, 22],
+      difuso: [13, 13, 15]
     });
     this.shaderProgram = shaderManager.program(ShadersManager.AGUA);
 

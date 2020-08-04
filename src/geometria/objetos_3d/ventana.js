@@ -4,7 +4,7 @@ import SuperficieBarrido from '../superficie_barrido/superficie_barrido.js';
 import PerfilVentana from '../superficie_barrido/poligonos/perfil_ventana.js';
 
 class Ventana extends Objeto3D {
-  constructor(base, altura, profundidad, material = DEFAULT_MATERIAL) {
+  constructor(base, altura, profundidad, material = MATERIAL_VIDRIO) {
     super();
 
     const perfil = new PerfilVentana(base, altura);

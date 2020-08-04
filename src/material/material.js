@@ -20,11 +20,13 @@ class Material {
     GUI_MATERIALES.CONFIG_VALUES = GUI_MATERIALES.CONFIG_VALUES || {}
 
     this.KEYS = {
-      COLOR_AMBIENTE: `${this.name} Color Ambiente`
+      COLOR_AMBIENTE: `${this.name} Color Ambiente`,
+      COLOR_DIFUSO: `${this.name} Color Difuso`
     }
 
     this.VALUES = {
       [this.KEYS.COLOR_AMBIENTE]: this.colorAmbiente,
+      [this.KEYS.COLOR_DIFUSO]: this.colorDifuso,
     };
 
     GUI_MATERIALES.CONFIG_KEYS = { ...GUI_MATERIALES.CONFIG_KEYS, ...this.KEYS };
@@ -38,8 +40,13 @@ class Material {
     this.carpeta.addColor(this.VALUES, this.KEYS.COLOR_AMBIENTE)
       .onChange(this.actualizarColorAmbiente);
 
-    GUI_MATERIALES.closed = true;
+    this.carpeta.addColor(this.VALUES, this.KEYS.COLOR_DIFUSO)
+      .onChange(this.actualizarColorDifuso);
+
+    GUI_MATERIALES.closed = false;
   }
+
+  actualizarColorDifuso = color => this.colorDifuso = color;
 
   actualizarColorAmbiente = color => this.colorAmbiente = color;
 

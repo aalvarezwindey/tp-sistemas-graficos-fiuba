@@ -4,8 +4,8 @@ import ShadersManager from "../../shaders/shaders_manager.js";
 class LozaAzul extends Material {
   constructor(shaderManager) {
     super('Loza Castillo', {
-      ambiente: [93.0 / 255.0, 98.0 / 255.0, 154.0 / 255.0],
-      difuso: [93.0 / 255.0, 98.0 / 255.0, 154.0 / 255.0]
+      ambiente: [19, 19, 27],
+      difuso: [9, 9, 10]
     });
     this.shaderProgram = shaderManager.program(ShadersManager.LOZA_AZUL);
 
