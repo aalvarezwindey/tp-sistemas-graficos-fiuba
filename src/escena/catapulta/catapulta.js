@@ -6,7 +6,6 @@ import SuperficieBarrido from '../../geometria/superficie_barrido/superficie_bar
 import Circulo from '../../geometria/superficie_barrido/poligonos/circulo.js';
 import Recta from '../../geometria/superficie_barrido/recorridos_parametricos/recta.js';
 import Esfera from '../../geometria/objetos_3d/esfera.js';
-import ShadersManager from '../../shaders/shaders_manager.js';
 
 var OVILLO_CUCHARA = null;
 var OVILLO_TRAVESAÑO_TRASERO = null;

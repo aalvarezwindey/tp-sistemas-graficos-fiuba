@@ -14,6 +14,11 @@ uniform vec3 posicionSol;
 varying vec3 vPosicionSol;
 uniform vec3 posicionProyectil;
 varying vec3 vPosicionProyectil;
+uniform vec3 posicionAntorcha1;
+varying vec3 vPosicionAntorcha1;
+uniform vec3 posicionAntorcha2;
+varying vec3 vPosicionAntorcha2;
+
 
 uniform vec3 colorAmbiente;
 varying vec3 vColorAmbiente;
@@ -50,4 +55,6 @@ void main(void) {
     vColorEspecular = colorEspecular;
     vGlossiness = glossiness;
     vPosicionProyectil = posicionProyectil;
+    vPosicionAntorcha1 = posicionAntorcha1;
+    vPosicionAntorcha2 = posicionAntorcha2;
 }

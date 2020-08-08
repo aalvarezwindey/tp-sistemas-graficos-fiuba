@@ -62,7 +62,7 @@ class Material {
       .onChange(this.actualizarGlossiness);
 
 
-    GUI_MATERIALES.closed = false;
+    GUI_MATERIALES.closed = true;
     GUI_MATERIALES.width = 515;
   }
 

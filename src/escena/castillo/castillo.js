@@ -8,6 +8,8 @@ import PerfilTechoTorre from '../../geometria/superficie_barrido/poligonos/perfi
 import PerfilMuralla from '../../geometria/superficie_barrido/poligonos/perfil_muralla.js';
 import Rectangulo from '../../geometria/superficie_barrido/poligonos/rectangulo.js';
 import PerfilTorreMuralla from '../../geometria/superficie_barrido/poligonos/perfil_torre_muralla.js';
+import Cilindro from '../../geometria/objetos_3d/cilindro.js';
+import Esfera from '../../geometria/objetos_3d/esfera.js';
 
 class TechoCastillo extends Objeto3D {
   constructor(largoPiso, anchoPiso) {
@@ -190,6 +192,27 @@ class TorreMuralla extends Objeto3D {
   }
 }
 
+class Antorcha extends Objeto3D {
+  constructor() {
+    super();
+
+    this.cilindro = new Cilindro(Antorcha.RADIO_MANGO, Antorcha.LARGO_MANGO, MATERIAL_MADERA_OSCURA);
+    this.esfera = new Esfera(Antorcha.RADIO_ESFERA, MATERIAL_LUZ)
+    
+    this.addChild(this.cilindro);
+    this.esfera.setPosition(-Antorcha.LARGO_MANGO / 2, 0, 0);
+    this.addChild(this.esfera);
+  }
+
+  getPosicionLuzMundo() {
+    return this.esfera.getWorldCoordinates();
+  }
+}
+
+Antorcha.RADIO_MANGO = 0.25;
+Antorcha.LARGO_MANGO = 3;
+Antorcha.RADIO_ESFERA = 0.5;
+
 class Muralla extends Objeto3D {
   constructor(radio, cantidadDeLados, altura) {
     super();
@@ -222,6 +245,27 @@ class Muralla extends Objeto3D {
     this.puerta = new Prisma(ANCHO_PUERTA, ALTO_PUERTA, PROFUNDIDAD_PUERTA, MATERIAL_MADERA_CLARA);
     this.puerta.setPosition(0, 0, -(ALTO_MARCO - ALTO_PUERTA) / 2);
     this.marcoPuerta.addChild(this.puerta);
+
+    // antorchas
+    this.antorcha1 = new Antorcha();
+    this.antorcha2 = new Antorcha();
+    this.antorcha1.setPosition(-PROFUNDIDAD_PUERTA / 2, ANCHO_PUERTA, 0);
+    this.antorcha2.setPosition(-PROFUNDIDAD_PUERTA / 2, -ANCHO_PUERTA, 0);
+    this.antorcha1.setRotation(0, Math.PI / 4, 0);
+    this.antorcha2.setRotation(0, Math.PI / 4, 0);
+    this.puerta.addChild(this.antorcha1);
+    this.puerta.addChild(this.antorcha2);
+
+    this.antorcha1.setAnimacion(a1 => {
+      let posicion = a1.getPosicionLuzMundo();
+      shadersManager.updatePosicionLuz(posicion, "posicionAntorcha1");
+    });
+
+    this.antorcha2.setAnimacion(a2 => {
+      let posicion = a2.getPosicionLuzMundo();
+      shadersManager.updatePosicionLuz(posicion, "posicionAntorcha2");
+    });
+    
 
     // giro para que un lado apunte al puente
     const giro = (2 * Math.PI / cantidadDeLados) / 2;
