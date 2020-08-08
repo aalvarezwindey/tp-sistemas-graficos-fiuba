@@ -9,5 +9,5 @@ void main(void) {
     vec3 nrmY = vec3(0.0, abs(vNormal.y), 0.0);
     vec3 nrmZ = vec3(0.0, 0.0, abs(vNormal.z));
 
-    gl_FragColor = vec4(abs(vNormal), 1.0);
+    gl_FragColor = vec4(vNormal, 1.0);
 }

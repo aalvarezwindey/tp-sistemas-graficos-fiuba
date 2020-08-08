@@ -304,7 +304,10 @@ class Escena {
   }
 
   updateViewMatrix = () => {
-    const matrizDeVista = this.gestorDeCamaras.getCamara().getMatrizDeVista();
+    const camara = this.gestorDeCamaras.getCamara();
+    const matrizDeVista = camara.getMatrizDeVista();
+    shadersManager.updatePosicionCamaraMundo(camara.posicion)
+
     this.shadersManager.updateShadersViewMatrix(matrizDeVista)
   }
 

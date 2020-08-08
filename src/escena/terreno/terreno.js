@@ -53,7 +53,7 @@ Terreno.MAX_LADO_CASTILLO = 20;
 Terreno.RADIO_ISLA = Terreno.MAX_LADO_CASTILLO * 1.5;
 Terreno.RADIO_AGUA = Terreno.RADIO_ISLA * 2;
 Terreno.LARGO_TERRENO = 50;
-Terreno.LARGO_PUENTE = Terreno.RADIO_AGUA - Terreno.RADIO_ISLA;
+Terreno.LARGO_PUENTE = Terreno.RADIO_AGUA - Terreno.RADIO_ISLA + 5;
 Terreno.ANCHO_PUENTE = 8;
 
 Terreno.DISTANCIA_AGUA_BORDE_TIERRA = 0.5;

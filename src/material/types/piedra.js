@@ -4,8 +4,10 @@ import ShadersManager from "../../shaders/shaders_manager.js";
 class Piedra extends Material {
   constructor(shaderManager) {
     super('Piedra', {
-      ambiente: [20, 15, 15],
-      difuso: [5, 5, 5]
+      ambiente: [42,42,42],
+      difuso: [88,86,86],
+      especular: [112,57,11],
+      glossiness: 10,
     });
     this.shaderProgram = shaderManager.program(ShadersManager.PIEDRA);
 

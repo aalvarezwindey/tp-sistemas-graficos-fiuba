@@ -1,5 +1,6 @@
 class CamaraTerceraPersona {
   constructor(persona) {
+    this.posicion = [0, 0, 0];
     this.persona = persona;
     this.OFFSET_ALTURA = 3;
     this.FACTOR_ALTURA_DEFAULT = 2;
@@ -35,6 +36,8 @@ class CamaraTerceraPersona {
       posicionMundoPersona[1] + alturaCamara,
       posicionMundoPersona[2] + this.persona.frontal[2] * this.distanciaAPersona,
     );
+
+    this.posicion = posicionCamara;
 
     mat4.lookAt(matrizDeVista, posicionCamara, posicionMundoPersona, [0, 1, 0]);
     return matrizDeVista;

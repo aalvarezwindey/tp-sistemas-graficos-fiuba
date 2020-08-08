@@ -137,24 +137,32 @@ class ShadersManager {
     
         // Configure shader attributes
         shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aPosition");
-        gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+        if (shaderProgram.vertexPositionAttribute !== -1) {
+          gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+        }
+
         shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aUv");
-    
         if (shaderProgram.textureCoordAttribute !== -1) {
           gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
         }
     
         shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aNormal");
-        gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+        if (shaderProgram.vertexNormalAttribute !== -1) {
+          gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+        }
+        
     
         // Configure uniforms
         shaderProgram.modelMatrixUniform = gl.getUniformLocation(shaderProgram, "modelMatrix");
         shaderProgram.normalMatrixUniform = gl.getUniformLocation(shaderProgram, "normalMatrix");
         shaderProgram.posicionSolUniform = gl.getUniformLocation(shaderProgram, "posicionSol");
+        shaderProgram.posicionCamaraMundoUniform = gl.getUniformLocation(shaderProgram, "posicionCamaraMundo");
 
         // Iluminacion
         shaderProgram.colorAmbienteUniform = gl.getUniformLocation(shaderProgram, "colorAmbiente");
         shaderProgram.colorDifusoUniform = gl.getUniformLocation(shaderProgram, "colorDifuso");
+        shaderProgram.colorEspecularUniform = gl.getUniformLocation(shaderProgram, "colorEspecular");
+        shaderProgram.glossinessUniform = gl.getUniformLocation(shaderProgram, "glossiness");
       }
 
       _initShader(glProgram);
@@ -184,6 +192,13 @@ class ShadersManager {
     for (let [_shaderName, program] of Object.entries(this.programs)) {
       gl.useProgram(program);
       gl.uniform3fv(program.posicionSolUniform, posicionSol);
+    }
+  }
+
+  updatePosicionCamaraMundo = (posicionCamara) => {
+    for (let [_shaderName, program] of Object.entries(this.programs)) {
+      gl.useProgram(program);
+      gl.uniform3fv(program.posicionCamaraMundoUniform, posicionCamara);
     }
   }
 

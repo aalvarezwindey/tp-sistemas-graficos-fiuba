@@ -4,8 +4,10 @@ import ShadersManager from "../../shaders/shaders_manager.js";
 class MaderaOscura extends Material {
   constructor(shaderManager) {
     super('Madera Oscura', {
-      ambiente:[25, 16, 16],
-      difuso: [2, 1, 1]
+      ambiente: [42,22,3],
+      difuso: [67,40,17],
+      especular: [45,15,15],
+      glossiness: 1
     });
     this.shaderProgram = shaderManager.program(ShadersManager.MADERA_OSCURA);
 

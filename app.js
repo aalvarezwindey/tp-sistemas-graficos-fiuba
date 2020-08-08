@@ -95,7 +95,6 @@ function startWebGLApp() {
 
   if (gl) {
     const clearColor = [25/255, 121/255, 169/255, 1.0];
-    console.log("startWebGLApp -> clearColor", clearColor)
     gl.clearColor(...clearColor);
     gl.enable(gl.DEPTH_TEST);
 
@@ -103,19 +102,20 @@ function startWebGLApp() {
     ShadersManager.init(gl).then(shaders => {
       shadersManager = shaders;
       DEFAULT_MATERIAL = new DefaultMaterial(shadersManager)
+      MATERIAL_ROJO = new Rojo(shadersManager);
+      MATERIAL_VERDE = new Verde(shadersManager);
+      MATERIAL_AZUL = new Azul(shadersManager);
+      MATERIAL_LUZ = new Luz(shadersManager);
+      MATERIAL_PRUEBA_NORMALES = new PruebaNormales(shadersManager);
+
       MATERIAL_MADERA_CLARA = new MaderaClara(shadersManager);
       MATERIAL_MADERA_OSCURA = new MaderaOscura(shadersManager);
       MATERIAL_HILO = new Hilo(shadersManager);
       MATERIAL_PIEDRA = new Piedra(shadersManager);
-      MATERIAL_ROJO = new Rojo(shadersManager);
-      MATERIAL_VERDE = new Verde(shadersManager);
-      MATERIAL_AZUL = new Azul(shadersManager);
       MATERIAL_BEIGE = new Beige(shadersManager);
       MATERIAL_LOZA_AZUL = new LozaAzul(shadersManager);
       MATERIAL_CESPED = new Cesped(shadersManager);
       MATERIAL_AGUA = new Agua(shadersManager);
-      MATERIAL_LUZ = new Luz(shadersManager);
-      MATERIAL_PRUEBA_NORMALES = new PruebaNormales(shadersManager);
       MATERIAL_VIDRIO = new Vidrio(shadersManager);
 
       escena = new Escena(shaders, gestorDeCamaras);

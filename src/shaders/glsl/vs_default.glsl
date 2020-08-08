@@ -15,8 +15,17 @@ varying vec3 vPosicionSol;
 uniform vec3 colorAmbiente;
 varying vec3 vColorAmbiente;
 
+uniform vec3 posicionCamaraMundo;
+varying vec3 vPosicionCamaraMundo;
+
 uniform vec3 colorDifuso;
 varying vec3 vColorDifuso;
+
+uniform vec3 colorEspecular;
+varying vec3 vColorEspecular;
+
+uniform float glossiness;
+varying float vGlossiness;
 
 varying vec3 vNormal;
 varying vec3 vPosWorld;
@@ -29,9 +38,12 @@ void main(void) {
     gl_Position = projMatrix * viewMatrix * modelMatrix * vec4(aPosition, 1.0);
 
     vPosWorld = (modelMatrix * vec4(aPosition, 1.0)).xyz;    //la posicion en coordenadas de mundo
-    vNormal = (normalMatrix * vec4(aNormal, 1.0)).xyz;       //la normal en coordenadas de mundo
+    vNormal = normalize((normalMatrix * vec4(aNormal, 1.0)).xyz);       //la normal en coordenadas de mundo
     vUv = uv;
     vPosicionSol = posicionSol;
     vColorAmbiente = colorAmbiente;
     vColorDifuso = colorDifuso;
+    vPosicionCamaraMundo = posicionCamaraMundo;
+    vColorEspecular = colorEspecular;
+    vGlossiness = glossiness;
 }
