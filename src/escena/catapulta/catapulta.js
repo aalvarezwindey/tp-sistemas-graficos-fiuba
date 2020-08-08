@@ -6,6 +6,7 @@ import SuperficieBarrido from '../../geometria/superficie_barrido/superficie_bar
 import Circulo from '../../geometria/superficie_barrido/poligonos/circulo.js';
 import Recta from '../../geometria/superficie_barrido/recorridos_parametricos/recta.js';
 import Esfera from '../../geometria/objetos_3d/esfera.js';
+import ShadersManager from '../../shaders/shaders_manager.js';
 
 var OVILLO_CUCHARA = null;
 var OVILLO_TRAVESAÑO_TRASERO = null;
@@ -165,7 +166,7 @@ class ProyectilCatapulta extends Objeto3D {
   constructor(radio) {
     super();
     this.radio = radio;
-    this.proyectil = new Esfera(radio, MATERIAL_PIEDRA);
+    this.proyectil = new Esfera(radio, MATERIAL_LUZ);
     this.addChild(this.proyectil);
   }
 }
@@ -200,6 +201,12 @@ class CucharaCatapulta extends Objeto3D {
     cabezaCuchara.setPosition(0, CucharaCatapulta.LARGO_MANGO / 2 + CucharaCatapulta.LARGO_CUADRADO_CUCHARA / 2, 0)
 
     PROYECTIL_CATAPULTA = new ProyectilCatapulta(CucharaCatapulta.RADIO_PROYECTIL);
+
+    PROYECTIL_CATAPULTA.setAnimacion(proyectil => {
+      let posicion = proyectil.getWorldCoordinates();
+      shadersManager.updatePosicionLuz(posicion, "posicionProyectil");
+    })
+
     PROYECTIL_CATAPULTA.setPosition(CucharaCatapulta.RADIO_PROYECTIL + CucharaCatapulta.ESPESOR / 2, 0, 0);
     cabezaCuchara.addChild(PROYECTIL_CATAPULTA);
 

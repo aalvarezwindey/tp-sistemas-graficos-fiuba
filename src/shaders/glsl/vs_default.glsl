@@ -9,8 +9,11 @@ uniform mat4 viewMatrix;
 uniform mat4 projMatrix;
 uniform mat4 normalMatrix;
 
+// Posicion luces
 uniform vec3 posicionSol;
 varying vec3 vPosicionSol;
+uniform vec3 posicionProyectil;
+varying vec3 vPosicionProyectil;
 
 uniform vec3 colorAmbiente;
 varying vec3 vColorAmbiente;
@@ -46,4 +49,5 @@ void main(void) {
     vPosicionCamaraMundo = posicionCamaraMundo;
     vColorEspecular = colorEspecular;
     vGlossiness = glossiness;
+    vPosicionProyectil = posicionProyectil;
 }

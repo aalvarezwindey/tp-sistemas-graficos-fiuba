@@ -6,8 +6,8 @@ class Cesped extends Material {
     super('Cesped', {
       ambiente: [16,67,23],
       difuso: [4,40,4],
-      especular: [255,113,0],
-      glossiness: 5
+      especular: [85,22,0],
+      glossiness: 154
     });
     this.shaderProgram = shaderManager.program(ShadersManager.CESPED);
 

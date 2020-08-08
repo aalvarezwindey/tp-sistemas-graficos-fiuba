@@ -6,7 +6,7 @@ class Piedra extends Material {
     super('Piedra', {
       ambiente: [42,42,42],
       difuso: [88,86,86],
-      especular: [112,57,11],
+      especular: [48,15,0],
       glossiness: 10,
     });
     this.shaderProgram = shaderManager.program(ShadersManager.PIEDRA);

@@ -6,7 +6,7 @@ class Beige extends Material {
     super('Pared Castillo', {
       ambiente: [85,85,16],
       difuso: [57,57,16],
-      especular: [213,97,52],
+      especular: [75,46,21],
       glossiness: 109
     });
     this.shaderProgram = shaderManager.program(ShadersManager.BEIGE);

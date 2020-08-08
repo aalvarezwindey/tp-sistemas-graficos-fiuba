@@ -195,6 +195,17 @@ class ShadersManager {
     }
   }
 
+  updatePosicionLuz = (posicion, shaderVarName) => {
+    for (let [_shaderName, program] of Object.entries(this.programs)) {
+      gl.useProgram(program);
+      const location = gl.getUniformLocation(program, shaderVarName);
+
+      if (location) {
+        gl.uniform3fv(location, posicion);
+      }
+    }
+  }
+
   updatePosicionCamaraMundo = (posicionCamara) => {
     for (let [_shaderName, program] of Object.entries(this.programs)) {
       gl.useProgram(program);
