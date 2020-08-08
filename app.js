@@ -5,7 +5,8 @@ const {
   ShadersManager,
   GestorDeCamaras,
   DefaultMaterial, MaderaClara, MaderaOscura, Hilo, Piedra, Rojo, Verde, Azul, Beige, LozaAzul, Cesped, Agua, PruebaNormales, Luz, Vidrio,
-  Escena
+  Escena,
+  TextureManager
 } = window.webGLApp;
 
 var mat4 = glMatrix.mat4;
@@ -20,6 +21,9 @@ var projMatrix = mat4.create();
 var escena = null;
 var gestorDeCamaras = null;
 var shadersManager = null;
+
+var TEXTURE_MANAGER = null;
+
 var DEFAULT_MATERIAL = null;
 var MATERIAL_MADERA_CLARA = null;
 var MATERIAL_MADERA_OSCURA = null;
@@ -99,7 +103,8 @@ function startWebGLApp() {
     gl.enable(gl.DEPTH_TEST);
 
     setupWebGL(); // configurar web GL
-    ShadersManager.init(gl).then(shaders => {
+    ShadersManager.init(gl).then(async shaders => {
+      TEXTURE_MANAGER = await TextureManager.init();
       shadersManager = shaders;
       DEFAULT_MATERIAL = new DefaultMaterial(shadersManager)
       MATERIAL_ROJO = new Rojo(shadersManager);
@@ -117,6 +122,8 @@ function startWebGLApp() {
       MATERIAL_CESPED = new Cesped(shadersManager);
       MATERIAL_AGUA = new Agua(shadersManager);
       MATERIAL_VIDRIO = new Vidrio(shadersManager);
+
+      
 
       escena = new Escena(shaders, gestorDeCamaras);
       escena.updateProjectionMatrix(projMatrix);
