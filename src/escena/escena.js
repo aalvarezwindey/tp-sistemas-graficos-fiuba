@@ -31,7 +31,7 @@ class Escena {
     this.objetos.push(this.terreno);
 
     this.catapulta = new Catapulta();
-    this.catapulta.setPosition(30, 0, 0);
+    this.catapulta.setPosition(35, 0, 0);
     this.objetos.push(this.catapulta);
     this.gestorDeCamaras.setPersonaParaCamaraTerceraPersona(this.catapulta);
 
@@ -40,14 +40,14 @@ class Escena {
     this.objetos.push(this.castillo);
 
     //  BEGIN TESTS
-    const rectangulo = new Rectangulo(1, 1, 4);
-    const prueba_cubo = new Objeto3D({
-      geometry: new SuperficieBarrido(rectangulo, new Recta(1, 1), true, 1, false),
-      material: MATERIAL_MADERA_CLARA,
-      glContext: gl
-    });
-    prueba_cubo.setPosition(30, 5, 0);
-    this.objetos.push(prueba_cubo);
+    // const rectangulo = new Rectangulo(1, 1, 4);
+    // const prueba_cubo = new Objeto3D({
+    //   geometry: new SuperficieBarrido(rectangulo, new Recta(1, 1), true, 1, false),
+    //   material: MATERIAL_MADERA_CLARA,
+    //   glContext: gl
+    // });
+    // prueba_cubo.setPosition(30, 5, 0);
+    // this.objetos.push(prueba_cubo);
 
     // END TESTS
     this.gestorDeCamaras.cambiarObjetivo(this.castillo);

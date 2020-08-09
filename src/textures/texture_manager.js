@@ -40,7 +40,7 @@ class TextureManager {
     gl.bindTexture(gl.TEXTURE_2D, TEXTURA_PIEDRA);
 
     // const TEXTURA_MADERA_CLARA = await initTexture('images/madera_clara_1k.jpg');
-    const TEXTURA_MADERA_CLARA = await initTexture('images/helper_texture.png');
+    const TEXTURA_MADERA_CLARA = await initTexture('images/madera_clara_1k.jpg');
     gl.activeTexture(gl.TEXTURE3);
     gl.bindTexture(gl.TEXTURE_2D, TEXTURA_MADERA_CLARA);
 

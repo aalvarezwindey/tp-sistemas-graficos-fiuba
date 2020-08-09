@@ -177,7 +177,15 @@ class TorreMuralla extends Objeto3D {
         false,
         20,
         true
-      )
+      );
+
+      TorreMuralla.fixtextura = new Cilindro(
+        TorreMuralla.radioTorre - TorreMuralla.ANCHO_TOROIDE / 2,
+        0.1,
+        MATERIAL_PIEDRA,
+        3,
+        3
+      );
     }
 
     this.torre = new Objeto3D({
@@ -193,6 +201,10 @@ class TorreMuralla extends Objeto3D {
     });
     this.toroideRectangular.setPosition(0, 0, alturaTorre + (TorreMuralla.ALTO_TOROIDE / 2));
     this.torre.addChild(this.toroideRectangular); 
+
+    this.toroideRectangular.addChild(TorreMuralla.fixtextura);
+    TorreMuralla.fixtextura.setRotation(0, Math.PI / 2, 0);
+    //TorreMuralla.fixtextura.addChild(EJES_DE_COORDENADAS)
 
     this.addChild(this.torre);
   }

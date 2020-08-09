@@ -17,7 +17,7 @@ class Terreno extends Objeto3D {
           Terreno.LARGO_TERRENO,
           40,
         ),
-        new Circunferencia(0.01, 10),
+        new Circunferencia(0.01, 100),
         false,
         100
       ),
