@@ -11,6 +11,7 @@ class SuperficieBarrido extends Geometry {
 
   _setupBuffers(filasQuads = 100, swapUV) {
     const niveles = filasQuads + 1;
+    this.niveles = niveles;
     const cantidadVertices = this.poligono.vertices.length;
 
     const bufferDePosicion = [];
@@ -19,7 +20,7 @@ class SuperficieBarrido extends Geometry {
 
     // Recordar que los index buffers generan una grilla de Filas x Columnas de QUADS
     super._setupIndexBuffer({
-      filas: this.cerrado ? niveles + 2 : niveles,
+      filas: this.cerrado ? niveles + 4 : niveles,
       columnas: cantidadVertices - 1,
     });
 
@@ -50,21 +51,6 @@ class SuperficieBarrido extends Geometry {
         this.poligono.vertices.forEach(v => {
           const centro = this.poligono.getCentro(u);
           vec3.negate(centro.normal, v.binormal);
-
-          try {
-            const x = v.posicion[0];
-            const y = v.posicion[1];
-            const uText = (x - minX) / (maxX - minX);
-            const vText = (y - minY) / (maxY - minY);
-            if (swapUV) {
-              bufferDeUV.push(.5, .5);
-            } else {
-              bufferDeUV.push(.5, .5);
-            }
-          } catch(err) {
-            // console.log("SuperficieBarrido -> _setupBuffers -> err", err)
-            bufferDeUV.push(0, 0)
-          }
           
           this._tejerNivelParaVertice({
             vertice: centro,
@@ -74,65 +60,34 @@ class SuperficieBarrido extends Geometry {
             bufferDeNormal,
             bufferDeUV
           });
+
+          this._agregarUVdeCentroAlBuffer({ centro, minX, maxX, minY, maxY, swapUV, bufferDeUV });
         });
+
+        // Volvemos a tejer el nivel de la tapa para mapear el poligono a la textura
+        this._tejidoNormalDeNivel({ u, nivel, matrizDeNivel, matrizDeNormales, bufferDePosicion, bufferDeNormal });
+        this._mapearUVenPoligono({ minX, maxX, minY, maxY, bufferDeUV, swapUV });
       }
+      // END PRIMER TAPA
 
-      this.poligono.vertices.forEach(vertice => {
-        let v;
-        // Tejido normal de nivel
-        const verticeTransformadoSegunNivel = this.poligono.getVertice(vertice, u);
-        v = verticeTransformadoSegunNivel.clone();
-        
-        if (this.cerrado && nivel === 0) {
-          vec3.negate(v.normal, v.binormal);
-        }
 
-        if (this.cerrado && nivel === niveles) {
-          v.normal = v.binormal;
-        }
+      // TEJIDO NORMAL
+      this._tejidoNormalDeNivel({ u, nivel, matrizDeNivel, matrizDeNormales, bufferDePosicion, bufferDeNormal });
+      this._llenarBufferUVParaNivelNormal({ u, swapUV, bufferDeUV });
+      // END TEJIDO NORMAL
 
-        this._tejerNivelParaVertice({
-          vertice: v,
-          matrizDeNivel,
-          matrizDeNormales,
-          bufferDePosicion,
-          bufferDeNormal
-        });
 
-        try {
-          const uText = this.poligono.getCoordenadaTexturaParaVertice(vertice);
-          const vText = this.recorrido.getCoordenadaTextura(u);
-          if (swapUV) {
-            bufferDeUV.push(vText, uText);
-          } else {
-            bufferDeUV.push(uText, vText);
-          }
-        } catch(err) {
-          // console.log("SuperficieBarrido -> _setupBuffers -> err", err)
-          bufferDeUV.push(0, 0)
-        }
-      })
+
 
       // Tejido de última tapa
       if (nivel === niveles && this.cerrado) {
+        // Volvemos a tejer el nivel de la tapa para mapear el poligono a la textura
+        this._tejidoNormalDeNivel({ u, nivel, matrizDeNivel, matrizDeNormales, bufferDePosicion, bufferDeNormal });
+        this._mapearUVenPoligono({ minX, maxX, minY, maxY, bufferDeUV, swapUV });
+
         this.poligono.vertices.forEach(v => {
           const centro = this.poligono.getCentro(u);
           centro.normal = v.binormal;
-
-          try {
-            const x = v.posicion[0];
-            const y = v.posicion[1];
-            const uText = (x - minX) / (maxX - minX);
-            const vText = (y - minY) / (maxY - minY);
-            if (swapUV) {
-              bufferDeUV.push(0.5, 0.5);
-            } else {
-              bufferDeUV.push(.5, .5);
-            }
-          } catch(err) {
-            // console.log("SuperficieBarrido -> _setupBuffers -> err", err)
-            bufferDeUV.push(0, 0)
-          }
           
           this._tejerNivelParaVertice({
             vertice: centro,
@@ -141,9 +96,15 @@ class SuperficieBarrido extends Geometry {
             bufferDePosicion,
             bufferDeNormal
           });
+          this._agregarUVdeCentroAlBuffer({ centro, minX, maxX, minY, maxY, swapUV, bufferDeUV });
         });
       }
     }
+    // END ULTIMA TAPA
+
+
+
+
 
     // Creación e Inicialización de los buffers
     const webgl_position_buffer = gl.createBuffer();
@@ -167,6 +128,79 @@ class SuperficieBarrido extends Geometry {
 
     this.buffers.position = webgl_position_buffer;
     this.buffers.normal = webgl_normal_buffer;
+  }
+
+  _agregarUVdeCentroAlBuffer({ centro, minX, maxX, minY, maxY, swapUV, bufferDeUV }) {
+    const xCentro = centro.posicion[0];
+    const yCentro = centro.posicion[1];
+    const uTextCentro = (xCentro - minX) / (maxX - minX);
+    const vTextCentro = (yCentro - minY) / (maxY - minY);
+    if (swapUV) {
+      bufferDeUV.push(vTextCentro, uTextCentro);
+    } else {
+      bufferDeUV.push(uTextCentro, vTextCentro);
+    }
+  }
+
+  _mapearUVenPoligono({ minX, maxX, minY, maxY, bufferDeUV, swapUV }) {
+    this.poligono.vertices.forEach(v => {
+      try {
+        const x = v.posicion[0];
+        const y = v.posicion[1];
+        const uText = (x - minX) / (maxX - minX);
+        const vText = (y - minY) / (maxY - minY);
+        if (swapUV) {
+          bufferDeUV.push(uText, vText);
+        } else {
+          bufferDeUV.push(vText, uText);
+        }
+      } catch(err) {
+        // console.log("SuperficieBarrido -> _setupBuffers -> err", err)
+        bufferDeUV.push(0, 0)
+      }
+    });
+  }
+  
+  _tejidoNormalDeNivel({ u, nivel, matrizDeNivel, matrizDeNormales, bufferDePosicion, bufferDeNormal }) {
+    this.poligono.vertices.forEach(vertice => {
+      let v;
+      // Tejido normal de nivel
+      const verticeTransformadoSegunNivel = this.poligono.getVertice(vertice, u);
+      v = verticeTransformadoSegunNivel.clone();
+      
+      if (this.cerrado && nivel === 0) {
+        vec3.negate(v.normal, v.binormal);
+      }
+
+      if (this.cerrado && nivel === this.niveles) {
+        v.normal = v.binormal;
+      }
+
+      this._tejerNivelParaVertice({
+        vertice: v,
+        matrizDeNivel,
+        matrizDeNormales,
+        bufferDePosicion,
+        bufferDeNormal
+      });
+    });
+  }
+
+  _llenarBufferUVParaNivelNormal({ u, swapUV, bufferDeUV }) {
+    this.poligono.vertices.forEach(vertice => {
+      try {
+        const uText = this.poligono.getCoordenadaTexturaParaVertice(vertice);
+        const vText = this.recorrido.getCoordenadaTextura(u);
+        if (swapUV) {
+          bufferDeUV.push(vText, uText);
+        } else {
+          bufferDeUV.push(uText, vText);
+        }
+      } catch(err) {
+        // console.log("SuperficieBarrido -> _setupBuffers -> err", err)
+        bufferDeUV.push(0, 0)
+      }
+    })
   }
 
   _poligonoMinAndMaxXY() {

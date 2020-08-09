@@ -39,17 +39,17 @@ class Escena {
     this.castillo.setPosition(0, 0, 0);
     this.objetos.push(this.castillo);
 
-/*     //  BEGIN TESTS
-    this.objetos = [];
-    const rectangulo = new Rectangulo(5, 5);
+    //  BEGIN TESTS
+    const rectangulo = new Rectangulo(1, 1, 4);
     const prueba_cubo = new Objeto3D({
-      geometry: new SuperficieBarrido(rectangulo, new Recta(5), true, 1),
-      material: MATERIAL_BEIGE,
+      geometry: new SuperficieBarrido(rectangulo, new Recta(1, 1), true, 1, false),
+      material: MATERIAL_MADERA_CLARA,
       glContext: gl
     });
+    prueba_cubo.setPosition(30, 5, 0);
     this.objetos.push(prueba_cubo);
 
-    // END TESTS */
+    // END TESTS
     this.gestorDeCamaras.cambiarObjetivo(this.castillo);
 
     this._iniciarIluminacion();
