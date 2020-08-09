@@ -6,11 +6,11 @@ import SuperficieBarrido from '../superficie_barrido/superficie_barrido.js';
 // Crea un cilindro de un largo y radio determinado,
 // ubicando su centro en el centro de masa del mismo
 class Cilindro extends Objeto3D {
-  constructor(radio, alto, material = DEFAULT_MATERIAL) {
+  constructor(radio, alto, material = DEFAULT_MATERIAL, cantRepeticionesEnU = 1, cantRepeticionesEnV = 1) {
     super();
 
     this.objeto = new Objeto3D({
-      geometry: new SuperficieBarrido(new Circulo(radio), new Recta(alto), true),
+      geometry: new SuperficieBarrido(new Circulo(radio, 40, cantRepeticionesEnU), new Recta(alto, cantRepeticionesEnV), true),
       material: material,
       glContext: gl
     });

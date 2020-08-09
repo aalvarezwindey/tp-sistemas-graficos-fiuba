@@ -15,13 +15,17 @@ varying vec3 vColorEspecular; // ks
 varying float vGlossiness;
 
 varying vec2 vUv;
+// The texture.
+uniform sampler2D u_texture;
 
 void main(void) {
     vec3 camVec = normalize(vPosicionCamaraMundo - vPosWorld);
+    vec4 colorTextura = texture2D(u_texture, vUv);
+    vec3 colorTextura3D = colorTextura.xyz;
 
     // Sol
     vec3 lightVec = normalize(vPosicionSol - vPosWorld);
-    vec3 componenteDifusa = dot(lightVec, vNormal) * vColorDifuso;
+    vec3 componenteDifusa = dot(lightVec, vNormal) * vColorDifuso + colorTextura3D;
 
     vec3 reflexVec = normalize(reflect(-lightVec, vNormal));
     vec3 componenteEspecular = pow(max(0.0, dot(reflexVec, camVec)), vGlossiness) * vColorEspecular;
@@ -79,6 +83,5 @@ void main(void) {
         (colorProyectil * intensidadLuzProyectil) + 
         (colorAntorcha1 * intensidadLuzAntorcha1) + 
         (colorAntorcha2 * intensidadLuzAntorcha2);
-
     gl_FragColor = vec4(colorFinal, 1.0);
 }

@@ -12,8 +12,9 @@ class Trapecio extends Poligono {
   v1 v8             v6 v7
   
   */
-  constructor(anchoInferior, anchoSuperior, altura) {
+  constructor(anchoInferior, anchoSuperior, altura, cantRepeticionesTextura = 1) {
     super();
+    this.cantRepeticionesTextura = cantRepeticionesTextura;
     this.anguloTrapecio = Math.atan(2 * altura / (anchoInferior - anchoSuperior));
 
     const v1 = new Vertice();
@@ -73,7 +74,10 @@ class Trapecio extends Poligono {
     this.centro.posicion = vec3.fromValues(0, 0, 0);
     this.centro.normal = vec3.fromValues(0, 0, 1);
 
-    [v1, v2, v3, v4, v5, v6, v7, v8].forEach(v => this.vertices.push(v));
+    [v1, v2, v3, v4, v5, v6, v7, v8].forEach(v => {
+      v.coordenadaTextura = ((v[1] + (altura / 2)) / altura) * this.cantRepeticionesTextura;
+      this.vertices.push(v)
+    });
   }
 
   getVertice(vertice, nivel) {

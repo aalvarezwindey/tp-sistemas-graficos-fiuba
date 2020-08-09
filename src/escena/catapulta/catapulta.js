@@ -11,6 +11,8 @@ var OVILLO_CUCHARA = null;
 var OVILLO_TRAVESAÑO_TRASERO = null;
 var HILO = null;
 var FRONTAL_CATAPULTA = null;
+const REPETICIONES_EN_U_LINGOTES = 0.2;
+const REPETICIONES_EN_V_LINGOTES = 0.2
 
 class Rueda extends Objeto3D {
   constructor() {
@@ -88,7 +90,9 @@ class TravesañoDelantero extends Objeto3D {
       TravesañoDelantero.ANCHO_SUP_LINGOTES,
       TravesañoDelantero.ALTURA_LINGOTES,
       TravesañoDelantero.LARGO_LINGOTE,
-      MATERIAL_MADERA_CLARA
+      MATERIAL_MADERA_CLARA,
+      REPETICIONES_EN_U_LINGOTES,
+      REPETICIONES_EN_V_LINGOTES
     );
     lingoteIzquierdo.setRotation(-Math.PI / 2, 0, 0);
     lingoteIzquierdo.setPosition(-TravesañoDelantero.DISTANCIA_ENTRE_LINGOTES / 2, TravesañoDelantero.ALTURA_LINGOTES / 2, 0);
@@ -99,7 +103,9 @@ class TravesañoDelantero extends Objeto3D {
       TravesañoDelantero.ANCHO_SUP_LINGOTES,
       TravesañoDelantero.ALTURA_LINGOTES,
       TravesañoDelantero.LARGO_LINGOTE,
-      MATERIAL_MADERA_CLARA
+      MATERIAL_MADERA_CLARA,
+      REPETICIONES_EN_U_LINGOTES,
+      REPETICIONES_EN_V_LINGOTES
     );
     lingoteDerecho.setRotation(-Math.PI / 2, 0, 0);
     lingoteDerecho.setPosition(TravesañoDelantero.DISTANCIA_ENTRE_LINGOTES / 2, TravesañoDelantero.ALTURA_LINGOTES / 2, 0);
@@ -267,7 +273,9 @@ class ContrapesoCuchara extends Objeto3D {
       ContrapesoCuchara.ANCHO_SUP_LINGOTES,
       ContrapesoCuchara.ALTURA_LINGOTES,
       ContrapesoCuchara.LARGO_LINGOTE,
-      MATERIAL_MADERA_CLARA
+      MATERIAL_MADERA_CLARA,
+      REPETICIONES_EN_U_LINGOTES,
+      REPETICIONES_EN_V_LINGOTES
     );
     lingoteIzquierdo.setRotation(-Math.PI / 2, 0, 0);
     lingoteIzquierdo.setPosition(
@@ -282,7 +290,9 @@ class ContrapesoCuchara extends Objeto3D {
       ContrapesoCuchara.ANCHO_SUP_LINGOTES,
       ContrapesoCuchara.ALTURA_LINGOTES,
       ContrapesoCuchara.LARGO_LINGOTE,
-      MATERIAL_MADERA_CLARA
+      MATERIAL_MADERA_CLARA,
+      REPETICIONES_EN_U_LINGOTES,
+      REPETICIONES_EN_V_LINGOTES
     );
     lingoteDerecho.setRotation(-Math.PI / 2, 0, 0);
     lingoteDerecho.setPosition(
@@ -321,7 +331,9 @@ class TravesañoTrasero extends Objeto3D {
       TravesañoTrasero.ANCHO_SUP_LINGOTES,
       TravesañoTrasero.ALTURA_LINGOTES,
       TravesañoTrasero.LARGO_LINGOTE,
-      MATERIAL_MADERA_CLARA
+      MATERIAL_MADERA_CLARA,
+      REPETICIONES_EN_U_LINGOTES,
+      REPETICIONES_EN_V_LINGOTES
     );
     lingoteIzquierdo.setRotation(-Math.PI / 2, 0, 0);
     lingoteIzquierdo.setPosition(-TravesañoTrasero.DISTANCIA_ENTRE_LINGOTES / 2, TravesañoTrasero.ALTURA_LINGOTES / 2, 0);
@@ -333,7 +345,9 @@ class TravesañoTrasero extends Objeto3D {
       TravesañoTrasero.ANCHO_SUP_LINGOTES,
       TravesañoTrasero.ALTURA_LINGOTES,
       TravesañoTrasero.LARGO_LINGOTE,
-      MATERIAL_MADERA_CLARA
+      MATERIAL_MADERA_CLARA,
+      REPETICIONES_EN_U_LINGOTES,
+      REPETICIONES_EN_V_LINGOTES
     );
     lingoteDerecho.setRotation(-Math.PI / 2, 0, 0);
     lingoteDerecho.setPosition(TravesañoTrasero.DISTANCIA_ENTRE_LINGOTES / 2, TravesañoTrasero.ALTURA_LINGOTES / 2, 0);

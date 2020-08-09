@@ -1,15 +1,15 @@
 import Geometry from "../geometry.js";
 
 class SuperficieBarrido extends Geometry {
-  constructor(poligono, recorrido, cerrado = true, filasQuads = 100) {
+  constructor(poligono, recorrido, cerrado = true, filasQuads = 100, swapUV = false) {
     super();
     this.poligono = poligono;
     this.recorrido = recorrido;
     this.cerrado = cerrado;
-    this._setupBuffers(filasQuads);
+    this._setupBuffers(filasQuads, swapUV);
   }
 
-  _setupBuffers(filasQuads = 100) {
+  _setupBuffers(filasQuads = 100, swapUV) {
     const niveles = filasQuads + 1;
     const cantidadVertices = this.poligono.vertices.length;
 
@@ -22,6 +22,8 @@ class SuperficieBarrido extends Geometry {
       filas: this.cerrado ? niveles + 2 : niveles,
       columnas: cantidadVertices - 1,
     });
+
+    const { minX, maxX, maxY, minY } = this._poligonoMinAndMaxXY();
 
     for (var nivel = 0; nivel <= niveles; nivel++) {
       const u = nivel / niveles;
@@ -49,13 +51,28 @@ class SuperficieBarrido extends Geometry {
           const centro = this.poligono.getCentro(u);
           vec3.negate(centro.normal, v.binormal);
 
+          try {
+            const x = v.posicion[0];
+            const y = v.posicion[1];
+            const uText = (x - minX) / (maxX - minX);
+            const vText = (y - minY) / (maxY - minY);
+            if (swapUV) {
+              bufferDeUV.push(.5, .5);
+            } else {
+              bufferDeUV.push(.5, .5);
+            }
+          } catch(err) {
+            // console.log("SuperficieBarrido -> _setupBuffers -> err", err)
+            bufferDeUV.push(0, 0)
+          }
           
           this._tejerNivelParaVertice({
             vertice: centro,
             matrizDeNivel,
             matrizDeNormales,
             bufferDePosicion,
-            bufferDeNormal
+            bufferDeNormal,
+            bufferDeUV
           });
         });
       }
@@ -81,6 +98,19 @@ class SuperficieBarrido extends Geometry {
           bufferDePosicion,
           bufferDeNormal
         });
+
+        try {
+          const uText = this.poligono.getCoordenadaTexturaParaVertice(vertice);
+          const vText = this.recorrido.getCoordenadaTextura(u);
+          if (swapUV) {
+            bufferDeUV.push(vText, uText);
+          } else {
+            bufferDeUV.push(uText, vText);
+          }
+        } catch(err) {
+          // console.log("SuperficieBarrido -> _setupBuffers -> err", err)
+          bufferDeUV.push(0, 0)
+        }
       })
 
       // Tejido de última tapa
@@ -88,6 +118,21 @@ class SuperficieBarrido extends Geometry {
         this.poligono.vertices.forEach(v => {
           const centro = this.poligono.getCentro(u);
           centro.normal = v.binormal;
+
+          try {
+            const x = v.posicion[0];
+            const y = v.posicion[1];
+            const uText = (x - minX) / (maxX - minX);
+            const vText = (y - minY) / (maxY - minY);
+            if (swapUV) {
+              bufferDeUV.push(0.5, 0.5);
+            } else {
+              bufferDeUV.push(.5, .5);
+            }
+          } catch(err) {
+            // console.log("SuperficieBarrido -> _setupBuffers -> err", err)
+            bufferDeUV.push(0, 0)
+          }
           
           this._tejerNivelParaVertice({
             vertice: centro,
@@ -113,16 +158,34 @@ class SuperficieBarrido extends Geometry {
     webgl_normal_buffer.itemSize = 3;
     webgl_normal_buffer.numItems = bufferDeNormal.length / 3;
 
-    // TODO define uv
-    /* const webgl_uvs_buffer = gl.createBuffer();
+    const webgl_uvs_buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, webgl_uvs_buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvBuffer), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(bufferDeUV), gl.STATIC_DRAW);
     webgl_uvs_buffer.itemSize = 2;
-    webgl_uvs_buffer.numItems = uvBuffer.length / 2; */
+    webgl_uvs_buffer.numItems = bufferDeUV.length / 2;
+    this.buffers.uv = webgl_uvs_buffer;
 
     this.buffers.position = webgl_position_buffer;
     this.buffers.normal = webgl_normal_buffer;
-    // this.buffers.uv = webgl_uvs_buffer;
+  }
+
+  _poligonoMinAndMaxXY() {
+    let minX, minY, maxX, maxY;
+    minX = Infinity;
+    minY = Infinity;
+    maxX = -Infinity;
+    maxY = -Infinity;
+
+    this.poligono.vertices.forEach(v => {
+      const x = v.posicion[0];
+      const y = v.posicion[1];
+      if (x > maxX) maxX = x;
+      if (x < minX) minX = x;
+      if (y > maxY) maxY = y;
+      if (y < minY) minY = y;
+    });
+
+    return { minX, maxX, minY, maxY };
   }
 
   _tejerNivelParaVertice = ({ vertice, matrizDeNivel, matrizDeNormales, bufferDePosicion, bufferDeNormal }) => {

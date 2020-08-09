@@ -10,7 +10,7 @@ class Agua extends Material {
       glossiness: 29
     });
     this.shaderProgram = shaderManager.program(ShadersManager.AGUA);
-
+    this.textura = TEXTURE_MANAGER.TEXTURA_AGUA;
   }
 }
 

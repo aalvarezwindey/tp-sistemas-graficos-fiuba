@@ -10,6 +10,8 @@ class Beige extends Material {
       glossiness: 109
     });
     this.shaderProgram = shaderManager.program(ShadersManager.BEIGE);
+
+    this.textura = TEXTURE_MANAGER.TEXTURA_PARED_CASTILLO;
   }
 }
 

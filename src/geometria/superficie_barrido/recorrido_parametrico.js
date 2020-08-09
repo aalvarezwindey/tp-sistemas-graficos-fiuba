@@ -1,4 +1,8 @@
 class RecorridoParametrico {
+  constructor(){
+    this.cantRepeticionesTextura = 1;
+  }
+
   getPosicion(u) {
     throw "Should be implemented";
   }
@@ -12,6 +16,14 @@ class RecorridoParametrico {
   }
 
   getBinormal(u) {
+    throw "Should be implemented";
+  }
+
+  getLongitudRecorrido() {
+    throw "Should be implemented";
+  }
+
+  getCoordenadaTextura(u) {
     throw "Should be implemented";
   }
 }

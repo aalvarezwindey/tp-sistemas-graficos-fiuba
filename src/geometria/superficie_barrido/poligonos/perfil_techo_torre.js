@@ -2,9 +2,10 @@ import Poligono, { Vertice } from "../poligono.js";
 import BezierCubica from "../../curvas/bezier/bezier_cubica.js";
 
 class PerfilTechoTorre extends Poligono {
-  constructor(radio, altura) {
+  constructor(radio, altura, cantRepeticionesTextura = 1) {
     super();
 
+    this.cantRepeticionesTextura = cantRepeticionesTextura;
     /*  
                            * v2 = p3     _
                           /|              |
@@ -74,6 +75,11 @@ class PerfilTechoTorre extends Poligono {
     this.vertices.push(v2);
     // Repetimos el primer vértice para cerrar bien el polígono
     this.vertices.push(v0);
+
+    this.vertices.forEach(v => {
+      // coordenada Y del vertice
+      v.coordenadaTextura = v.posicion[1] * this.cantRepeticionesTextura / altura
+    })
 
     
     this.centro.posicion = vec3.fromValues(...p2.posicion);

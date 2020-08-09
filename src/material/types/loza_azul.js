@@ -10,7 +10,7 @@ class LozaAzul extends Material {
       glossiness: 2
     });
     this.shaderProgram = shaderManager.program(ShadersManager.LOZA_AZUL);
-
+    this.textura = TEXTURE_MANAGER.TEXTURA_LOZA_AZUL;
   }
 }
 

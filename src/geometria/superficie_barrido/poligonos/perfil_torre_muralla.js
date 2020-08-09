@@ -3,9 +3,9 @@ import BSplineCuadratica from "../../curvas/bspline/bspline_cuadratica.js";
 
 
 class PerfilTorreMuralla extends Poligono {
-  constructor(r = 7, h = 17.5) {
+  constructor(r = 7, h = 17.5, cantRepeticionesTextura = 1) {
     super();
-    
+    this.cantRepeticionesTextura = cantRepeticionesTextura;
     const v0 = [r - 1, - (10/35) * h, 0];
     const v1 = [r + 1, + (10/35) * h, 0];
     const v2 = [r - 3, + (30/35) * h, 0];
@@ -29,7 +29,12 @@ class PerfilTorreMuralla extends Poligono {
     x1.normal = [0, 1, 0];
     x1.tangente = [1, 0, 0];
 
-    this.vertices.push(...curva.vertices, x1, x0)
+    this.vertices.push(...curva.vertices, x1, x0);
+
+    this.vertices.forEach(v => {
+      // coordenada Y del vertice
+      v.coordenadaTextura = v.posicion[1] * this.cantRepeticionesTextura / h;
+    })
 
     this.centro.posicion = [r / 2, h / 4, 0];
   }

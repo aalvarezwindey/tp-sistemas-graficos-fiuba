@@ -10,7 +10,7 @@ class Cesped extends Material {
       glossiness: 154
     });
     this.shaderProgram = shaderManager.program(ShadersManager.CESPED);
-
+    this.textura = TEXTURE_MANAGER.TEXTURA_CESPED;
   }
 }
 

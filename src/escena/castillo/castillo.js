@@ -30,7 +30,9 @@ class TechoCastillo extends Objeto3D {
         verticeTransformado.posicion[1] = vertice.posicion[1] - (nivel * TechoCastillo.ANCHO_PORCENTUAL_FINAL_DISMINUIDO * vertice.posicion[1])
 
         return verticeTransformado;
-      }
+      },
+      0.8,
+      4
     );
 
     this.addChild(this.techo);
@@ -70,7 +72,7 @@ class Piso extends Objeto3D {
 
     this.ancho = ancho;
     this.largo = largo;
-    this.piso = new Prisma(largo, ancho, Piso.ALTURA, MATERIAL_BEIGE);
+    this.piso = new Prisma(largo, ancho, Piso.ALTURA, MATERIAL_BEIGE, null, 1, 30);
 
     if (!ultimo) {
       const divisor = new DivisorDePisos(largo, ancho);
@@ -162,15 +164,19 @@ class TorreMuralla extends Objeto3D {
 
       // Volvemos a setear la geometria
       TorreMuralla.geometriaTorre = new SuperficieBarrido(
-        new PerfilTorreMuralla(radioTorre, alturaTorre),
-        new Circunferencia(0.01),
+        new PerfilTorreMuralla(radioTorre, alturaTorre, 2),
+        new Circunferencia(0.01, 4),
+        false,
+        20,
         false
       );
 
       TorreMuralla.geometriaToroide = new SuperficieBarrido(
-        new Rectangulo(TorreMuralla.ANCHO_TOROIDE, TorreMuralla.ALTO_TOROIDE),
-        new Circunferencia(TorreMuralla.radioTorre - TorreMuralla.ANCHO_TOROIDE / 2),
-        false
+        new Rectangulo(TorreMuralla.ANCHO_TOROIDE, TorreMuralla.ALTO_TOROIDE, 0.2),
+        new Circunferencia(TorreMuralla.radioTorre - TorreMuralla.ANCHO_TOROIDE / 2, 2),
+        false,
+        20,
+        true
       )
     }
 
@@ -218,7 +224,7 @@ class Muralla extends Objeto3D {
     super();
 
     this.muralla = new Objeto3D({
-      geometry: new SuperficieBarrido(new PerfilMuralla(altura, Muralla.ANCHO), new Circunferencia(radio, 0.1), false, cantidadDeLados - 1),
+      geometry: new SuperficieBarrido(new PerfilMuralla(altura, Muralla.ANCHO, 10), new Circunferencia(radio, 16, cantidadDeLados), false, 100, true),
       material: MATERIAL_PIEDRA,
       glContext: gl
     });
@@ -241,7 +247,7 @@ class Muralla extends Objeto3D {
     const ALTO_PUERTA = ALTO_MARCO * 0.95;
     const PROFUNDIDAD_PUERTA = PROFUNDIDAD_MARCO * 1.1;
 
-    this.marcoPuerta = new Prisma(ANCHO_MARCO, ALTO_MARCO, PROFUNDIDAD_MARCO, MATERIAL_PIEDRA);
+    this.marcoPuerta = new Prisma(ANCHO_MARCO, ALTO_MARCO, PROFUNDIDAD_MARCO, MATERIAL_PIEDRA, null, 2.5, 5);
     this.puerta = new Prisma(ANCHO_PUERTA, ALTO_PUERTA, PROFUNDIDAD_PUERTA, MATERIAL_MADERA_CLARA);
     this.puerta.setPosition(0, 0, -(ALTO_MARCO - ALTO_PUERTA) / 2);
     this.marcoPuerta.addChild(this.puerta);
@@ -304,17 +310,22 @@ class TorreCastillo extends Objeto3D {
           radioInferior: TorreCastillo.RADIO_INFERIOR, 
           alturaSuperior: alturaSuperior, 
           radioSuperior: TorreCastillo.RADIO_SUPERIOR,
-          alturaCurva: TorreCastillo.ALTURA_CURVA
+          alturaCurva: TorreCastillo.ALTURA_CURVA,
+          cantRepeticionesTextura: 4
         }), 
         // Para hacer una revolucion hacemos un barrido en una circunferencia de R -> 0
-        new Circunferencia(0.01), 
-        false
+        new Circunferencia(0.01, 5), 
+        false,
+        100,
+        true
       );
 
       TorreCastillo.geometriaTecho = new SuperficieBarrido(
-        new PerfilTechoTorre(TorreCastillo.RADIO_TECHO, TorreCastillo.ALTURA_TECHO),
-        new Circunferencia(0.01),
-        false
+        new PerfilTechoTorre(TorreCastillo.RADIO_TECHO, TorreCastillo.ALTURA_TECHO, 1),
+        new Circunferencia(0.01, 1),
+        false,
+        20,
+        true
       )
     }
 

@@ -3,8 +3,9 @@ import BSplineCuadratica from "../../curvas/bspline/bspline_cuadratica.js";
 
 // El parametro altura es desde el piso hasta la plataforma
 class PerfilMuralla extends Poligono {
-  constructor(altura = 9, ancho = 5) {
+  constructor(altura = 9, ancho = 5, cantRepeticionesTextura = 1) {
     super();
+    this.cantRepeticionesTextura = cantRepeticionesTextura;
 
     const A = ancho;
     const H = altura;
@@ -28,12 +29,12 @@ class PerfilMuralla extends Poligono {
 
     const curvaBspline1 = new BSplineCuadratica(
       { puntosDeControl: [v0, v1, v2, v3] },
-      20,
+      40,
     );
 
     const curvaBspline2 = new BSplineCuadratica(
       { puntosDeControl: [w0, w0, w1, w2, w3, w3] },
-      20
+      40
     );
 
     [...curvaBspline1.vertices, ...curvaBspline2.vertices].forEach(v => {
@@ -53,6 +54,12 @@ class PerfilMuralla extends Poligono {
 
       this.vertices.push(verticeEspejado);
     }
+
+    this.vertices.forEach(v => {
+      // coordenada Y del vertice
+      v.coordenadaTextura = v.posicion[0] * this.cantRepeticionesTextura / (H + 0.4 * H);
+    })
+
 
     this.centro.posicion = [0, H/2, 0];
   }

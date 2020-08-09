@@ -10,7 +10,7 @@ class MaderaOscura extends Material {
       glossiness: 1
     });
     this.shaderProgram = shaderManager.program(ShadersManager.MADERA_OSCURA);
-
+    this.textura = TEXTURE_MANAGER.TEXTURA_MADERA_OSCURA;
   }
 }
 

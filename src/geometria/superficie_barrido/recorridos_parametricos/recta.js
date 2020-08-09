@@ -1,11 +1,13 @@
 import RecorridoParametrico from "../recorrido_parametrico.js";
 
 class Recta extends RecorridoParametrico {
-  constructor(largo) {
+  constructor(largo, cantRepeticionesTextura = 1) {
     super();
     this.largo = largo;
 
     this.sentido = 'x';
+
+    this.cantRepeticionesTextura = cantRepeticionesTextura;
   }
 
   getPosicion(u) {
@@ -43,6 +45,14 @@ class Recta extends RecorridoParametrico {
       case 'z': return [0, 1, 0];
       default: return [0, 0, 1];
     }
+  }
+
+  getLongitudRecorrido() {
+    return this.largo;
+  }
+
+  getCoordenadaTextura(u) {
+    return u * this.cantRepeticionesTextura;
   }
 }
 

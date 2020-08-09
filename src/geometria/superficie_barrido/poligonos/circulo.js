@@ -3,9 +3,9 @@ import Poligono, { Vertice } from "../poligono.js";
 const _2pi = Math.PI * 2;
 
 class Circulo extends Poligono {
-  constructor(radio, definicion = 100) {
+  constructor(radio, definicion = 100, cantRepeticionesTextura) {
     super();
-
+    this.cantRepeticionesTextura = cantRepeticionesTextura;
     this.radio = radio;
 
     for (let i = 0; i <= definicion; i++) {
@@ -15,6 +15,7 @@ class Circulo extends Poligono {
       vertice.normal = this._getNormal(u);
       vertice.tangente = this._getTangente(u);
       vertice.binormal = [0, 0, 1];
+      vertice.coordenadaTextura = u * this.cantRepeticionesTextura;
       this.vertices.push(vertice);
     }
 

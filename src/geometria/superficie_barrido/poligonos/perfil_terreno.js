@@ -1,9 +1,9 @@
 import Poligono, { Vertice } from "../poligono.js";
 
 class PerfilTerreno extends Poligono {
-  constructor(profundidadAgua, radioAgua, largoTerreno) {
+  constructor(profundidadAgua, radioAgua, largoTerreno, cantRepeticionesTextura = 1) {
     super();
-
+    this.cantRepeticionesTextura = cantRepeticionesTextura
     const v0 = new Vertice();
     v0.posicion = [0, 0, 0];
 
@@ -18,10 +18,13 @@ class PerfilTerreno extends Poligono {
 
     this.vertices.push(v0, v1, v2, v3);
 
+    const largo = radioAgua + largoTerreno;
+
     this.vertices.forEach(v => {
       v.normal = [0, 1, 0];
       v.tangente = [1, 0, 0];
       v.binormal = [0, 0, 1];
+      v.coordenadaTextura = (v.posicion[0] / largo) * this.cantRepeticionesTextura;
     })
 
     this.centro.posicion = vec3.fromValues(0, 0, 0);

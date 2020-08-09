@@ -6,6 +6,9 @@ import Terreno from "./terreno/terreno.js";
 import Prisma from "../geometria/objetos_3d/prisma.js";
 import Cilindro from "../geometria/objetos_3d/cilindro.js";
 import FuenteDeLuzPuntual from "../iluminacion/fuente_de_luz_puntual.js";
+import Rectangulo from "../geometria/superficie_barrido/poligonos/rectangulo.js";
+import SuperficieBarrido from "../geometria/superficie_barrido/superficie_barrido.js";
+import Recta from "../geometria/superficie_barrido/recorridos_parametricos/recta.js";
 
 class Escena {
   constructor(shadersManager, gestorDeCamaras) {
@@ -35,6 +38,19 @@ class Escena {
     this.castillo = new Castillo();
     this.castillo.setPosition(0, 0, 0);
     this.objetos.push(this.castillo);
+
+/*     //  BEGIN TESTS
+    this.objetos = [];
+    const rectangulo = new Rectangulo(5, 5);
+    const prueba_cubo = new Objeto3D({
+      geometry: new SuperficieBarrido(rectangulo, new Recta(5), true, 1),
+      material: MATERIAL_BEIGE,
+      glContext: gl
+    });
+    this.objetos.push(prueba_cubo);
+
+    // END TESTS */
+    this.gestorDeCamaras.cambiarObjetivo(this.castillo);
 
     this._iniciarIluminacion();
 
@@ -69,8 +85,6 @@ class Escena {
     this.objetos.push(this.proyectilDesprendido);
 
     this._ajustarEscalaDeEscena();    
-
-    this.gestorDeCamaras.cambiarObjetivo(this.castillo);
 
     this._iniciarMenuDatGUI();
   }

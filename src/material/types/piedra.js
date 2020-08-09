@@ -11,6 +11,7 @@ class Piedra extends Material {
     });
     this.shaderProgram = shaderManager.program(ShadersManager.PIEDRA);
 
+    this.textura = TEXTURE_MANAGER.TEXTURA_PIEDRA;
   }
 }
 

@@ -11,6 +11,7 @@ class MaderaClara extends Material {
     });
     this.shaderProgram = shaderManager.program(ShadersManager.MADERA_CLARA);
 
+    this.textura = TEXTURE_MANAGER.TEXTURA_MADERA_CLARA;
   }
 }
 

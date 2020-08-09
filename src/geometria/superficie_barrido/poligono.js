@@ -2,6 +2,7 @@ class Poligono {
   constructor() {
     this.vertices = [];
     this.centro = new Vertice();
+    this.cantRepeticionesTextura = 1;
   }
 
   getVertice(vertice, nivel) {
@@ -10,6 +11,18 @@ class Poligono {
 
   getCentro(nivel) {
     throw "Debe implementarse";
+  }
+
+  getPerimetro() {
+    throw "Debe implementarse";
+  }
+
+  getCoordenadaTexturaParaVertice(vertice) {
+    if (vertice.coordenadaTextura !== null) {
+      return vertice.coordenadaTextura;
+    } else {
+      throw `Vertice sin coordenada textura en Rectangulo`;
+    }
   }
 
   // Setea una callback para que se transformen los vertices del poligono a lo largo de un recorrido
@@ -24,6 +37,7 @@ class Vertice {
     this.normal = vec3.fromValues(0, 1, 0);
     this.tangente = vec3.fromValues(1, 0, 0);
     this.binormal = vec3.fromValues(0, 0, 1);
+    this.coordenadaTextura = null;
   }
 
   clone() {

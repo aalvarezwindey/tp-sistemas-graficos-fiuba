@@ -106,6 +106,9 @@ class Material {
     if (uv && shaderProgram.textureCoordAttribute !== -1) {
       gl.bindBuffer(gl.ARRAY_BUFFER, uv);
       gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, uv.itemSize, gl.FLOAT, false, 0, 0);
+      // Tell the shader to use texture unit N for u_texture
+      var textureLocation = gl.getUniformLocation(shaderProgram, "u_texture");
+      gl.uniform1i(textureLocation, TEXTURE_MANAGER.getTextureUnit(this.textura));
     }
 
     if (normal && shaderProgram.vertexNormalAttribute !== -1) {
