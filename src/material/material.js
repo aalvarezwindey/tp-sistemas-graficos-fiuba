@@ -62,7 +62,7 @@ class Material {
       .onChange(this.actualizarGlossiness);
 
 
-    GUI_MATERIALES.closed = true;
+    GUI_MATERIALES.closed = false;
     GUI_MATERIALES.width = 515;
   }
 
@@ -107,8 +107,14 @@ class Material {
       gl.bindBuffer(gl.ARRAY_BUFFER, uv);
       gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, uv.itemSize, gl.FLOAT, false, 0, 0);
       // Tell the shader to use texture unit N for u_texture
-      var textureLocation = gl.getUniformLocation(shaderProgram, "u_texture");
+      var textureLocation = gl.getUniformLocation(shaderProgram, "u_texture1");
       gl.uniform1i(textureLocation, TEXTURE_MANAGER.getTextureUnit(this.textura));
+
+      var textureLocation2 = gl.getUniformLocation(shaderProgram, "u_texture2");
+      gl.uniform1i(textureLocation2, TEXTURE_MANAGER.getTextureUnit(this.textura_2));
+
+      var textureLocation3 = gl.getUniformLocation(shaderProgram, "u_texture3");
+      gl.uniform1i(textureLocation3, TEXTURE_MANAGER.getTextureUnit(this.textura_3));
     }
 
     if (normal && shaderProgram.vertexNormalAttribute !== -1) {

@@ -391,7 +391,7 @@ class EjeTravesañoTrasero extends Objeto3D {
     this.disparar = false;
     this.eje.setAnimacion((ejeTravesañoTrasero) => {
       if (this.disparar) {
-        const VELOCIDAD = 20;
+        const VELOCIDAD = 40;
         const ANGULO_MAX = 2 * Math.PI; // 1 vuelta
         const anguloDeRotacion = Math.max(-ANGULO_MAX, -(TIEMPO - this.tiempoInicial) * VELOCIDAD * ANGULO_MAX);
         ejeTravesañoTrasero.setRotation(anguloDeRotacion, 0, 0);

@@ -4,10 +4,10 @@ import ShadersManager from "../../shaders/shaders_manager.js";
 class Agua extends Material {
   constructor(shaderManager) {
     super('Agua', {
-      ambiente: [35,35,80],
-      difuso: [47,47,130],
-      especular: [255,139,0],
-      glossiness: 29
+      ambiente: [13,13,55],
+      difuso: [9,9,70],
+      especular: [213,81,0],
+      glossiness: 5
     });
     this.shaderProgram = shaderManager.program(ShadersManager.AGUA);
     this.textura = TEXTURE_MANAGER.TEXTURA_AGUA;

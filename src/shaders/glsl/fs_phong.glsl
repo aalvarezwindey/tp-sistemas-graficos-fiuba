@@ -16,16 +16,34 @@ varying float vGlossiness;
 
 varying vec2 vUv;
 // The texture.
-uniform sampler2D u_texture;
+uniform sampler2D u_texture1;
+uniform sampler2D u_texture2;
+uniform sampler2D u_texture3;
 
 void main(void) {
     vec3 camVec = normalize(vPosicionCamaraMundo - vPosWorld);
-    vec4 colorTextura = texture2D(u_texture, vUv);
-    vec3 colorTextura3D = colorTextura.xyz;
+    vec4 colorTextura_1 = texture2D(u_texture1, vUv);
+    vec3 colorTextura3D_1 = colorTextura_1.xyz;
+
+    // Textura 2
+    vec3 colorTextura3D_2_1 = texture2D(u_texture2, vUv).xyz;
+    vec3 colorTextura3D_2_2 = texture2D(u_texture2, vUv * 2.17123).xyz;
+    vec3 colorTextura3D_2_3 = texture2D(u_texture2, vUv * 3.8813).xyz;
+    vec3 colorTextura3D_2 = mix(mix(colorTextura3D_2_1, colorTextura3D_2_2, 0.5), colorTextura3D_2_3, 0.3);
+
+    // Textura 3
+    vec3 colorTextura3D_3_1 = texture2D(u_texture3, vUv * 0.893).xyz;
+    vec3 colorTextura3D_3_2 = texture2D(u_texture3, vUv * 2.17343).xyz;
+    vec3 colorTextura3D_3_3 = texture2D(u_texture3, vUv * 1.55324).xyz;
+    vec3 colorTextura3D_3 = mix(mix(colorTextura3D_3_1, colorTextura3D_3_2, 0.5), colorTextura3D_3_3, 0.3);
+
+    // Color textura final
+    vec3 colorTexturaFinal = mix(colorTextura3D_1, colorTextura3D_2, colorTextura3D_3);
+
 
     // Sol
     vec3 lightVec = normalize(vPosicionSol - vPosWorld);
-    vec3 componenteDifusa = dot(lightVec, vNormal) * vColorDifuso + colorTextura3D;
+    vec3 componenteDifusa = dot(lightVec, vNormal) * vColorDifuso + colorTexturaFinal;
 
     vec3 reflexVec = normalize(reflect(-lightVec, vNormal));
     vec3 componenteEspecular = pow(max(0.0, dot(reflexVec, camVec)), vGlossiness) * vColorEspecular;

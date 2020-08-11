@@ -323,7 +323,7 @@ class TorreCastillo extends Objeto3D {
           alturaSuperior: alturaSuperior, 
           radioSuperior: TorreCastillo.RADIO_SUPERIOR,
           alturaCurva: TorreCastillo.ALTURA_CURVA,
-          cantRepeticionesTextura: 4
+          cantRepeticionesTextura: TorreCastillo.altura / 3
         }), 
         // Para hacer una revolucion hacemos un barrido en una circunferencia de R -> 0
         new Circunferencia(0.01, 5), 

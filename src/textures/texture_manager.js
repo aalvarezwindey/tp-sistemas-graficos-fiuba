@@ -55,9 +55,17 @@ class TextureManager {
     const TEXTURA_AGUA = await initTexture('images/water_1k.jpg');
     gl.activeTexture(gl.TEXTURE6);
     gl.bindTexture(gl.TEXTURE_2D, TEXTURA_AGUA);
+    
+    const TEXTURA_CESPED_2 = await initTexture('images/grass2_1k.jpg');
+    gl.activeTexture(gl.TEXTURE7);
+    gl.bindTexture(gl.TEXTURE_2D, TEXTURA_CESPED);
+
+    const TEXTURA_CESPED_3 = await initTexture('images/grass3_1k.jpg');
+    gl.activeTexture(gl.TEXTURE8);
+    gl.bindTexture(gl.TEXTURE_2D, TEXTURA_CESPED);
 
     const TEXTURA_NULA_NEGRA = await initTexture('images/black.jpg');
-    gl.activeTexture(gl.TEXTURE7);
+    gl.activeTexture(gl.TEXTURE9);
     gl.bindTexture(gl.TEXTURE_2D, TEXTURA_NULA_NEGRA);
 
     const texturas = [
@@ -68,6 +76,8 @@ class TextureManager {
       TEXTURA_MADERA_OSCURA,
       TEXTURA_CESPED,
       TEXTURA_AGUA,
+      TEXTURA_CESPED_2,
+      TEXTURA_CESPED_3,
       TEXTURA_NULA_NEGRA,
     ];
     return new TextureManager(texturas);
@@ -82,6 +92,8 @@ class TextureManager {
     this.TEXTURA_MADERA_OSCURA = texturas[4];
     this.TEXTURA_CESPED = texturas[5];
     this.TEXTURA_AGUA = texturas[6]
+    this.TEXTURA_CESPED_2 = texturas[7]
+    this.TEXTURA_CESPED_3 = texturas[8]
     this.TEXTURA_NULA_NEGRA = texturas[texturas.length - 1];
   }
 
@@ -92,8 +104,7 @@ class TextureManager {
       gl.bindTexture(gl.TEXTURE_2D, texture);
       return idx;
     } else {
-      gl.bindTexture(gl.TEXTURE_2D, this.TEXTURA_NULA_NEGRA);
-      return (this.texturas.length - 1);
+      return this.getTextureUnit(this.TEXTURA_NULA_NEGRA);
     }
   }
 }

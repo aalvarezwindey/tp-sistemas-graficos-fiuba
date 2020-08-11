@@ -11,7 +11,7 @@ class CamaraPrimeraPersona {
     const OBJETIVO_DEFAULT = new Objeto3D();
     OBJETIVO_DEFAULT.setPosition(0, 0, -D_OBJ);
 
-    this.posicion = POSICION_DEFAULT;
+    this.objetoPosicion = POSICION_DEFAULT;
     this.objetivo = OBJETIVO_DEFAULT;
     this.offsetMove = 0.5;
     this.offsetRotation = 0.2;
@@ -52,34 +52,34 @@ class CamaraPrimeraPersona {
     document.addEventListener('keydown', event => {
       switch(event.key){
         case "a":
-          this.posicion.setPosition(
-            this.posicion.position[0] + this.lateral[0],
+          this.objetoPosicion.setPosition(
+            this.objetoPosicion.position[0] + this.lateral[0],
             ALTURA_PERSONAJE,
-            this.posicion.position[2] + this.lateral[2],
+            this.objetoPosicion.position[2] + this.lateral[2],
           )
           break;
 
         case "d":
-          this.posicion.setPosition(
-            this.posicion.position[0] - this.lateral[0],
+          this.objetoPosicion.setPosition(
+            this.objetoPosicion.position[0] - this.lateral[0],
             ALTURA_PERSONAJE,
-            this.posicion.position[2] - this.lateral[2],
+            this.objetoPosicion.position[2] - this.lateral[2],
           )
           break;
 
         case "w":
-          this.posicion.setPosition(
-            this.posicion.position[0] + this.frontal[0],
+          this.objetoPosicion.setPosition(
+            this.objetoPosicion.position[0] + this.frontal[0],
             ALTURA_PERSONAJE,
-            this.posicion.position[2] + this.frontal[2],
+            this.objetoPosicion.position[2] + this.frontal[2],
           )
           break;
 
         case "s":
-          this.posicion.setPosition(
-            this.posicion.position[0] - this.frontal[0],
+          this.objetoPosicion.setPosition(
+            this.objetoPosicion.position[0] - this.frontal[0],
             ALTURA_PERSONAJE,
-            this.posicion.position[2] - this.frontal[2],
+            this.objetoPosicion.position[2] - this.frontal[2],
           )
           break;
 
@@ -96,8 +96,12 @@ class CamaraPrimeraPersona {
     })
   }
 
+  get posicion() {
+    return this.objetoPosicion.getWorldCoordinates();
+  }
+
   getMatrizDeVista = () => {
-    const matrizDeModeladoDelPersonaje = this.posicion.modelMatrix;
+    const matrizDeModeladoDelPersonaje = this.objetoPosicion.modelMatrix;
     const matrizDeModeladoDelObjetivo = this.objetivo.modelMatrix;
 
     const posicionPersonajeEnMundo = vec3.create();
@@ -142,7 +146,7 @@ class CamaraPrimeraPersona {
     vec3.transformMat4(this.frontal, this.frontal, m);
     vec3.transformMat4(this.lateral, this.lateral, m);
 
-    this.posicion.setRotation(0, this.rotacion, 0);
+    this.objetoPosicion.setRotation(0, this.rotacion, 0);
   }
 
   _actualizarPosicionDelObjetivo = () => {

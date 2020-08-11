@@ -3,17 +3,13 @@ import Catapulta from "./catapulta/catapulta.js";
 import EjesDeCoordenadas from "../geometria/objetos_3d/ejes_de_coordenadas.js";
 import Castillo from "./castillo/castillo.js";
 import Terreno from "./terreno/terreno.js";
-import Prisma from "../geometria/objetos_3d/prisma.js";
-import Cilindro from "../geometria/objetos_3d/cilindro.js";
 import FuenteDeLuzPuntual from "../iluminacion/fuente_de_luz_puntual.js";
-import Rectangulo from "../geometria/superficie_barrido/poligonos/rectangulo.js";
-import SuperficieBarrido from "../geometria/superficie_barrido/superficie_barrido.js";
-import Recta from "../geometria/superficie_barrido/recorridos_parametricos/recta.js";
 
 class Escena {
   constructor(shadersManager, gestorDeCamaras) {
     EJES_DE_COORDENADAS = new EjesDeCoordenadas();
     this.objetos = [];
+    this.VELOCIDAD_ORBITA_SOL = 0
     this.shadersManager = shadersManager;
     this.gestorDeCamaras = gestorDeCamaras;
     this._indiceObjetoEnfocado = 0;
@@ -39,17 +35,6 @@ class Escena {
     this.castillo.setPosition(0, 0, 0);
     this.objetos.push(this.castillo);
 
-    //  BEGIN TESTS
-    // const rectangulo = new Rectangulo(1, 1, 4);
-    // const prueba_cubo = new Objeto3D({
-    //   geometry: new SuperficieBarrido(rectangulo, new Recta(1, 1), true, 1, false),
-    //   material: MATERIAL_MADERA_CLARA,
-    //   glContext: gl
-    // });
-    // prueba_cubo.setPosition(30, 5, 0);
-    // this.objetos.push(prueba_cubo);
-
-    // END TESTS
     this.gestorDeCamaras.cambiarObjetivo(this.castillo);
 
     this._iniciarIluminacion();
@@ -101,7 +86,7 @@ class Escena {
     
     this.sol.setAnimacion(s => {
       const _2pi = Math.PI * 2;
-      const VELOCIDAD_ORBITA = TIEMPO * 5 * 0;
+      const VELOCIDAD_ORBITA = TIEMPO * 5 * this.VELOCIDAD_ORBITA_SOL;
       const nuevaPosicion = [0.0, this.ALTURA_ORBITA + this.RADIO_ORBITA * Math.sin(VELOCIDAD_ORBITA * _2pi), this.RADIO_ORBITA * Math.cos(VELOCIDAD_ORBITA * _2pi)];
       s.setPosition(...nuevaPosicion);
       shadersManager.updatePosicionSol(nuevaPosicion);
@@ -201,6 +186,7 @@ class Escena {
       Presione [U, H, J, K] para mover la catapulta
       Presione [BARRA ESPACIADORA] para disparar la catapulta (o resetear el disparo)
       Presione los números [1, 2, 3, 4, 5] para variar parámetros del castillo
+      Presione los números [+ y -] para aumentar la velocidad de la orbita del sol
     `);
   }
 
@@ -245,31 +231,26 @@ class Escena {
         }
 
         case '1': {
-          break
           this.castillo.variarPisos()
           break;
         }
 
         case '2': {
-          break
           this.castillo.variarLargo()
           break;
         }
 
         case '3': {
-          break
           this.castillo.variarAncho()
           break;
         }
 
         case '4': {
-          break
           this.castillo.variarLadosDeMuralla()
           break;
         }
 
         case '5': {
-          break
           this.castillo.variarAlturaDeMuralla()
           break;
         }
@@ -287,16 +268,17 @@ class Escena {
         }
 
         case '+': {
-          this.RADIO_ORBITA = Math.min(100, this.RADIO_ORBITA + 0.5);
+          this.VELOCIDAD_ORBITA_SOL = Math.min(1, this.VELOCIDAD_ORBITA_SOL + 0.05);
           break;
         }
 
         case '-': {
-          this.RADIO_ORBITA = Math.max(1, this.RADIO_ORBITA - 0.5);
+          this.VELOCIDAD_ORBITA_SOL = Math.max(0, this.VELOCIDAD_ORBITA_SOL - 0.05);
           break;
         }
 
         case '0': {
+          break;
           DEBUG_EJES = !DEBUG_EJES;
           if (DEBUG_EJES) {
             this.objetos.forEach(obj => obj.addChild(EJES_DE_COORDENADAS));

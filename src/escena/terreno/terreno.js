@@ -15,9 +15,9 @@ class Terreno extends Objeto3D {
           Terreno.PROFUNDIDAD_AGUA,
           Terreno.RADIO_AGUA,
           Terreno.LARGO_TERRENO,
-          40,
+          2,
         ),
-        new Circunferencia(0.01, 100),
+        new Circunferencia(0.01, 10),
         false,
         100
       ),
